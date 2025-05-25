@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  socketUrl: 'http://localhost:3000',
-  url: 'http://localhost:3000',
+  socketUrl: 'https://unrayappserver.onrender.com',
+  url: 'https://unrayappserver.onrender.com',
     AZURE_FACE_ENDPOINT : 'https://eastus.api.cognitive.microsoft.com/face/v1.0/detect',
     AZURE_SUBSCRIPTION_KEY: '70uJX0QgwsiKoaCuZ4T2mC6zfQ5gkVtvUAoHxsCHiSfudusjmWHgJQQJ99BDACYeBjFXJ3w3AAAKACOGww4X'
   ,

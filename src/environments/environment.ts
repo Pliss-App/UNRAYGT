@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  socketUrl: 'http://localhost:3000',
-  url: 'http://localhost:3000',
+  socketUrl: 'https://unrayappserver.onrender.com',
+  url: 'https://unrayappserver.onrender.com',
 
    /*  npm i @angular/fire@6.1.4 firebase@8.6.1
      socketUrl: 'https://unrayappserver.onrender.com',
