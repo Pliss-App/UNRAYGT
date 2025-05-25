@@ -1,0 +1,121 @@
+<ion-content [fullscreen]="true" class="background-image">
+  <ion-grid class="centered-card">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="6" size-lg="4">
+        <ion-card class="card-register" style="border-radius: 15px;">
+          <ion-card-content>
+
+            <p style="margin-top: 5px; margin-bottom: 5px; text-align: center; font-size: 18pt; font-weight: bolder;">
+              Crear Cuenta</p>
+            <form [formGroup]="registro" (ngSubmit)="onSubmit()">
+              <ion-grid style="padding: 0px; margin: 0px;">
+                <ion-row style="padding: 0px; margin: 0px;">
+                  <ion-col size="6" size-md="6" size-lg="4" style="padding: 0px; margin: 0px;">
+                    <ion-item class="outlined-input">
+                      <ion-input class="white-placeholder" formControlName="nombre" type="text"
+                        placeholder="Nombre"></ion-input>
+                    </ion-item>
+                    <ion-text class="text-required" color="danger" *ngIf="isFieldInvalid('nombre')">
+                      Nombre es requerido.
+                    </ion-text>
+                  </ion-col>
+                  <ion-col size="6" size-md="6" size-lg="4" style="padding: 0px; margin: 0px;">
+                    <ion-item class="outlined-input">
+                      <ion-input class="white-placeholder" formControlName="apellido" type="text"
+                        placeholder="Apellido"></ion-input>
+                    </ion-item>
+                    <ion-text class="text-required" color="danger" *ngIf="isFieldInvalid('apellido')">
+                      Apellido es requerido.
+                    </ion-text>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+
+              <ion-item class="outlined-input phone-input">
+                <!-- Código del país -->
+                <ion-select interface="popover" placeholder="+502" formControlName="codigoPais"
+                  class="country-code-select">
+                  <ion-select-option value="502">🇬🇹 +502</ion-select-option>
+                </ion-select>
+
+                <!-- Número de teléfono -->
+                <ion-input formControlName="telefono" type="tel" placeholder="Teléfono"
+                  class="white-placeholder"></ion-input>
+              </ion-item>
+
+
+
+              <!--<ion-item class="outlined-input">
+                <ion-input class="white-placeholder" formControlName="telefono" type="tel"
+                  placeholder="Teléfono"></ion-input>
+              </ion-item>  -->
+              <ion-text class="text-required" color="danger" *ngIf="isFieldInvalid('telefono')">
+                Teléfono es requerido.
+              </ion-text>
+
+              <ion-item class="outlined-input">
+                <ion-input class="white-placeholder" formControlName="correo" type="email"
+                  placeholder="Correo"></ion-input>
+              </ion-item>
+              <ion-text class="text-required" color="danger" *ngIf="isFieldInvalid('correo')">
+                Email es requerido y debe ser válido.
+              </ion-text>
+
+              <ion-item class="outlined-input">
+                <ion-input class="white-placeholder" formControlName="password" type="password"
+                  placeholder="Contraseña"></ion-input>
+              </ion-item>
+              <ion-text class="text-required" color="danger" *ngIf="isFieldInvalid('password')">
+                La contraseña es requerida y debe tener al menos 6 caracteres.
+              </ion-text>
+
+              <ion-item class="outlined-input">
+                <ion-input class="white-placeholder" formControlName="confirmPassword" type="password"
+                  placeholder="Repetir Contraseña"></ion-input>
+              </ion-item>
+              <ion-text class="text-required" color="danger"
+                *ngIf="registro.errors?.['passwordsMismatch'] && registro.get('confirmPassword')?.touched">
+                Las contraseñas no coinciden.
+              </ion-text>
+
+              <ion-item class="outlined-input-referido">
+                <ion-label>¿Tiene código de referido?</ion-label>
+                <ion-toggle formControlName="tieneCodigoReferido" slot="end"></ion-toggle>
+              </ion-item>
+
+              <!-- Campo de código referido (solo aparece si está activado el toggle) -->
+              <ion-item class="outlined-input" *ngIf="registro.get('tieneCodigoReferido')?.value">
+                <ion-input class="white-placeholder" formControlName="codigo" type="number"
+                  placeholder="Código Referido"></ion-input>
+              </ion-item>
+              <div style="display: flex; align-items: center;">
+                <input type="checkbox" formControlName="aceptaTerminos" id="acepta" style="margin-left: 6px;" />
+                <label for="acepta" style="margin-left: 5px;">
+                  Acepto los términos y condiciones
+                </label>
+              </div>
+
+              <div *ngIf="registro.get('aceptaTerminos')?.invalid && registro.get('aceptaTerminos')?.touched"
+                style="color: red;">
+                Debes aceptar los términos y condiciones
+              </div>
+              <ion-button shape="round" [disabled]="!registro.valid || isSubmitting" expand="full"
+                class="ion-margin-top" type="submit">
+                Crear Cuenta
+              </ion-button>
+
+
+              <p style="margin-top: 12px; margin-left: 6px; font-size: 13pt;">
+                Ya tengo cuenta! <a style="font-weight: bolder; color: white; " href="auth/login">Iniciar Sesión</a>
+              </p>
+
+
+            </form>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

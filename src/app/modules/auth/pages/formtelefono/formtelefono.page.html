@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true" class="ion-padding phone-page">
+
+  <div class="form-container">
+    <ion-grid class="centered-card">
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" size-md="6" size-lg="4">
+          <ion-card
+            style="border-radius: 15px; color:white; background: rgba(0, 0, 0, 0.5); box-shadow: none; border: 1px solid rgba(255, 255, 255, 0.9);">
+            <h1 class="title">Un Ray</h1>
+            <p class="subtitle">Ingreso fácil, plataforma confiable</p>
+
+            <ion-item class="input-wrapper">
+              <ion-select class="code-phone" [(ngModel)]="selectedCountry" interface="popover">
+                <ion-select-option *ngFor="let country of countries" [value]="country">
+                  <img [src]="country.flag" class="flag-icon" />
+                  {{ country.name }} ({{ country.code }})
+                </ion-select-option>
+              </ion-select>
+
+              <ion-input  autocomplete="one-time-code" class="white-placeholder" [(ngModel)]="phoneNumber" type="tel" placeholder="Teléfono"
+                maxlength="15"></ion-input>
+            </ion-item>
+            <p style="text-align: left; margin-left: 5px; margin-right: 5px;">Al agregar tu télefono aceptas los Términos y Condiciones.</p>
+
+            <ion-button   [disabled]="!phoneNumber || isLoading"  shape="round" expand="block" (click)="submitPhone()">
+              <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+              <span *ngIf="!isLoading">Entrar</span></ion-button>
+
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+</ion-content>

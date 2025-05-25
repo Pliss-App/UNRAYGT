@@ -1,0 +1,115 @@
+ion-header {
+    padding: 15px;
+    box-shadow: none;
+    border: none;
+    background: #f5f8f7 !important;
+    --background: #f5f8f7;
+}
+
+ion-toolbar {
+    border: none;
+    background: #ffffff !important;
+    --background: #ffffff;
+}
+
+
+ion-content {
+
+    background: #f5f8f7 !important;
+    --background: #f5f8f7;
+}
+
+.content-referido {
+
+    height: 100%;
+    width: 100%;
+    background: #ffffff !important;
+
+}
+
+
+.titulo-centrado {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 19px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1;
+    z-index: 1;
+}
+
+.label-text {
+    text-transform: none;
+    font-size: 13px;
+}
+
+.contenido-segmentos {
+    padding: 10px;
+}
+.contenedor-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 10px 0; /* opcional */
+  }
+  
+  .img-referido {
+    max-width: 250px; /* o el tamaño que prefieras */
+    width: 90%;
+  }
+  
+  .img-assets {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+
+  .referido-card {
+    background: rgb(247, 247, 247);
+    
+    border-radius: 12px;
+    box-shadow: none !important;
+  }
+
+  .item-codigo{
+    background: gainsboro;
+    --background: rgb(247, 247, 247);
+  }
+  
+  .codigo-texto {
+    font-size: 20pt;
+    font-weight: 600;
+    color: #333;
+  }
+  
+
+  ion-icon {
+    font-size: 32px;
+    color: #ffffff; // cambia según la red si quieres
+  }
+
+  .circle-number {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: orangered;
+    color: white;
+    font-weight: bold;
+    margin-right: 8px;
+    font-size: 14px;
+  }
+
+
+
+  ion-input.input-grande input {
+    font-size: 22px !important;
+  }

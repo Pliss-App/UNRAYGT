@@ -1,0 +1,78 @@
+ion-title {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+  
+  .star {
+    font-size: 40px;
+    color: gold;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+
+
+  .avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: solid 4px rgb(238, 238, 238);
+    //box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  p{
+    text-align: center;
+  }
+  
+
+  .star-container {
+    //display: flex;
+    //justify-content: center;
+    //margin: 20px 0;
+  }
+  .star-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  
+  .star {
+    font-size: 2.5rem;
+    color: #fcd34d; /* Color dorado */
+    cursor: pointer;
+  }
+  
+  ion-textarea {
+    margin-top: 5px;
+    margin-left:8px;
+    margin-right: 8px;
+   // border: 2px solid #ccc; /* Borde gris */
+   // border-radius: 10px; /* Bordes redondeados */
+  }
+
+  
+
+  h2{
+    font-weight: bolder;
+  }
+
+  ion-modal {
+    --width: 90%; /* Puedes ajustar el tamaño del modal */
+    --max-width: 400px; /* Establecer un tamaño máximo */
+    --height: auto;
+    --max-height: 90%; /* Limitar la altura para que no ocupe toda la pantalla */
+  }
+
+  

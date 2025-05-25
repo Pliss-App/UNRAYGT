@@ -1,0 +1,33 @@
+
+
+<ion-content [fullscreen]="true">
+  <ion-fab   style="z-index: 7 !important;" vertical="top" horizontal="end" slot="fixed" size="small">
+    <ion-fab-button size="small" (click)="locate()">
+      <ion-icon color="primary"  name="locate"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <app-map-routing [idSoli]="solicitud.id" [origin]="{ lat: solicitud.start_lat, lng:solicitud.start_lng}"
+  [destination]="{ lat:solicitud.end_lat, lng: solicitud.end_lng}"
+  [waypoints]="[]"
+  [estado_viaje]="solicitud.estado_viaje"
+ [idConductor]="idConductor" *ngIf="idConductor"    class="mapa-viaje"  [style.top]="'0px'"
+ [style.bottom]="(sheetHeight - 20) + 'px'"></app-map-routing> 
+
+ <app-viaje-sheet class="viaje-sheet"  (sheetHeightChange)="actualizarAlturaMapa($event)"
+ >
+
+ <app-user-driver *ngIf="idConductor" 
+ [idViaje]="solicitud.id" 
+ [estado_viaje]="solicitud.estado_viaje"
+ [rol]="'user'"
+ [idUser]="user.idUser" 
+ [idConductor]="solicitud.idUser" 
+ [pointA]="solicitud.start_direction"
+ [pointB]="solicitud.end_direction"
+ [origin]="{ lat: solicitud.start_lat, lng:solicitud.start_lng}"
+ [destination]="{ lat:solicitud.end_lat, lng: solicitud.end_lng}"
+ [coste]="solicitud.costo"
+ class="user-driver"></app-user-driver> 
+
+</app-viaje-sheet>
+</ion-content>

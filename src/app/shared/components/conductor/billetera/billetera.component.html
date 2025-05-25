@@ -1,0 +1,10 @@
+<div class="billetera elevation elevation-3" style="position: relative;" >
+   <div class="icono-actualizar" (click)="getGanancias()">   <ion-icon  *ngIf="!isLoading" name="reload-outline"></ion-icon>
+      <ion-icon *ngIf="isLoading" name="reload-outline" class="spin"></ion-icon>
+   </div>
+   <span>
+       Q{{saldo}}  
+      <p class="ganancia">Ganancia</p> 
+     <!-- <p  (click)="recargar()" class="recargar-saldo" ><a style="color: rgb(120, 196, 8) !important"> RECARGAR </a></p>-->
+   </span>
+</div>

@@ -1,0 +1,64 @@
+<ion-header color="primary">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="openMenu()">
+        <!--<ion-icon class="icon-back" name="arrow-back"></ion-icon>-->
+        <ion-icon class="icon-back" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Ganancias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content class="card-content">
+      <!-- Centrar el h1 -->
+      <h1>Q{{ totalGanancia }}</h1>
+      <!-- Texto debajo del h1 -->
+      <p class="ganancia-text">Ganancias</p>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Seleccionar Fecha</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Botón para abrir el calendario -->
+      <ion-button shape="round" expand="full" (click)="toggleDatePicker()">
+        {{ selectedDate }}
+      </ion-button>
+
+      <!-- Calendario que se muestra/oculta según la variable `showDatePicker` -->
+      <ion-datetime *ngIf="showDatePicker" [value]="selectedDate" (ionChange)="onDateChange($event)"
+        presentation="date">
+      </ion-datetime>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid *ngIf="listado.length" style="padding: 0px;margin: 0px;">
+    <ion-row>
+
+    <ion-col *ngFor="let g of listado" style="padding: 0px;margin: 0px;">
+      <ion-card class="car-list">
+        <ion-label style="padding: 0px;margin: 0px;">
+          <p><ion-icon color="danger" name="location-outline"></ion-icon> <!-- Indicador de inicio --> {{
+            g.start_direction }} </p>
+          <p> <ion-icon name="flag-outline"></ion-icon> {{ g.end_direction }}</p>
+          <p style="margin-top: 5px;">Costo: {{ g.costo | currency:'GTQ' }}</p>
+          <h2>Ganancia: <span style="color:rgb(4, 194, 4); font-weight: bolder;">{{ g.ganancia | currency:'GTQ'
+              }}</span></h2>
+          <p>Fecha: {{ g.fecha }} - Hora: {{ g.hora }}</p>
+        </ion-label>
+      </ion-card>
+
+    </ion-col>
+ </ion-row>
+  </ion-grid>
+
+  <ion-card *ngIf="!listado.length">
+    <ion-card-content>
+      <ion-label>No hay ganancias registradas para esta fecha.</ion-label>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

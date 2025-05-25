@@ -1,0 +1,89 @@
+
+<ion-content [fullscreen]="true">
+  <div>
+  <app-mapa>
+    <div class="btn-online-off">
+
+      <ion-item class="toggle-container" [ngClass]="{ 'item-online': isOnline, 'item-offline': !isOnline }">
+        <div class="toggle-wrapper">
+          <div class="toggle-left">
+            <ion-label class="status-label">OFFLINE</ion-label>
+          </div>
+      
+          <div class="toggle-center">
+            <ion-toggle [(ngModel)]="isOnline" (ionChange)="updateStatus()"
+                        [color]="isOnline==true ? 'success' : 'danger'">
+            </ion-toggle>
+          </div>
+      
+          <div class="toggle-right">
+            <ion-label class="status-label">ONLINE</ion-label>
+          </div>
+        </div>
+      </ion-item>
+    </div>
+
+  </app-mapa>
+
+  <div class="menu elevation-3">
+    <ion-button class="btn-menu" fill="clear" shape="round" (click)="openMenu()">  <ion-icon  name="menu"></ion-icon></ion-button></div> 
+  <div class="billetera"> <app-billetera></app-billetera></div>
+
+  <div class="notification-btn elevation-3">
+  <ion-button (click)="notification()" fill="clear" shape="round">
+    <ion-icon slot="icon-only" name="notifications"></ion-icon>
+  </ion-button>
+</div>
+
+ <!-- <div *ngIf="solicitud; else noSolicitud" class="cajon-solicitud"></div> -->
+  <div *ngIf="solicitud" class="cajon-solicitud">
+    <ion-card>
+      <ion-progress-bar 
+      [value]="progreso" 
+      buffer="1" 
+      [color]="colorProgreso" 
+      class="progress-bar">
+    </ion-progress-bar>
+      <ion-grid>
+        <ion-row>
+          <!-- Columna 25% con Avatar y Nombre del Usuario -->
+          <ion-col size="3" class="user-info">
+            <ion-avatar>
+              <img [src]="solicitud?.foto ? solicitud.foto : 'https://t4.ftcdn.net/jpg/00/65/77/27/360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg'" alt="Usuario" />
+            </ion-avatar>
+            <ion-label>
+              <h4>{{solicitud?.nombre}} {{solicitud?.apellido}}</h4>
+            </ion-label>
+          </ion-col>
+    
+          <!-- Columna 75% con Información del Viaje -->
+          <ion-col size="9" class="trip-info">
+            <ion-label>
+              <p><strong>Salida:</strong> {{solicitud.start_direction}}</p>
+              <p><strong>Destino:</strong> {{solicitud.end_direction}}</p>
+              <p><strong>Costo:</strong> Q{{solicitud.costo}}</p>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+    
+        <!-- Fila con botones Aceptar y Rechazar -->
+        <ion-row class="buttons-row">
+          <ion-col>
+            <ion-button (click)="aceptarSolicitud()" expand="block" color="success">Aceptar</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button (click)="rechazarSolicitud()" expand="block" color="danger">Rechazar</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </div>
+
+ <!-- <ng-template #noSolicitud class="cajon-solicitud">
+    <ion-text color="medium">
+      <p>No hay solicitudes pendientes.</p>
+    </ion-text>
+  </ng-template> -->
+
+</div>
+</ion-content>

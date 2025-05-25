@@ -1,0 +1,24 @@
+<!--<div id="mapa_conductor">
+
+
+     
+  <div class="map-footer">
+    <ng-content></ng-content>
+  </div>
+</div> -->
+
+
+<div class="map-container">
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" style="bottom: 155px;">
+        <ion-fab-button size="small" (click)="getUserLocation()" class="custom-fab">
+          <ion-icon  name="locate-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+      
+    <!-- Aquí va el mapa -->
+    <div id="mapa_conductor"></div>
+    <!-- Footer dentro del mapa -->
+    <div class="map-footer">
+      <ng-content></ng-content>
+    </div>
+  </div>

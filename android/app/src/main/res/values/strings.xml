@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Un Ray</string>
+    <string name="title_activity_main">Un Ray</string>
+    <string name="package_name">com.unrayinternational.app</string>
+    <string name="custom_url_scheme">com.unrayinternational.app</string>
+</resources>

@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-toolbar >
+    <ion-buttons slot="start">
+      <ion-button  fill="outline" (click)="openMenu()" class="custom-button" >
+        <!--<ion-icon class="icon-back" name="arrow-back"></ion-icon>-->
+        <ion-icon class="icon-back" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="photo-profile">
+    <div style="text-align: center;">
+
+      <app-foto></app-foto>
+      <div class="rating">
+        <ion-icon class="start" *ngFor="let star of stars" [name]="star"></ion-icon>
+       <!-- <span *ngIf="rating"> {{rating.rating}} ({{rating.total_viajes}})</span> --> </div>  
+       
+        <p  class="nombre">{{user.nombre}} {{user.apellido}}</p>  
+        <p class="codigo">
+          <ion-icon color="warning" name="pricetag"></ion-icon> 
+          {{ user.codigo ?? 'SIN CÓDIGO' }}  
+          <ion-icon name="copy-outline" style="cursor: pointer; margin-left: 8px;" (click)="copiarCodigo(user.codigo)"></ion-icon>
+        </p> 
+    </div>
+
+  </div>
+
+  <div class="contenido-perfil">
+  
+  <ion-card class="custom-card">
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="4" class="center-content divider" *ngIf="saldo">
+          <p class="titulo-contenido-cajon">Saldo</p>
+          <p class="contenido-cajon">Q{{ saldo}}</p>
+        </ion-col>
+        <ion-col size="4" class="center-content divider" *ngIf="rating">
+          <p class="titulo-contenido-cajon">Viajes</p>
+          <p class="contenido-cajon">{{rating.total_viajes}}</p>
+        </ion-col>
+        <ion-col size="4" class="center-content">
+          <p class="titulo-contenido-cajon">Ganancias</p>
+          <p class="contenido-cajon">Q{{ganancia}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>Datos personales</ion-card-header>
+    <ion-card-content>
+    <form [formGroup]="profileForm">
+
+      <ion-item class="outlined-input">
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input  formControlName="nombre"  [(ngModel)]="user.nombre" name="nombre" type="text"
+          placeholder="Nombre"></ion-input>
+      </ion-item>
+      <ion-item class="outlined-input">
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Apellido</ion-label>
+        <ion-input formControlName="apellido" [(ngModel)]="user.apellido" name="apellido" type="text"
+          placeholder="Apellido"></ion-input>
+      </ion-item>
+
+
+      <ion-item class="outlined-input">
+        <ion-icon name="call-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Teléfono</ion-label>
+        <ion-input [disabled]="true" formControlName="telefono" [(ngModel)]="user.telefono" name="telefono" type="tel"
+          placeholder="Teléfono"></ion-input>
+      </ion-item>
+      <ion-item class="outlined-input">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Correo</ion-label>
+
+        <ion-input formControlName="correo" [(ngModel)]="user.correo" name="correo" type="email"
+          placeholder="Correo"></ion-input>
+      </ion-item>
+
+    </form>
+ <!--   <div style="width: 100%; text-align: center; margin-bottom: 8px; margin-top:8px">
+      <ion-button shape="round" [disabled]="isUpdateButtonDisabled" (click)="updateProfile()">
+        Actualizar
+      </ion-button>
+    </div> -->
+</ion-card-content>
+
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>Detalles del vehiculo</ion-card-header>
+
+
+    <ion-card-content *ngIf="vehiculo">
+      <ion-item>
+        <ion-label>Modelo:</ion-label>
+        <ion-text>{{ vehiculo.modelo }}</ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Placas:</ion-label>
+        <ion-text>{{ vehiculo.placas }}</ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Color:</ion-label>
+        <ion-text>{{ vehiculo.color }}</ion-text>
+      </ion-item>
+
+
+
+    </ion-card-content>
+  </ion-card> 
+</div>
+</ion-content>

@@ -1,0 +1,97 @@
+<ion-header [translucent]="true" color="primary">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <!-- Botón de regreso -->
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Recargar</ion-title>
+    <ion-buttons slot="end">
+      <!-- Opción de Pagos -->
+      <ion-button (click)="navigateToPayments()">Pagos</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content>
+  <div style="padding-left: 25px; padding-right: 25px;">
+  <!--  <p style="padding-left: 0px; padding-right: 10px;margin-bottom: 0px;">Recarga tu billetera para seguir recibiendo viajes.
+    </p>
+    <ion-grid style="margin-top: -12px;">
+      <ion-row style="margin-top: -5px; text-align: center;" class="ion-justify-content-center ion-align-items-center">
+
+        <ion-col size="6" >
+          <p> <b>VisaLink:</b></p>
+          <ion-button expand="full" (click)="openVisaLink()"><ion-icon name="card"></ion-icon></ion-button>
+        </ion-col>
+    
+      
+        <ion-col size="6" >
+          <p><b>Depósito</b></p>
+          <ion-button expand="full" color="primary" (click)="mostrarDetallesCuenta()"><ion-icon name="business"></ion-icon></ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>  -->
+   <!-- <p>Link de pago: </p>
+    <ion-button expand="full" (click)="openVisaLink()">Abrir Visa Link</ion-button>
+
+    <h4>Realiza depósito a: </h4>
+    <ion-card class="custom-card">
+      <ion-card-header>
+        <ion-card-title>Banco Promerica</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><b>Titular:</b> PLIISS TECHNOLOGY BUSINESSES</p>
+        <p><b>Tipo:</b> Monetaria</p>
+        <p><b>Moneda:</b> Quetzales</p>
+        <p><b>Número:</b> 12335010221476</p>
+      </ion-card-content>
+    </ion-card>
+     <h4 style="margin-top: 15px;">Adjuntar comprobante</h4>
+    -->
+    
+
+    <form [formGroup]="paymentForm" (ngSubmit)="submitForm()" style="margin-top: 15px;">
+      <p>Carga tu imagen, nosotros nos encargamos del resto.</p>
+      📢 Importante: Para garantizar una correcta lectura de la imagen, asegúrate de:
+      <ul>
+        <li>✅ Tomar la foto en un lugar bien iluminado.</li>
+        <li>✅ Usar una imagen clara y enfocada.</li>
+        <li>✅ Evitar sombras, reflejos o fondos que dificulten la lectura del texto.</li>
+        <li>✅ Asegurarte de que todos los datos sean legibles y no estén borrosos.</li>
+      </ul>
+      <ion-item class="outlined-input">
+        <ion-label position="floating">Número de Boleta</ion-label>
+        <ion-input  [(ngModel)]="formValidFields.receiptNumber"  formControlName="receiptNumber" type="text" 
+        (ionInput)="checkInput('receiptNumber')"></ion-input>
+        <ion-icon *ngIf="isFieldValid('receiptNumber')" name="checkmark-circle" color="success" slot="end"></ion-icon>  </ion-item>
+
+        <ion-item class="outlined-input">
+          <ion-label position="floating">Monto Q.</ion-label>
+          <ion-input 
+            formControlName="amount" 
+            type="number"
+            [(ngModel)]="formValidFields.amount"
+            (ionInput)="checkInput('amount')">
+          </ion-input>
+          <ion-icon *ngIf="isFieldValid('amount')" name="checkmark-circle" color="success" slot="end"></ion-icon>
+        </ion-item>
+
+      <p>Adjunta tu vaucher o boleta de depósito</p>
+
+
+      <div class="photo-container" (click)="openPhotoOptions()">
+        <img *ngIf="photoBase64" [src]="photoBase64" />
+        <ion-icon *ngIf="!photoBase64" name="camera" size="large"></ion-icon>
+      </div>
+
+      <ion-button
+      expand="full"
+      type="submit"
+      [disabled]="!isImageValid">  <!-- Aquí el botón se desactiva si la imagen no es válida -->
+      Enviar
+    </ion-button>
+    </form>
+  </div>
+</ion-content>

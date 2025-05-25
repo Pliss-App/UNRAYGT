@@ -1,0 +1,28 @@
+<ion-header color="primary">
+  <ion-toolbar  color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="openMenu()">
+        <!--<ion-icon class="icon-back" name="arrow-back"></ion-icon>-->
+        <ion-icon class="icon-back" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Preguntas frecuentes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+  <ion-button fill="clear" (click)="goBack()">
+    <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+    Regresar
+  </ion-button>
+
+  <ion-list lines="none">
+    <ion-item *ngFor="let item of preguntas">
+      <ion-label>
+        <h2>{{item.pregunta}}</h2>
+        <p>{{item.respuesta}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

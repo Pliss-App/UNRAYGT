@@ -1,0 +1,40 @@
+
+:host {
+    --background: transparent !important; /* 🔥 Fondo del modal */
+    --backdrop-opacity: 0 !important;     /* 🔥 Fondo oscuro transparente */
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+  }
+  .modal-content {
+    background: transparent; /* 🔥 Fondo de la caja también transparente */
+    --background: transparent !important; /* 🔥 Fondo del modal */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Ocupa toda la pantalla para centrar */
+  }
+  
+  .alerta-rostro {
+    background: white; /* 🔥 Caja blanca visible */
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .alert-img-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  
+  .alert-img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+  }
+  

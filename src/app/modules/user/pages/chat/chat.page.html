@@ -1,0 +1,41 @@
+<ion-header class="no-shadow">
+  <ion-toolbar class="no-shadow">
+    <ion-title>Chat</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon style="color: black;" slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="chat-content" [scrollEvents]="true" (ionScroll)="onScroll($event)">
+  <div class="contenedor-chat">
+  <div *ngFor="let msg of mensajes" [ngClass]="{'sent': msg.emisor_id === emisorId, 'received': msg.emisor_id !== emisorId}">
+    <div class="message">{{ msg.mensaje }}</div>
+  </div>
+</div>
+
+<div class="list-sms-definido" *ngIf="!isSelect">
+  <ion-chip *ngFor="let item of smsDefinidos" (click)="selectSMS(item)">
+    <ion-label>{{item.mensaje}}</ion-label>
+  </ion-chip>
+</div>
+</ion-content>
+
+<ion-footer class="transparent-footer">
+  <ion-item class="transparent-item" lines="none">
+    <ion-input
+      style="--padding-start: 10px;"
+      [(ngModel)]="mensaje"
+      placeholder="Mensaje"
+      clearInput
+      type="text"
+      autofocus
+    ></ion-input>
+    <ion-button color="success" [disabled]="!mensaje" (click)="enviarMensaje()" shape="round" class="round-button">
+      <ion-icon  style="color: white !important;"slot="icon-only" name="send"></ion-icon>
+    </ion-button>
+  </ion-item>
+</ion-footer>
+

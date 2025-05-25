@@ -1,0 +1,50 @@
+.user-driver{
+  
+}
+
+.mapa-viaje {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: bottom 0.2s ease-in-out; // Animación al mover el sheet
+  overflow: hidden; // Evita espacios en blanco
+}
+
+.viaje-sheet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: max-content;
+  background: white;
+  border-radius: 15px 15px 0 0;
+  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
+  transition: height 0.2s ease-in-out;
+  overflow: hidden;
+}
+
+  .tt-attribution {
+    font-size: 10px; /* Ajusta el tamaño del texto */
+    margin: 0; /* Elimina el margen */
+    opacity: 0.4; /* Cambia la opacidad si es necesario */
+  }
+
+  ion-fab-button {
+    --background: rgba(255, 255, 255, 0.9);
+    /* Fondo semitransparente */
+    --background-activated: rgba(255, 255, 255, 0.9);
+    /* Fondo al hacer clic */
+    --background-focused: rgba(255, 255, 255, 0.9);
+    /* Fondo al estar enfocado */
+    --background-hover: rgba(255, 255, 255, 0.9);
+    /* Fondo al pasar el cursor */
+    backdrop-filter: blur(5px);
+    /* Agrega un desenfoque de fondo */
+    border-radius: 50%;
+    /* Forma redonda */
+    box-shadow: none !important;
+    color: black
+  }
+
+

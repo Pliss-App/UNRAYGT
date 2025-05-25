@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <!-- Botón de regreso -->
+      <ion-back-button defaultHref="/" ></ion-back-button>
+    </ion-buttons>
+    <ion-title>Recuperar Contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="8" size-lg="6">
+        <ion-card class="animate-card">
+          <ion-card-header class="text-center">
+            <ion-card-title>🔒 ¿Olvidaste tu contraseña?</ion-card-title>
+            <ion-card-subtitle>
+              Ingresa tu correo electrónico para recibir instrucciones de recuperación.
+            </ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <form [formGroup]="recoverForm" (ngSubmit)="onSubmit()">
+              <!-- Campo de Correo -->
+              <ion-item lines="full">
+                <ion-icon name="mail-outline" slot="start" class="input-icon"></ion-icon>
+               <!-- <ion-label position="floating">Correo Electrónico</ion-label>-->
+                <ion-input 
+                  type="email" 
+                  formControlName="email" 
+                  placeholder="ejemplo@correo.com">
+                </ion-input>
+              </ion-item>
+
+              <!-- Mensaje de error -->
+              <ion-text color="danger" *ngIf="recoverForm.get('email')?.invalid && recoverForm.get('email')?.touched">
+                <p class="ion-padding-start">Por favor, ingresa un correo válido.</p>
+              </ion-text>
+
+              <!-- Botón Enviar -->
+              <ion-button expand="block" color="primary" type="submit" [disabled]="recoverForm.invalid" class="custom-button">
+                <ion-icon name="send-outline" slot="start"></ion-icon>
+                Enviar
+              </ion-button>
+            </form>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

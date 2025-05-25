@@ -1,0 +1,107 @@
+<ion-header color="primary">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="openMenu()">
+        <!--<ion-icon class="icon-back" name="arrow-back"></ion-icon>-->
+        <ion-icon class="icon-back" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div class="titulo-centrado">Referido</div>
+  </ion-toolbar>
+  <ion-toolbar color="primary" style="margin-top: -2px;">
+    <!-- Default Segment -->
+    <ion-segment [(ngModel)]="segmentValue" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="compartir">
+        <ion-label class="label-text">Compartir código</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="ingresar">
+        <ion-label class="label-text">Ingresar código</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-horizontal">
+
+  <div class="content-referido">
+
+
+    <div class="contenido-segmentos" *ngIf="segmentValue === 'compartir'">
+      <!-- Contenido de compartir código -->
+      <div class="contenedor-img">
+        <div class="img-referido">
+          <img class="img-assets" src="../../../../assets/img/compartir.png" alt="">
+        </div>
+      </div>
+
+      <h5>¡Comparte tu código ahora!</h5>
+      <p>Ayuda a otros a comenzar su camino hacia su destino.</p>
+
+      <ion-card class="referido-card">
+        <ion-item lines="none" class="item-codigo">
+          <ion-label class="codigo-texto">
+            {{ codigo }}
+          </ion-label>
+          <ion-button shape="round" style=" text-transform: none;" fill="outline" size="small" (click)="copiarCodigo()">
+            Copiar
+          </ion-button>
+        </ion-item>
+      </ion-card>
+
+      <div style="width: 100%;">
+        <ion-grid>
+          <ion-row class="ion-justify-content-center">
+            <ion-col size="9">
+              <p style="font-weight: bold; font-size: 14pt;">Compartir mi código</p>
+            </ion-col>
+            <ion-col size="3">
+              <ion-button fill="clear" (click)="compartir()">
+                <ion-icon color="secondary" name="share-outline" size="large"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+
+
+    </div>
+
+    <div class="contenido-segmentos" *ngIf="segmentValue === 'ingresar'">
+      <!-- Contenido de compartir código -->
+      <div class="contenedor-img">
+        <div class="img-referido">
+          <img class="img-assets" src="../../../../assets/img/ingresar.png" alt="">
+        </div>
+      </div>
+
+      <p>
+        <span class="circle-number">1</span> Ingresa 1 código de referido.
+      </p>
+      <br>
+      <ion-card class="referido-card">
+        <ion-item lines="none" class="item-codigo">
+          <ion-input [disabled]="isReferido" class="input-grande" [(ngModel)]="codigoReferido" maxlength="6" type="text"
+            placeholder="Ingresa código de referido"></ion-input>
+        </ion-item>
+      </ion-card>
+      <br>
+      <ion-button style="margin: 5px;  text-transform: none;" shape="round" expand="block"
+        [disabled]="codigoReferido.length !== 6 || isReferido || isLoading" (click)="ingresarCodigo()">
+
+        <ng-container *ngIf="!isLoading; else cargando">
+          Ingresar código
+        </ng-container>
+
+        <ng-template #cargando>
+          <ion-spinner name="crescent"></ion-spinner>
+        </ng-template>
+      </ion-button>
+    </div>
+    <div style="width: 100%; text-align: center;">
+      <p style="color:rgb(0, 132, 255); cursor: pointer;" (click)="abrirTerminos()">Términos y condiciones</p>
+    </div>
+    <br>
+  </div>
+
+</ion-content>

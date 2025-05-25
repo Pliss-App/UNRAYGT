@@ -1,0 +1,218 @@
+<div *ngIf="loading" style="padding: 10px;">
+  <ion-skeleton-text animated="true" style="width: 20%; height: 40px; margin: 10px 0;"></ion-skeleton-text>
+  <ion-skeleton-text animated="true" style="width: 80%; height: 20px; margin: 10px 0;"></ion-skeleton-text>
+  <ion-skeleton-text animated="true" style="width: 90%; height: 20px; margin: 10px 0;"></ion-skeleton-text>
+  <ion-skeleton-text animated="true" style="width: 100%; height: 100px; margin: 10px 0;"></ion-skeleton-text>
+</div>
+<div *ngIf="!loading">
+  <div class="detalles-conductor">
+
+    <ion-button fill="clear" *ngIf="rol=='user'" style="border-radius: 30px !important;" class="floating-button"
+      (click)="iniciarViaje(updateStatus, idConductor, idViaje)"><ion-icon
+        name="navigate-outline"></ion-icon>{{mensajeNavegacion }}</ion-button>
+
+    <ion-grid>
+      <ion-row class="driver-info" *ngIf="tiempo!=undefined && rol=='conductor' ">
+        <ion-col>
+          <h3 style="margin-top: -2px; margin-right: 30px;"> El conductor llegará en aproximadamente {{tiempo}}
+          </h3>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="driver-info">
+        <ion-col size="12" *ngIf="rol=='user' && estado_viaje != 'Pendiente de Iniciar' && tiempo!=undefined ">
+          <p class="tiempo-distance-pasajero"> Estas a <b>{{tiempo}}</b> - <b> {{distancia}} </b></p>
+          <hr>
+        </ion-col>
+        <!-- Lado izquierdo: Foto y Nombre del Conductor -->
+        <ion-col size="3" class="left">
+          <div class="avatar-wrapper">
+            <p class="calificacion" *ngIf="profile?.rating && user.rol != 'conductor'"> <ion-icon
+                style="color: rgb(255, 217, 0); margin-left: 1px; margin-right: 1px;"
+                name="star"></ion-icon>{{profile.rating}} </p>
+            <ion-avatar class="driver-photo">
+              <img [src]="profile.foto" alt="Foto de Perfil" />
+            </ion-avatar>
+
+            <!-- Segundo avatar más pequeño en la esquina inferior derecha -->
+
+            <ion-avatar class="small-avatar" *ngIf="user?.rol=='usuario'">
+              <img [src]="profile.fotoservicio" alt="Icono adicional" />
+            </ion-avatar>
+
+          </div>
+          <div class="avatar-cajon">
+
+
+            <!--<div class="driver-placas" *ngIf="user?.rol=='usuario'">
+            <p>{{profile.placas}}</p>
+          </div>  -->
+          </div>
+
+        </ion-col>
+        <!-- Lado derecho: Puntos de salida y destino -->
+        <ion-col size="5" class="right" style="padding-left: 15px;">
+          <div class="route-details" *ngIf="user?.rol=='usuario'">
+            <div class="driver-placas" *ngIf="user?.rol=='usuario'">
+              <p>{{profile.placas}}</p>
+            </div>
+            <div class="driver-vehiculo">
+              <p>{{profile.modelo}}, {{profile.color}}</p>
+            </div>
+
+            <div class="driver-name">
+              <p style="margin-bottom: 1px;">{{ profile.nombre }} {{profile.apellido}}</p>
+            </div>
+
+          </div>
+          <div class="route-details" *ngIf="user?.rol=='conductor'">
+
+            <div class="driver-name">
+              <p style="margin-bottom: 1px;">{{ profile.nombre | capitalizeName }} {{profile.apellido | capitalizeName}}
+              </p>
+              <span style="margin-top: 0px;" *ngIf="profile?.rating"> <ion-icon style="color: rgb(255, 217, 0);"
+                  name="star"></ion-icon>{{profile.rating}} ({{profile?.total_viajes}}) </span>
+            </div>
+          </div>
+        </ion-col>
+
+        <ion-col size="4" class="right" style="text-align: right; ">
+          <!--  <p class="precio">Q.{{coste}}</p> -->
+          <!--  <ion-button (click)="callSeguridad()" color="warning" class="btn-seguridad">
+          <ion-icon slot="icon-only" name="shield-checkmark" style="color: white !important;" class="custom-icon"></ion-icon>
+        </ion-button>   -->
+          <ion-button (click)="makeCall(profile.telefono)" color="primary" class="btn-seguridad">
+            <ion-icon slot="icon-only" name="call-outline" class="custom-icon"></ion-icon>
+          </ion-button>
+          <ion-button (click)="openChatModal()" color="primary" class="btn-sms">
+            <ion-icon slot="icon-only" name="chatbubble-ellipses-outline" style="color: white !important;"
+              class="custom-icon"></ion-icon>
+          </ion-button>
+        </ion-col>
+
+      </ion-row>
+
+
+
+      <ion-row *ngIf="rol=='user' && estado_viaje == 'En Ruta a Pasajero' " style="margin-bottom: 5px;">
+        <ion-col size="12">
+          <ion-button [disabled]=" btnLlegue"
+            (click)="updateEstadoViaje('Conductor Llego a Salida', idConductor, idViaje)" color="success"
+            style="color:white; border-radius: 10px;" expand="block">¡Ya llegue!</ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="estado_viaje == 'Conductor Llego a Salida' && user?.rol=='usuario'">
+        <ion-col size="12">
+          <div class="alerta-conductor">
+            <p class="alert-message">El conductor ya llego. No te demores. Estamos listos para llevarte a tu destino.
+            </p>
+            <ion-button color="success" (click)="atenderNoti()" shape="round" class="alert-btn-action">Ok, en
+              camino</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div style="background: white;margin-bottom: 1px; margin-top:2px;">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="1">
+          <v-col size="12">
+            <div class="pA">
+              <ion-icon color="success" class="start" name="radio-button-on"></ion-icon>
+            </div>
+          </v-col>
+
+          <v-col size="12">
+            <div class="pB">
+              <ion-icon color="danger" class="start" name="radio-button-on"></ion-icon>
+            </div>
+          </v-col>
+        </ion-col>
+
+        <ion-col size="11">
+          <ion-item>
+            <ion-label>
+              <p style="margin-bottom: 5px;">Salida</p>
+              <h3> {{pointA}}</h3>
+            </ion-label>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-label>
+              <p style="margin-bottom: 5px;">Destino</p>
+              <h3> {{pointB}}</h3>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="detalles-precio">
+    <h5>Costo Viaje</h5>
+    <p class="precio">Q{{coste}}</p>
+  </div>
+
+  <div class="metodo-pago-viaje">
+    <ion-row>
+      <ion-col size="6">
+        <h5><ion-icon color="success" name="cash-outline"></ion-icon> Método de Pago</h5>
+      </ion-col>
+      <ion-col size="6" class="ion-text-end" style="display: flex; justify-content: flex-end;">
+        <ion-item lines="none">
+          <ion-select disabled="true" [(ngModel)]="selectedPaymentMethod">
+            <ion-select-option value="efectivo">Efectivo</ion-select-option>
+            <ion-select-option value="tarjeta">Tarjeta de Crédito</ion-select-option>
+            <ion-select-option value="paypal">PayPal</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div class="seguridad">
+    <h5> <ion-icon slot="icon-only" color="tertiary" name="shield-checkmark"></ion-icon> Seguridad</h5>
+    <ion-row style="text-align: center;">
+      <ion-col size="4">
+        <ion-button (click)="makeCallSeguridad(callPolicia.telefeno)" color="success" class="btn-seguridad-apoyo">
+          <ion-icon slot="icon-only" class="seguridad-icon" name="shield"></ion-icon>
+        </ion-button>
+        <p>Policia</p>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button (click)="makeCallSeguridad(callBomberos.telefono)" color="warning" class="btn-seguridad-apoyo">
+          <ion-icon slot="icon-only" class="seguridad-icon" name="flame"></ion-icon>
+        </ion-button>
+        <p>Bomberos</p>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button (click)="makeCallSeguridad(callCruzRoja.telefono)" color="danger" class="btn-seguridad-apoyo">
+          <ion-icon slot="icon-only" class="seguridad-icon" name="heart-circle"></ion-icon>
+        </ion-button>
+        <p>Cruz Roja</p>
+      </ion-col>
+    </ion-row>
+
+  </div>
+
+  <div class="finalizar">
+    <ion-row>
+      <ion-col *ngIf="user?.rol=='conductor'" size="6" [attr.size]="user?.rol=='conductor'? '6' : '12'">
+        <ion-button *ngIf="user?.rol=='conductor'" color="danger" (click)="finalizar()" style="border-radius: 10px;"
+          expand="block">Finalizar</ion-button>
+      </ion-col>
+      <ion-col size="6" [attr.size]="user?.rol=='conductor'? '6' : '12'">
+        <ion-button (click)="openPopup()" style="border-radius: 10px;" expand="block">Cancelar</ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+
+  <app-popupcancelar [isOpen]="isPopupOpen" [title]="'Elige una opción'" [options]="options" (onClose)="handleClose()"
+    (onSave)="handleSave($event)"></app-popupcancelar>
+
+</div>

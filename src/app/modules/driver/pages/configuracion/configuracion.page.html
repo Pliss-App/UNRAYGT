@@ -1,0 +1,43 @@
+<ion-header color="primary">
+  <ion-toolbar  color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="openMenu()">
+        <!--<ion-icon class="icon-back" name="arrow-back"></ion-icon>-->
+        <ion-icon class="icon-back" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Configuración </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+<ion-list>
+  <ion-item  routerLink="/driver/configuracion/aplicacion" lines="none" detail>
+    <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+    Acerca de la Aplicación
+  </ion-item>
+  <ion-item lines="none" (click)="confirmLogout('logout', 'Cerrar sesión', '¿Estás seguro de que deseas salir?')">
+    <ion-icon slot="start" name="exit-outline"></ion-icon>
+      Cerrar sesión
+  </ion-item>
+
+<!--  <ion-item lines="none" (click)="confirmLogout('delete', 'Eliminar cuenta', '¿Estás seguro de que deseas eliminar tu cuenta?')" class="red-text">
+    <ion-icon slot="start" name="person-remove-outline"></ion-icon>
+
+      Eliminar cuenta
+
+  </ion-item>-->
+</ion-list>
+
+</ion-content>
+<!--
+<ion-footer style="box-shadow: none;">
+  <ion-toolbar>
+    <div class="footer-container">
+      <ion-button expand="full" fill="outline" color="danger" shape="round" class="custom-button"
+        (click)="confirmLogout('delete', 'Eliminar cuenta', '¿Estás seguro de que deseas eliminar tu cuenta?')">
+        Eliminar cuenta
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>-->

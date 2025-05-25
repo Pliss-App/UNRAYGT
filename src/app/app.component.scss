@@ -1,0 +1,100 @@
+.custom-avatar {
+  width: 80px;
+  /* Ancho del avatar */
+  height: 80px;
+  /* Altura del avatar */
+  border: 2px solid white;
+}
+
+.btn-camera {
+  position: absolute;
+  right: 0px;
+
+  bottom: 5px;
+}
+
+ion-item {
+  font-size: 15pt;
+  color: black;
+}
+
+ion-header {
+  box-shadow: none;
+
+  background: orangered;
+  /* border-bottom-left-radius: 40px 10px;
+  border-bottom-right-radius: 40px 10px;*/
+  display: flex;
+  justify-content: left;
+  /* Centra horizontalmente */
+  align-items: center;
+}
+
+.header-menu {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.item-avatar {
+  background: orangered !important;
+}
+
+
+ion-footer {
+  --background: transparent;
+  /* Cambia el fondo si es necesario */
+  border: none;
+  /* Asegúrate de que no haya bordes visibles */
+}
+
+ion-toolbar {
+  --border-width: 0;
+}
+
+ion-icon {
+  color: orangered;
+
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+}
+
+.icon-navegate {
+  color: white !important;
+  position: absolute;
+  right: 10px;
+  top: 7px;
+  box-shadow: none !important;
+}
+
+.start {
+  font-size: 12px;
+  color: gold;
+}
+
+span {
+  margin-top: 4px;
+  margin-left: 5px;
+  font-size: 11pt;
+}
+
+.btn-modo {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  padding: 10px;
+}
+
+.btn-modo-conductor {
+  height: 50px;
+  font-size: 14pt;
+
+
+ --box-shadow: none;
+ --background-hover: transparent;
+ --background-activated: transparent;
+ --background-focused: transparent;
+}

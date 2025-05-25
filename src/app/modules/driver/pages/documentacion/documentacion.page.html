@@ -1,0 +1,131 @@
+<ion-header color="primary">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button size="large" (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Documentación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content>
+  <div class="centrado-container">
+    <div class="center-element">
+
+      <form (ngSubmit)="onSubmit()" [formGroup]="form" class="formulario" style="border-radius: 12px !important;">
+        <ion-list>
+          <ion-item lines="none" *ngFor="let field of fields" style="margin-top: 25px; text-align: center;">
+            <div style="width: 100%;">
+              <ion-label
+                style="margin-bottom: 10px; width: 100%; font-size: 16pt; font-weight: bolder; text-align: center;">
+                {{ field.label }}
+              </ion-label>
+              <ion-label>{{ field.descripcion }}</ion-label>
+
+              <!-- Campo adicional para fecha de vencimiento del DPI -->
+              <!--   <ion-item *ngIf="field.nombre === 'dpi_frontal'" lines="none">
+                <ion-label position="stacked">Fecha de vencimiento del DPI</ion-label>
+                <ion-datetime
+                  presentation="date"
+                  formControlName="fechavencimientodpi"
+                  placeholder="Seleccionar fecha"
+                ></ion-datetime>
+              </ion-item> -->
+
+              <!-- Campo adicional para fecha de vencimiento de Tarjeta de Circulación -->
+              <!-- <ion-item *ngIf="field.nombre === 'tarjeta_frontal'" lines="none">
+                <ion-label position="stacked">Fecha de vencimiento de la Tarjeta de Circulación</ion-label>
+                <ion-datetime
+                  presentation="date"
+                  formControlName="fechavencimientotarcirculacion"
+                  placeholder="Seleccionar fecha"
+                ></ion-datetime>
+              </ion-item> -->
+
+              <!-- Imagen -->
+              <img (click)="presentActionSheet(field.nombre)"
+                [src]="previews[field.nombre] || 'https://www.utec.edu.sv/solicitud-maestrias/assets/img/default_img.png'"
+                class="preview-image" style="border: 2px dashed #ccc; padding: 4px" />
+            </div>
+          </ion-item>
+
+
+        </ion-list>
+
+        <ion-list>
+          <h3>Datos del Vehículo</h3>
+          <ion-item>
+            <ion-label position="stacked">No. de Placa</ion-label>
+            <ion-input formControlName="placa" placeholder="P123SAT"></ion-input>
+          </ion-item>
+            <ion-item>
+            <ion-label position="stacked">Modelo</ion-label>
+            <ion-input formControlName="placa" placeholder="Ingresa..."></ion-input>
+          </ion-item>
+                      <ion-item>
+            <ion-label position="stacked">Modelo</ion-label>
+            <ion-input formControlName="placa" placeholder="Ingresa..."></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <ion-list>
+          <p class="referencia">Referencia 1</p>
+          <ion-item>
+            <ion-label position="stacked">Nombre</ion-label>
+            <ion-input formControlName="nombrereferencia1" placeholder="Ej. Juan Pérez"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Parentesco</ion-label>
+            <ion-input formControlName="parentescoreferencia1" placeholder="Ej. Hermano"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Contacto</ion-label>
+            <ion-input formControlName="contactoreferencia1" placeholder="Ej. 5555-5555" type="tel"></ion-input>
+          </ion-item>
+
+          <p class="referencia">Referencia 2</p>
+          <ion-item>
+            <ion-label position="stacked">Nombre</ion-label>
+            <ion-input formControlName="nombrereferencia2" placeholder="Ej. Juan Pérez"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Parentesco</ion-label>
+            <ion-input formControlName="parentescoreferencia2" placeholder="Ej. Amigo"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Contacto</ion-label>
+            <ion-input formControlName="contactoreferencia2" placeholder="Ej. 5555-5555" type="tel"></ion-input>
+          </ion-item>
+
+        </ion-list>
+        <!-- <ion-button style="margin-top: 35px;" expand="full" type="submit" [disabled]="!form.valid">
+          Guardar
+        </ion-button> -->
+
+        <ion-button style="margin-top: 35px;" expand="block" type="submit" [disabled]="form.invalid || isLoading">
+          {{ isLoading ? 'Enviando...' : 'Enviar' }}
+        </ion-button>
+      </form>
+
+      <ion-loading *ngIf="isLoading" message="Enviando datos..." spinner="circles"></ion-loading>
+
+
+
+      <div *ngIf="active" style="text-align: center; padding-top: 25px; font-size: 16pt;">
+        Cargando...
+
+      </div>
+
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+
+</ion-footer>

@@ -1,0 +1,54 @@
+ion-item{
+    font-size: 15pt;
+}
+    
+  ion-icon {
+    font-size: 28px;
+  }
+
+
+  .red-text {
+    color: red !important;
+    font-weight: bold; /* Opcional: para hacerlo más visible */
+  }
+  
+
+  .custom-alert {
+    --background: #fff;
+    --border-radius: 12px;
+    --width: 90%;
+    text-align: center;
+  }
+  
+  .custom-alert strong {
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  .cancel-button {
+    color: gray !important;
+  }
+  
+  .logout-button {
+    color: white !important;
+    background: red !important;
+    border-radius: 8px;
+    padding: 8px 16px;
+  }
+  
+  .footer-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .custom-button {
+    --border-radius: 50px; /* Hace que sea redondeado */
+    --box-shadow: none; /* Elimina la elevación */
+    --border-width: 2px; /* Grosor del borde */
+    --border-color: var(--ion-color-danger); /* Borde rojo */
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+  }
+  

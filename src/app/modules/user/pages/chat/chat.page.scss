@@ -1,0 +1,105 @@
+/* Estilos generales */
+ion-toolbar {
+  --ion-box-shadow: none; /* Elimina la sombra */
+  --border-width: 0px; /* Elimina la línea inferior */
+}
+
+.no-shadow {
+  box-shadow: none !important;
+  --box-shadow: none !important; /* Elimina sombras en Ionic */
+  --ion-box-shadow: none !important;
+  --ion-toolbar-background:white !important;
+
+}
+
+.chat-content {
+  --background: url("../../../../../assets/img/chat.jpg") repeat center center / auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+
+}
+
+.contenedor-chat{
+  padding: 10px;
+
+}
+
+.message { 
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 75%;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+}
+
+/* Estilo de los mensajes enviados */
+.sent {
+  background-color: #d9fdd3;
+  color: rgb(0, 0, 0);
+  align-self: flex-end;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  margin-left: 30%;
+}
+
+/* Estilo de los mensajes recibidos */
+.received {
+  background-color: #ffffff;
+  color: black;
+  align-self: flex-start;
+  max-width: 70%;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* Entrada de texto en el footer */
+.transparent-footer {
+  --background: url("../../../../../assets/img/chat.jpg") repeat center center / auto;
+  box-shadow: none !important; /* Elimina sombra */
+}
+
+.transparent-item {
+  margin-left: -5px;
+  --background: url("../../../../../assets/img/chat.jpg") repeat center center / auto;
+  --inner-border-width: 0px; /* Elimina bordes */
+}
+
+
+ion-input {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 1px;
+  flex-grow: 1;
+  margin-right: 10px;
+  border: 1px rgb(245, 245, 245) solid;
+  border-radius: 15px;
+  background-color: rgb(255, 255, 255);
+}
+
+ion-icon {
+  font-size: 20px; /* Ajusta el tamaño del ícono */
+  color: #ffffff;  /* Cambia el color del ícono */
+}
+
+
+.round-button {
+  width: 50px; /* Ajusta el tamaño según necesites */
+  height: 40px;
+  border-radius: 55% !important; /* Hace que sea perfectamente redondo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --background: green; /* Color de fondo */
+  --color: white; /* Color del ícono */
+}
+
+.list-sms-definido{
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+}

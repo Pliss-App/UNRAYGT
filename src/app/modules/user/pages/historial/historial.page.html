@@ -1,0 +1,54 @@
+<ion-header color="primary">
+  <ion-toolbar  color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="openMenu()">
+        <!--<ion-icon class="icon-back" name="arrow-back"></ion-icon>-->
+        <ion-icon class="icon-back" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Historial </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item *ngFor="let viaje of viajes"> 
+      <ion-label>
+        <ion-grid>
+          <ion-row class="align-items-center">
+            <ion-col size="auto">
+              <ion-icon name="location-outline" style="color: green;"></ion-icon>
+            </ion-col>
+            <ion-col>
+              <p>{{ viaje.start_direction }}</p>
+            </ion-col>
+          </ion-row>
+          
+          <ion-row class="align-items-center">
+            <ion-col size="auto">
+              <ion-icon name="flag-outline" style="color: red;"></ion-icon>
+            </ion-col>
+            <ion-col>
+              <p>{{ viaje.end_direction }}</p>
+            </ion-col>
+          </ion-row>
+    
+          <ion-row>
+            <ion-col style="text-align: left; margin-left: 25px;">
+              <p>       <ion-icon name="time-outline"></ion-icon> {{ viaje.fecha_hora | date: 'dd/MM/yyyy' }}</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-label>
+    
+      <div class="info">
+        <strong>Q. {{ viaje.costo }}</strong>
+      </div>
+    </ion-item>
+    
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content loadingText="Cargando más viajes...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

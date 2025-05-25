@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cuenta Bancaria</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarModal()">
+        <ion-icon color="white" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="cuenta" *ngIf="isLoading==true">
+
+        <ion-skeleton-text animated style="width: 150px; height: 24px;"></ion-skeleton-text>
+
+
+      <p><ion-skeleton-text animated style="width: 80%; height: 16px; margin-bottom: 8px;"></ion-skeleton-text></p>
+      <p><ion-skeleton-text animated style="width: 60%; height: 16px; margin-bottom: 8px;"></ion-skeleton-text></p>
+      <p><ion-skeleton-text animated style="width: 70%; height: 16px; margin-bottom: 8px;"></ion-skeleton-text></p>
+      <p><ion-skeleton-text animated style="width: 50%; height: 16px; margin-bottom: 8px;"></ion-skeleton-text></p>
+      <p><ion-skeleton-text animated style="width: 90%; height: 24px;"></ion-skeleton-text></p>
+
+  </div>
+
+
+    <div class="cuenta" *ngIf="isLoading==false">
+      <p style="font-size: 13pt;"><b>Banco:</b> {{metodo.banco}}</p>
+      <p style="font-size: 13pt;"><b>Titular:</b> {{metodo.titular}}</p>
+      <p style="font-size: 13pt;"><b>Tipo:</b> {{metodo.tipo}}</p>
+      <p style="font-size: 13pt;"><b>Moneda:</b> {{metodo.moneda}}</p>
+      <p style="font-size: 13pt;"><b>No. de Cuenta:</b></p>
+      <p style="margin-bottom: 5px;"><span style="font-size: 18pt;">{{metodo.nocuenta}}</span></p>
+    </div>
+
+
+</ion-content>

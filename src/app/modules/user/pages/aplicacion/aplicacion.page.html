@@ -1,0 +1,33 @@
+<ion-header color="primary">
+  <ion-toolbar  color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="openMenu()">
+        <!--<ion-icon class="icon-back" name="arrow-back"></ion-icon>-->
+        <ion-icon class="icon-back" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Sobre la aplicación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-button fill="clear" (click)="goBack()">
+    <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+    Regresar
+  </ion-button>
+
+  <ion-list lines="none" >
+    <ion-item lines="none"  routerLink="/user/configuracion/politicas" detail><ion-label>Términos y condiciones</ion-label></ion-item>
+
+    <ion-item lines="none">
+      <ion-label>
+      Versión de la aplicación
+      <br>
+        <ion-text color="medium">
+          <small>{{ appVersion}}</small>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

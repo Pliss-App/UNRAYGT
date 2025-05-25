@@ -1,0 +1,67 @@
+/* src/app/pages/payment-form/payment-form.page.scss */
+.photo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    border: 1px dashed #ccc;
+    margin: 20px 0;
+    cursor: pointer;
+  }
+
+  h4{
+    font-weight: bolder;
+  }
+  
+  .photo-container img {
+    max-height: 100%;
+    max-width: 100%;
+    border-radius: 10px;
+  }
+  
+  .photo-container ion-icon {
+    font-size: 50px;
+    color: #aaa;
+  }
+  
+
+  .outlined-input {
+    --border-width: 1px;
+  --border-style: solid;
+ // --border-color: var(--ion-color-medium); 
+ --border-radius: 10px; 
+  --background: transparent; 
+  padding: 6px; 
+  }
+/*
+  .outlined-input ion-input {
+    padding: 12px; 
+  }*/
+
+
+  .custom-card {
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  ion-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #01a016;
+  }
+  
+  ion-card-content p {
+    font-size: 1rem;
+    margin: 4px 0;
+    color: #333;
+  }
+  
+  
+
+  .outlined-input ion-icon {
+    font-size: 24px; /* Ajusta el tamaño del ícono */
+    margin-right: 8px; /* Ajusta el espacio entre el ícono y el borde del input */
+  }
+  

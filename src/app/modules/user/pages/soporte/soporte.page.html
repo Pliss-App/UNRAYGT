@@ -1,0 +1,73 @@
+<ion-header color="primary">
+  <ion-toolbar  color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="openMenu()">
+        <!--<ion-icon class="icon-back" name="arrow-back"></ion-icon>-->
+        <ion-icon class="icon-back" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Soporte </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-list lines="none">
+  
+    <ion-item-divider>
+      <ion-label class="custom-label">Contacto Directo con Soporte</ion-label>
+    </ion-item-divider>
+  
+    <ion-item><ion-icon slot="start" name="mail-open-outline"></ion-icon><ion-label >{{correo}}</ion-label></ion-item>
+    <ion-item  routerLink="/user/soporte/formulario" detail><ion-icon  slot="start" name="clipboard-outline"></ion-icon> <ion-label>Enviar formulario</ion-label></ion-item>
+  
+
+    <ion-item-divider>
+      <ion-label class="custom-label">Redes Sociales y Comunidad</ion-label>
+    </ion-item-divider>
+   <ion-item lines="none">
+      <a href="https://www.facebook.com/profile.php?id=100075636168514" target="_blank"
+        style="display: flex; align-items: center;  text-decoration: none; color: black;">
+        <ion-icon color="secondary" name="logo-facebook" style="margin-right: 8px;"></ion-icon>
+        <ion-label>Facebook</ion-label>
+      </a>
+    </ion-item>
+
+    <ion-item lines="none">
+      <a href="https://www.instagram.com/unraylatinoamerica/" target="_blank" style="display: flex; align-items: center;  text-decoration: none; color: black;">
+        <ion-icon color="danger" name="logo-instagram" style="margin-right: 8px;"></ion-icon>
+        <ion-label>  Instagram</ion-label>
+      </a>
+    </ion-item>
+
+
+
+
+    <ion-item lines="none">
+      <a href="https://www.tiktok.com/@unray_latinoamerica" target="_blank"
+        style="display: flex; align-items: center;  text-decoration: none; color: black;">
+        <ion-icon color="black" name="logo-tiktok" style="margin-right: 8px;"></ion-icon>
+
+        <ion-label>TikTok</ion-label>
+      </a>
+    </ion-item>
+
+    <ion-item lines="none">
+      <a href="https://www.youtube.com/@UnRayLatinoamerica" target="_blank"
+        style="display: flex; align-items: center;  text-decoration: none; color: black;">
+        <ion-icon color="danger" name="logo-youtube" style="margin-right: 8px;"></ion-icon>
+
+        <ion-label>YouTube</ion-label>
+      </a>
+    </ion-item>
+
+    
+    <ion-item lines="none">
+      <a href="https://unraylatinoamerica.com/" target="_blank"
+        style="display: flex; align-items: center;  text-decoration: none; color: black;">
+        <ion-icon color="success" name="globe" style="margin-right: 8px;"></ion-icon>
+        <ion-label> Página web</ion-label>
+      </a>
+    </ion-item>
+  </ion-list>
+  
+  
+</ion-content>

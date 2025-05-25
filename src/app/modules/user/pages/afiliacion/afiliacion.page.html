@@ -1,0 +1,317 @@
+<ion-header [translucent]="true">
+
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon style="font-size: 30px;" name="chevron-back-sharp"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div class="titulo-centrado">Afiliación</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <swiper-container (touchstart)="preventTouch($event)" (touchmove)="preventTouch($event)" #swiper *ngIf="swiperReady"
+    [noSwiping]="true" [noSwipingClass]="'swiper-slide'" [pagination]="{ clickable: true }" [navigation]="false"
+    [allowTouchMove]="false">
+
+    <!-- Paso 1: Foto de perfil -->
+    <swiper-slide>
+      <div class="step-container">
+        <div class="step-contenido-afilicacion">
+          <h3>1. ¿Cómo deseas generar ingresos? </h3>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6" *ngFor="let card of servicios" style="padding: 5px;">
+
+                <ion-card class="custom-card" (click)="seleccionarServicio(card.id)"
+                  [class.seleccionado]="servicioSeleccionado === card.id">
+                  <div class="card-wrapper">
+                    <img [src]="card.foto" alt="Ejemplo" />
+
+
+                    <!-- Icono de check cuando está seleccionado -->
+                    <ion-icon *ngIf="servicioSeleccionado === card.id" name="checkmark-circle"
+                      class="check-icon"></ion-icon>
+                  </div>
+                  <p class="nombre-service">{{ card.nombre }}</p>
+                </ion-card>
+
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <h3>Carga foto de perfil</h3>
+
+          <ion-card (click)="takePhoto('perfil')" button="true" class="upload-card">
+
+            <ion-img *ngIf="steps.perfil.photo; else placeholder" [src]="steps.perfil.photo"></ion-img>
+            <ng-template #placeholder>
+              <ion-img src="../../../../../assets/requisitos/perfil.jpg"></ion-img>
+            </ng-template>
+
+          </ion-card>
+          <br>
+          <!--  <ion-item class="outlined-input">
+            <ion-label position="stacked">Fecha de Nacimiento</ion-label>
+            <ion-input    #fechaInput [(ngModel)]="steps.perfil.fechaNacimiento" (ionInput)="formatFechaNacimiento($event, 'perfil', fechaInput)"
+              placeholder="DD/MM/AAAA" maxlength="10" type="text" inputmode="numeric">
+            </ion-input>
+          </ion-item> -->
+        </div>
+
+
+      </div>
+    </swiper-slide>
+
+    <!-- Paso 2: DPI -->
+    <swiper-slide>
+
+      <div class="step-container">
+        <div class="step-contenido-afilicacion">
+          <h3>2. Documento DPI</h3>
+
+
+
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" size-sm="12">
+                <p style="margin-top: 0px;">Tomate una foto junto a tu DPI.</p>
+                <ion-card (click)="takePhoto('dpi', 'rostrodpi')" button="true" class="upload-card">
+
+                  <ion-img *ngIf="steps.dpi.rostrodpi; else placeholderRosDPI" [src]="steps.dpi.rostrodpi"></ion-img>
+                  <ng-template #placeholderRosDPI>
+                    <ion-img src="../../../../../assets/requisitos/rostrodpi.jpg"></ion-img>
+                  </ng-template>
+
+                </ion-card>
+              </ion-col>
+              <ion-col size="12" size-sm="12">
+                <ion-card (click)="takePhoto('dpi', 'dpi_frontal')" button="true" class="upload-card">
+
+                  <ion-img *ngIf="steps.dpi.dpi_frontal; else placeholderFotoFrontal"
+                    [src]="steps.dpi.dpi_frontal"></ion-img>
+                  <ng-template #placeholderFotoFrontal>
+                    <ion-img src="../../../../../assets/requisitos/dpifrontal.jpg"></ion-img>
+                  </ng-template>
+
+                </ion-card>
+              </ion-col>
+              <ion-col size="12" size-sm="12">
+                <ion-card (click)="takePhoto('dpi', 'dpi_inverso')" button="true" class="upload-card">
+
+                  <ion-img *ngIf="steps.dpi.dpi_inverso; else placeholderFotoTrasera"
+                    [src]="steps.dpi.dpi_inverso"></ion-img>
+                  <ng-template #placeholderFotoTrasera>
+                    <ion-img src="../../../../../assets/requisitos/dpiatras.jpg"></ion-img>
+                  </ng-template>
+
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <br>
+          <!--       <ion-item class="outlined-input">
+            <ion-label position="stacked">Fecha de vencimiento</ion-label>
+            <ion-input #fechaInput1 [(ngModel)]="steps.dpi.fechavencimientodpi" (ionInput)="formatFechaNacimiento($event, 'dpi', fechaInput1)"
+              placeholder="DD/MM/AAAA" maxlength="10" type="text" inputmode="numeric">
+            </ion-input>
+          </ion-item> -->
+          <br>
+          <br>
+          <br>
+          <br>
+          <!--    <div class="navigation-buttons">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="4" class="next-button-left">
+                  <ion-button class="prev-button" fill="outline" expand="block" (click)="prevStep()">
+                    Ant. <ion-icon name="chevron-forward-outline"></ion-icon>
+                  </ion-button>
+                </ion-col>
+                <ion-col size="4">
+                </ion-col>
+                <ion-col size="4" class="next-button-rigth">
+                  <ion-button (click)="nextStep()" [disabled]="!steps.dpi.completed" class="next-button" expand="block">
+                    Sig. <ion-icon name="chevron-forward-outline"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>-->
+        </div>
+      </div>
+    </swiper-slide>
+
+    <!-- Agrega el resto de los pasos igual... -->
+    <!-- Paso 3: Licencia de Conducir -->
+    <swiper-slide>
+
+      <div class="step-container">
+        <div class="step-contenido-afilicacion">
+          <h3>3. Información del vehículo</h3>
+
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" size-sm="12">
+                <p>Toma una foto de tu automóvil pero que se vea el número de placa.</p>
+                <ion-card (click)="takePhoto('vehiculo', 'vehiculo_frontal')" button="true" class="upload-card">
+
+                  <ion-img *ngIf="steps.vehiculo.vehiculo_frontal; else placeholdervehiculo"
+                    [src]="steps.vehiculo.vehiculo_frontal"></ion-img>
+                  <ng-template #placeholdervehiculo>
+                    <!--<div class="placeholder-content">
+                        <ion-icon name="camera" size="large"></ion-icon>
+                        <p>Foto del vehículo</p>
+                      </div> -->
+                    <ion-img src="../../../../../assets/requisitos/carro.jpg"></ion-img>
+                  </ng-template>
+
+                </ion-card>
+              </ion-col>
+              <ion-col size="12" size-sm="12">
+                <h5>Tarjeta de Circulación</h5>
+              </ion-col>
+              <ion-col size="12" size-sm="12">
+                <ion-card (click)="takePhoto('vehiculo', 'tarjeta_frontal')" button="true" class="upload-card">
+
+                  <ion-img *ngIf="steps.vehiculo.tarjeta_frontal; else placeholdertafrontal"
+                    [src]="steps.vehiculo.tarjeta_frontal"></ion-img>
+                  <ng-template #placeholdertafrontal>
+                    <ion-img src="../../../../../assets/requisitos/tcfrontal.jpg"></ion-img>
+                  </ng-template>
+
+                </ion-card>
+              </ion-col>
+              <ion-col size="12" size-sm="12">
+                <ion-card (click)="takePhoto('vehiculo', 'tarjeta_inverso')" button="true" class="upload-card">
+
+                  <ion-img *ngIf="steps.vehiculo.tarjeta_inverso; else placeholdertaatras"
+                    [src]="steps.vehiculo.tarjeta_inverso"></ion-img>
+                  <ng-template #placeholdertaatras>
+                    <ion-img src="../../../../../assets/requisitos/tcatras.jpg"></ion-img>
+                  </ng-template>
+
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <br>
+          <br>
+          <br>
+          <br>
+          <!-- <div class="navigation-buttons">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="4" class="next-button-left">
+                  <ion-button class="prev-button" fill="outline" expand="block" (click)="prevStep()">
+                    Ant. <ion-icon name="chevron-forward-outline"></ion-icon>
+                  </ion-button>
+                </ion-col>
+                <ion-col size="4">
+                </ion-col>
+                <ion-col size="4" class="next-button-rigth">
+                  <ion-button (click)="nextStep()" [disabled]="!steps.vehiculo.completed" class="next-button" expand="block">
+                    Sig. <ion-icon name="chevron-forward-outline"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div> -->
+
+        </div>
+      </div>
+
+
+    </swiper-slide>
+
+    <!-- Paso 4: Vehículo -->
+    <swiper-slide>
+      <div class="step-container">
+        <div class="step-contenido-afilicacion">
+          <h3>4. Licencia de conducir</h3>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" size-sm="12">
+                <ion-card (click)="takePhoto('licencia', 'licencia_frontal')" button="true" class="upload-card">
+
+                  <ion-img *ngIf="steps.licencia.licencia_frontal; else placeholderlicenfrontal"
+                    [src]="steps.licencia.licencia_frontal"></ion-img>
+                  <ng-template #placeholderlicenfrontal>
+                    <!--<div class="placeholder-content">
+                        <ion-icon name="camera" size="large"></ion-icon>
+                        <p>Foto del vehículo</p>
+                      </div> -->
+                    <ion-img src="../../../../../assets/requisitos/licenciaatras.jpg"></ion-img>
+                  </ng-template>
+
+                </ion-card>
+              </ion-col>
+              <ion-col size="12" size-sm="12">
+                <ion-card (click)="takePhoto('licencia', 'licencia_inverso')" button="true" class="upload-card">
+
+                  <ion-img *ngIf="steps.licencia.licencia_inverso; else placeholderlicenciaatras"
+                    [src]="steps.licencia.licencia_inverso"></ion-img>
+                  <ng-template #placeholderlicenciaatras>
+                    <ion-img src="../../../../../assets/requisitos/licenciafrontal.jpg"></ion-img>
+                  </ng-template>
+
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <br>
+          <br>
+          <br>
+        </div>
+      </div>
+    </swiper-slide>
+    <swiper-slide>
+      <div class="step-container">
+        <div class="step-contenido-afilicacion">
+          <h3>5. Datos del vehículo</h3>
+          <ion-item class="outlined-input">
+            <ion-label position="stacked">Fecha de Nacimiento</ion-label>
+            <ion-input  [(ngModel)]="steps.detalleVehiculo.placas"
+              (ionInput)="llenarCampo($event, 'detalleVehiculo')" placeholder="P123SAT"
+              type="text" inputmode="numeric">
+            </ion-input>
+          </ion-item>
+        </div>
+      </div>
+    </swiper-slide>
+
+
+  </swiper-container>
+
+  <input type="text" id="fakeInput" style="position:absolute; top:-100px;" />
+</ion-content>
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="4">
+        <ion-button (click)="prevStep()" [disabled]="currentStepIndex === 0" fill="outline" expand="block">
+          Ant. <ion-icon name="chevron-back-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="4"></ion-col>
+      <ion-col size="4">
+        <ion-button *ngIf="!isAllStepsComplete()" (click)="nextStep()" [disabled]="!isCurrentStepValid()"
+          expand="block">
+          Sig. <ion-icon name="chevron-forward-outline"></ion-icon>
+        </ion-button>
+
+        <ion-button *ngIf="isAllStepsComplete()" [disabled]="isLoading" (click)="submitForm()" expand="block"
+          color="success">
+          <ng-container *ngIf="!isLoading; else loadingContent">
+            <div>Enviar <ion-icon name="checkmark-circle-outline"></ion-icon></div>
+          </ng-container>
+          <ng-template #loadingContent>
+            <ion-spinner name="dots"></ion-spinner>
+            <span class="ml-2">Enviando...</span>
+          </ng-template>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

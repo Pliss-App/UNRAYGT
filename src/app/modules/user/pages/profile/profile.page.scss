@@ -1,0 +1,252 @@
+ion-title {
+  text-align: center;
+  width: 90%;
+  font-weight: bolder;
+}
+
+ion-content {
+  background: #f5f8f7 !important;
+  --background: #f5f8f7;
+}
+
+ion-card-content {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+ion-header {
+  box-shadow: none;
+  border: none;
+  background: #f5f8f7 !important;
+  --background: #f5f8f7;
+}
+
+
+.btn-menu {
+  position: fixed !important;
+  top: 10px;
+  left: 10px;
+
+}
+
+
+ion-toolbar {
+  border: none;
+  background: #f5f8f7 !important;
+  --background: #f5f8f7;
+}
+
+
+.contenido-perfil {
+
+  padding: 2px !important;
+}
+
+ion-icon {
+  color: orangered;
+}
+
+.contenido-referido{
+
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+
+  .texto-referido{
+    font-weight: 500;
+  }
+
+  .texto-referido-link{
+    font-weight: bold !important;
+    margin-top: 15px;
+    color: #3785fa; 
+     
+  }
+
+  .icon-link{
+
+
+    color: #3785fa;  
+
+  }
+}
+
+.outlined-input {
+  --border-width: 1px;
+--border-style: solid;
+--border-color: var(--ion-color-medium); /* Cambia el color si lo deseas */
+--border-radius: 8px; /* Ajusta el radio del borde según el diseño deseado */
+--background: transparent; /* Asegúrate de que el fondo sea transparente */
+padding: 6px; /* Quitar padding interno */
+}
+
+.outlined-input ion-input {
+  padding: 12px; /* Ajusta el padding del input */
+}
+
+.ion-margin-top {
+  --border-radius: 10px !important;
+}
+
+
+.photo-profile {
+
+  border-bottom-left-radius: 80px 20px;
+  border-bottom-right-radius: 80px 20px;
+  // border: 5px orangered solid;
+  //background: orangered;
+
+  display: flex;
+  justify-content: center;
+  /* Centra horizontalmente */
+  align-items: center;
+  /* Centra verticalmente */
+  height: auto;
+}
+
+
+p {
+  color: white;
+  font-weight: bolder;
+}
+
+
+
+ion-footer {
+  text-align: center;
+  box-shadow: none;
+}
+
+ion-button {}
+
+
+
+ion-card {
+  --background: #ffffff;
+  /* Fondo claro para la tarjeta */
+  --box-shadow: none !important;
+  /* Sombras sutiles para darle profundidad */
+  box-shadow: none !important;
+  border-radius: 10px;
+  /* Bordes redondeados */
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+ion-card-header {
+  padding: 10px;
+  font-size: 14pt;
+  color: black;
+}
+
+ion-card-title {
+  font-weight: bold;
+  /* Título en negrita */
+  font-size: 1.2em;
+}
+
+ion-item {
+  --border-width: 0;
+  /* Eliminar borde */
+  --inner-padding-end: 20px;
+  /* Padding entre los elementos */
+}
+
+ion-label {
+  font-size: 1em;
+  color: #333;
+}
+
+ion-text {
+  font-size: 1em;
+  color: #555;
+}
+
+
+.rating {
+  margin-top: 15px;
+}
+
+
+
+.start {
+  font-size: 25px;
+  color: gold;
+}
+
+.nombre {
+  font-size: 16pt;
+  font-weight: bolder;
+  color: black;
+  margin-top: 8px;
+  margin-bottom: 5px;
+}
+
+
+
+.custom-card {
+
+  text-align: center;
+  /* Asegura que el texto del ion-card esté centrado */
+  background: orangered;
+}
+
+.center-content {
+  font-size: 12pt;
+
+  justify-content: center;
+  /* Centra horizontalmente */
+  align-items: center;
+  /* Centra verticalmente */
+  text-align: center;
+  /* Asegura que el texto dentro también esté centrado */
+
+  .titulo-contenido-cajon {
+    margin-bottom: 0px;
+    margin-top: 5px;
+  }
+
+  .contenido-cajon {
+    font-size: 13pt;
+    margin-bottom: 3px;
+
+    margin-top: 8px;
+  }
+}
+
+.divider {
+  border-right: 2px solid #ffffff;
+  /* Línea divisoria entre columnas */
+}
+
+/* Elimina la línea derecha del último ion-col */
+.divider:last-child {
+  border-right: none;
+}
+
+.custom-button {
+  margin-left: 10px;
+  margin-top: 6px;
+  background: white;
+ // box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+//  --border-color: orangered;
+  /* Cambia el color del borde */
+  --color: white;
+  /* Cambia el color del texto e icono */
+  --border-radius: 50% !important;
+  border-radius: 50% !important;
+  height: 43px !important;
+  width: 43px !important;
+
+  .icon-back {
+    font-size: 39px !important;
+    color: orangered;
+  }
+
+  
+}
+
+.codigo{
+  margin-top: 0px;
+  padding-top: 0px;
+  color: rgb(52, 177, 226);
+}

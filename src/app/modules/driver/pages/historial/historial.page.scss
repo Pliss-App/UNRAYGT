@@ -1,0 +1,29 @@
+ion-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    .info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: right;
+    }
+  
+    ion-icon {
+      font-size: 24px;
+      color: #4caf50;
+    }
+  }
+  
+
+
+    
+  ion-icon {
+    font-size: 28px;
+  }
+
+
+  .card-historial{
+    border-radius: 10px;
+  }

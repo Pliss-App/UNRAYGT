@@ -1,0 +1,51 @@
+ion-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    .info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: right;
+    }
+  
+    ion-icon {
+      font-size: 24px;
+      color: #4caf50;
+    }
+  }
+  
+
+
+    
+  ion-icon {
+    font-size: 28px;
+  }
+
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrar verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+    height: 100%; /* Asegurarse de que ocupe todo el alto del contenedor */
+    text-align: center; /* Asegura que el texto se alinee al centro */
+  }
+  
+  h1 {
+    font-size: 4rem; /* Puedes ajustar el tamaño de la fuente */
+    margin: 0;
+  }
+  
+  .ganancia-text {
+    margin-top: 2px !important;
+    font-size: 1.5rem;
+
+  }
+  
+
+  .car-list{
+    padding: 10px;
+    border-radius: 10px;
+  }

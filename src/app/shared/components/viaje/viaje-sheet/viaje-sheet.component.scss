@@ -1,0 +1,43 @@
+.bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 250px;  /* Altura inicial */
+    width: 100%;
+    background-color: #f7f7f7;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+    transition: height 0.2s ease-in-out;
+  
+    .drag-handle {
+      width: 40px;
+      height: 6px;
+      background-color: #ccc;
+      border-radius: 3px;
+      margin: 10px auto 0;
+      position: fixed;
+      left: 46%; /* Centra horizontalmente */
+    }
+  }
+  
+ 
+  .floating-button {
+    position: absolute;
+    top: -55px; /* Para colocarlo encima del bottom-sheet */
+    left: 10px;
+    background-color: white !important; /* Fondo blanco */
+    color: black !important; /* Texto negro */
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+
+  }
+  
+  .floating-button ion-icon {
+    margin-right: 8px; /* Espacio entre el icono y el texto */
+    font-size: 20px;
+    color: black !important;
+  }

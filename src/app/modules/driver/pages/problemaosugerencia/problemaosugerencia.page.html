@@ -1,0 +1,64 @@
+<ion-header color="primary">
+  <ion-toolbar  color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="openMenu()">
+        <!--<ion-icon class="icon-back" name="arrow-back"></ion-icon>-->
+        <ion-icon class="icon-back" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Reportar Problema / Sugerencia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-button fill="clear" (click)="goBack()">
+    <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+    Regresar
+  </ion-button>
+
+
+  <!-- Introducción -->
+  <div class="intro">
+    <p>Si has encontrado un problema o tienes una sugerencia, por favor háznoslo saber.</p>
+  </div>
+
+  <!-- Tipo de Reporte -->
+  <ion-item>
+    <ion-label>Tipo</ion-label>
+    <ion-select [(ngModel)]="tipoReporte">
+      <ion-select-option value="error">Error en la App</ion-select-option>
+      <ion-select-option value="sugerencia">Sugerencia</ion-select-option>
+      <ion-select-option value="otro">Otro</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Descripción -->
+  <ion-item>
+    <ion-label position="stacked">Descripción</ion-label>
+    <ion-textarea [(ngModel)]="descripcion" rows="4" autoGrow placeholder="Explica el problema o tu sugerencia..."></ion-textarea>
+  </ion-item>
+
+  <!-- Adjuntar Imagen -->
+  <ion-item>
+    <ion-label>Adjuntar Imagen (Opcional)</ion-label>
+    <ion-button fill="outline" (click)="seleccionarImagen()">
+      <ion-icon name="camera"></ion-icon> Subir Imagen
+    </ion-button>
+  </ion-item>
+  
+  <div *ngIf="imagen" class="imagen-preview">
+    <img [src]="imagen" alt="Vista previa" />
+    <ion-button fill="clear" color="danger" (click)="eliminarImagen()">
+      <ion-icon name="trash"></ion-icon> Quitar
+    </ion-button>
+  </div>
+
+  <br>
+  <!-- Botón Enviar -->
+  <ion-button expand="full" color="primary" (click)="enviarReporte()" [disabled]="!descripcion || !tipoReporte || isLoading">
+    <ion-spinner *ngIf="isLoading"></ion-spinner>
+    {{ isLoading ? 'Enviando...' : 'Enviar Reporte' }}
+  </ion-button>
+
+</ion-content>

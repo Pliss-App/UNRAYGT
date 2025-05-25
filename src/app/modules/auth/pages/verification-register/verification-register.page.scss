@@ -1,0 +1,146 @@
+
+.otp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  padding: 20px !important;
+
+  ion-input {
+    text-align: center;
+    font-size: 24px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .instruction {
+    text-align: center;
+    margin-bottom: -10px;
+  }
+}
+
+
+ion-footer ion-toolbar {
+  padding: 15px;
+  --border-width: 0;
+  border-width: 0;
+  --box-shadow: none;
+  box-shadow: none;
+  /* Elimina también alguna sombra si aparece */
+  --border-width: 1px 0 0 0;
+
+
+}
+
+.verify-button-container {
+
+  width: 100%;
+  background: transparent;
+  /* Sin fondo */
+}
+
+
+.otp-input {
+  --background: transparent;
+  --border-radius: 8px;
+  /* Bordes redondeados */
+  --box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  /* Sombra */
+  --padding-start: 0px;
+  --padding-end: 0px;
+  --height: 50px;
+  /* Ajusta la altura del cuadro */
+  --border: 1px solid #ccc;
+  /* Bordes visibles */
+  border: 1px solid #ccc;
+  /* Bordes visibles */
+  border-radius: 8px;
+  /* Bordes redondeados */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  /* Sombra */
+}
+
+.otp-input input {
+  text-align: center;
+  /* Centra el texto */
+  font-size: 24px;
+  /* Tamaño de fuente mayor */
+  height: 100%;
+  /* Ocupa toda la altura */
+  --border: 1px solid #ccc;
+  /* Bordes visibles */
+  outline: none;
+  /* Elimina el contorno por defecto */
+  padding: 0;
+}
+
+
+
+
+
+.contenedor-icon-seguridad {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  /* Ajusta según necesites */
+  width: 100%;
+}
+
+.icon-seguridad {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  background: rgb(255, 69, 0, 0.2);
+
+}
+
+.icon-seguridad ion-icon {
+
+  font-size: 76px;
+  color: white;
+  /* o cualquier color directo */
+  text-shadow:
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff;
+}
+
+.icon-bordered::part(icon) {
+  stroke: white;
+  stroke-width: 2px;
+  fill: currentColor;
+}
+
+.icon-candado {
+  top: 33%;
+  transform: (50%, 50%);
+  position: absolute;
+  font-size: 35px !important;
+}
+
+
+.icon-background,
+.icon-foreground {
+  position: absolute;
+  top: 17%;
+  transform: (50%, 50%);
+
+  font-size: 80px !important;
+}
+
+.icon-background {
+  color: white;
+  z-index: 1;
+  transform: scale(1.15);
+  /* Hace que parezca un borde blanco */
+}
+
+.icon-foreground {
+  z-index: 2;
+}

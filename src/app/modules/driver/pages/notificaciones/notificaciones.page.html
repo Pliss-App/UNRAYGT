@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar >
+    <ion-buttons slot="start">
+      <ion-button (click)="back()" >
+        <!--<ion-icon class="icon-back" name="arrow-back"></ion-icon>-->
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title size="large">Notificaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Filtros -->
+  <ion-segment [(ngModel)]="filtroEstado" (ionChange)="filtrarNotificaciones()">
+    <ion-segment-button value="todas">
+      <ion-label>Todas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="enviada">
+      <ion-label>No Vistas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="vista">
+      <ion-label>Vistas</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Barra de Búsqueda -->
+  <ion-searchbar [(ngModel)]="busqueda" (ionInput)="filtrarNotificaciones()" placeholder="Buscar notificación"></ion-searchbar>
+
+  <!-- Lista de Notificaciones -->
+  <ion-list>
+    <ion-item *ngFor="let notificacion of notificacionesFiltradas" (click)="marcarComoVista(notificacion)">
+      <ion-avatar slot="start">
+        <ion-icon 
+        style="font-size: 30px;"  
+        [name]="notificacion.estado === 'enviada' ? 'notifications' : 'checkmark-done-circle'"
+        [style.color]="notificacion.estado === 'enviada' ? 'var(--ion-color-danger)' : 'var(--ion-color-success)'">
+      </ion-icon>
+      </ion-avatar>
+      <ion-label>
+        <h2 [class.nueva]="notificacion.estado === 'enviada'">{{ notificacion.titulo }}</h2>
+        <p>{{ notificacion.mensaje }}</p>
+        <ion-text color="medium">
+          <small>{{ calcularTiempoRelativo(notificacion.fecha_envio) }}</small>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

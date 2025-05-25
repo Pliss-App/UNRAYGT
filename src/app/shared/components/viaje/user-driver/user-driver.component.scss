@@ -1,0 +1,432 @@
+.driver-info {
+    display: flex;
+    align-items: center;
+
+
+
+    .left {
+        margin: 0px;
+        padding: 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        .driver-photo {
+            /*   width: 70px;
+            height: 70px;
+            margin-bottom: 8px;
+            border:  2px solid orangered; */
+
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        }
+
+
+    }
+
+    .right {
+        margin-right: 0px;
+
+        .route-details {
+
+
+
+            .driver-vehiculo {
+                p {
+                    margin-top: 5px;
+                    font-size: 14pt;
+        
+                    margin-bottom: 0px;
+                    color: #000000;
+                }
+            }
+
+            .driver-name p {
+                margin-top: 5px;
+                font-size: 11pt;
+
+                color: #868686;
+            }
+        }
+    }
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-seguridad {
+    width: 35px;
+    height: 35px;
+    --border-radius: 50%;
+    --box-shadow: none;
+    box-shadow: none !important;
+}
+
+.btn-sms {
+    width: 35px;
+    height: 35px;
+    --border-radius: 50%;
+    --box-shadow: none;
+    box-shadow: none !important;
+}
+
+.custom-icon {
+    --ion-icon-size: 45px;
+    /* Cambia el tamaño del ícono */
+}
+
+.detalles-conductor {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding-bottom: 10px;
+    padding-top: 15px;
+    background: white;
+    height: auto;
+}
+
+
+
+.detalles-ruta {
+    background: white;
+    border-radius: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+
+
+    .end {
+        margin-bottom: -6px;
+        font-size: 24px;
+        /* Tamaño del círculo */
+        color: red;
+        /* Color inicial */
+        cursor: pointer;
+        /* Cambia el cursor al pasar por encima */
+        transition: color 0.3s ease;
+        /* Transición para el cambio de color */
+    }
+
+    .start {
+        margin-bottom: -6px;
+        font-size: 24px;
+        /* Tamaño del círculo */
+        color: green;
+        /* Color inicial */
+        cursor: pointer;
+        /* Cambia el cursor al pasar por encima */
+        transition: color 0.3s ease;
+        /* Transición para el cambio de color */
+    }
+
+    p {
+        span {
+            padding-top: -2px;
+        }
+    }
+}
+
+
+
+.alerta-conductor {
+    margin-top: 8px;
+    border-radius: 15px;
+    padding: 10px;
+    background: #ecf0f1;
+    width: 100%;
+    text-align: center;
+
+    .alert-message {
+        margin-left: 5px;
+
+        margin-top: 2px;
+        margin-bottom: 5px;
+        font-size: 13pt;
+    }
+}
+
+.floating-button ion-icon {
+    margin-right: 5px;
+    /* Espacio entre el icono y el texto */
+    font-size: 20px;
+    color: rgb(255, 255, 255) !important;
+}
+
+.floating-button {
+    position: absolute;
+    top: -65px;
+    /* Para colocarlo encima del bottom-sheet */
+    left: 21%;
+    right: 21%;
+    color: white !important;
+    background-color: #0d31f8 !important;
+    /* Fondo blanco */
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+    border: solid 2px rgb(219, 219, 219);
+
+}
+
+.btn-llegue {
+    position: absolute;
+    top: -55px;
+    /* Para colocarlo encima del bottom-sheet */
+    //left: 25%;
+    right: 1%;
+    background-color: white !important;
+    /* Fondo blanco */
+    color: black !important;
+    /* Texto negro */
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: solid 2px rgb(219, 219, 219);
+}
+
+.tiempo-distance-pasajero {
+    margin-left: 6px;
+    margin-top: 0px;
+    margin-bottom: -5px;
+    font-size: 18pt;
+    color: #525252;
+}
+
+
+.driver-container {
+    position: relative;
+    display: inline-block;
+    /* Para que se ajuste al contenido */
+    text-align: center;
+    /* Centrar elementos */
+
+    /* .driver-photo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid white; 
+      } */
+
+    .driver-info {
+        position: absolute;
+        bottom: -10px;
+        /* Ajusta para que se superponga al avatar */
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        /* Fondo semitransparente */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 10px;
+        font-size: 12px;
+        white-space: nowrap;
+        /* Evita que el texto se divida */
+    }
+
+
+    .driver-vehiculo p {
+        margin-top: 5px;
+        margin: 0;
+        font-size: 12px;
+        font-weight: bolder;
+    }
+}
+
+
+
+
+.avatar-cajon {
+    position: relative;
+
+
+    .driver-photo {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 8px;
+        border: 2px solid orangered;
+
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    }
+
+
+}
+
+.pA {
+    text-align: center;
+    margin-top: 5px;
+    height: 45px;
+
+    ion-icon {
+        font-size: 30px;
+    }
+}
+
+.pB {
+    text-align: center;
+    margin-top: 15px;
+    height: 50px;
+
+    ion-icon {
+        font-size: 30px;
+    }
+}
+
+.detalles-precio {
+
+    margin-top: 3px;
+    text-align: center;
+    background: white;
+
+    padding-top: 3px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 1px;
+
+    h5 {
+        color: #48c1fd;
+        font-weight: 400;
+    }
+
+    .precio {
+        font-size: 18pt;
+        margin: 0px;
+        font-weight: 900;
+    }
+}
+
+.metodo-pago-viaje {
+    background: white;
+    margin-top: 3px;
+    padding-left: 15px;
+}
+
+.finalizar {
+    background: white;
+    margin-top: 3px;
+}
+
+.seguridad {
+
+    padding-top: 5px;
+
+    background: white;
+    margin-top: 3px;
+
+    h5 {
+        padding-left: 20px;
+    }
+
+    p {
+        margin: 0px;
+    }
+
+    .btn-seguridad-apoyo {
+        width: 35px;
+        height: 35px;
+        --border-radius: 50%;
+
+        .seguridad-icon {
+            font-size: 25px !important;
+        }
+    }
+}
+
+
+
+
+.driver-placas {
+    display: inline-block; 
+    margin: 0px !important;
+    padding: 0px !important;
+    top: -10px;
+    background: rgb(245, 245, 245);
+    /* Ajusta el ancho del div al contenido */
+    border: 1px solid rgb(214, 214, 214);
+    /* Opcional: Espaciado interno para que el contenido no toque los bordes */
+    border-radius: 5px;
+
+    p {
+        letter-spacing: 2px;
+        margin: 0px !important;
+        padding: 5px !important;
+        font-size: 14pt;
+        font-weight:500
+    }
+}
+
+
+
+.avatar-wrapper {
+    position: relative;
+    width: 70px;
+    /* ajusta según necesidad */
+    height: 70px;
+}
+
+.driver-photo {
+    width: 100%;
+    height: 100%;
+}
+
+
+.small-avatar {
+    background: white !important;
+    position: absolute;
+    bottom: -8px;
+    object-fit: contain;
+    left: 1px;
+    width: 35px;
+    /* tamaño más pequeño */
+    height: 35px;
+    border: 2px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.calificacion {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    width: 50%;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    background: white;
+    font-size: 10pt;
+    border-radius: 15px;
+}
+
+
+
+.btn-shared-location{
+    position: absolute;
+    top:10px;
+    right: 5px;
+    border-radius: 50%;
+}

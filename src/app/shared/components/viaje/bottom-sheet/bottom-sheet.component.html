@@ -1,0 +1,9 @@
+<div
+  class="bottom-sheet"
+  (touchstart)="onTouchStart($event)"
+  (touchmove)="onTouchMove($event)"
+  (touchend)="onTouchEnd()"
+>
+  <div class="drag-handle"></div>
+  <ng-content></ng-content>
+</div>

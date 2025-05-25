@@ -1,0 +1,21 @@
+ion-segment {
+    margin-bottom: 10px;
+  }
+  
+  ion-icon.nueva {
+    color: var(--ion-color-danger);
+  }
+  
+  h2.nueva {
+    font-weight: bold;
+    color: var(--ion-color-primary);
+  }
+  
+  ion-item {
+    border-bottom: 1px solid var(--ion-color-light);
+  }
+  
+  ion-item:hover {
+    background-color: var(--ion-color-light);
+  }
+  

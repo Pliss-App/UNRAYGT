@@ -1,0 +1,180 @@
+.menu {
+  background: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 0px !important;
+  position: absolute;
+  top: 10px;
+  margin-left: 15px;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+
+  .btn-menu {
+
+    ion-icon {
+      font-size: 30px !important;
+    }
+  }
+}
+
+
+
+
+.transparent-header {
+  --background: transparent;
+  box-shadow: none !important;
+
+  ion-toolbar {
+    --background: transparent;
+    --ion-background-color: transparent;
+    --ion-toolbar-background: transparent;
+    box-shadow: none !important;
+    /* Opcional: elimina la sombra */
+  }
+}
+
+.custom-icon {
+
+  color: orangered;
+}
+
+ion-fab-button {
+  --background: rgba(255, 255, 255, 0.9);
+  /* Fondo semitransparente */
+  --background-activated: rgba(255, 255, 255, 0.9);
+  /* Fondo al hacer clic */
+  --background-focused: rgba(255, 255, 255, 0.9);
+  /* Fondo al estar enfocado */
+  --background-hover: rgba(255, 255, 255, 0.9);
+  /* Fondo al pasar el cursor */
+  backdrop-filter: blur(5px);
+  /* Agrega un desenfoque de fondo */
+  border-radius: 50%;
+  /* Forma redonda */
+  box-shadow: none !important;
+  color: black
+}
+
+.elevation-3 {
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
+  /* Elevación alta */
+  border: solid 2px rgb(235, 235, 235)
+}
+
+
+
+.efecto-busqueda {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  /* Centra verticalmente */
+  justify-content: center;
+  /* Centra horizontalmente */
+}
+
+
+ion-fab {
+  z-index: 7 !important;
+  /* Asegura que siempre esté encima */
+}
+
+/*
+  .container {
+  
+  } */
+/*
+  .circle-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  */
+
+
+.circle-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid rgba(0, 123, 255, 0.6);
+  animation: waveEffect 2.5s infinite ease-out;
+}
+
+.circle:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.circle:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes waveEffect {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+
+.btn-cancelar {
+  position: absolute;
+  bottom: 10px;
+
+  font-size: 14pt;
+
+  width: 270px;
+
+  font-weight: 300;
+  height: 50px !important;
+  margin: 0 auto;
+  border-radius: 25px !important;
+}
+
+
+.msg-busqueda-conductor{
+ // font-weight: bolder;
+  position: absolute;
+  color: rgb(238, 238, 238);
+}
+
+.notification-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  --background: #ff3b30;
+  /* Rojo de alerta */
+  --color: white;
+  --border-radius: 50%;
+  border-radius: 50%;
+  background: white;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}

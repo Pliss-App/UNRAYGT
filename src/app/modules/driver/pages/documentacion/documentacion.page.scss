@@ -1,0 +1,47 @@
+.centrado-container {
+    display: flex; /* Activa el modo Flexbox */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;      /* centra verticalmente */
+    text-align: center; /* Opcional: centra texto dentro del elemento */
+  }
+  
+  .center-element {
+   
+    /* Opcional: agrega estilos adicionales para el elemento */
+    background-color: #f4f4f4; /* Ejemplo de fondo */
+    padding: 20px; /* Ejemplo de relleno */
+
+  }
+
+  .formulario {
+
+
+  }
+
+  .preview-image{
+    width: 80%;
+    object-fit: cover;
+    height: 200px;
+    border-radius: 15px;
+  }
+
+  .alert-custom {
+    text-align: center;
+    font-size: 16px;
+  }
+
+  .img-preview {
+    width: 100%;
+    height: auto;
+    border: 2px dashed #ccc;
+    border-radius: 12px;
+    margin-top: 8px;
+  }
+  
+
+  .referencia{
+    font-weight: bold;
+    text-align: left;
+    margin-left: 15px;
+    font-size: 12pt;
+  }

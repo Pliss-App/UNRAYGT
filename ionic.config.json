@@ -1,0 +1,8 @@
+{
+  "name": "Un Ray",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

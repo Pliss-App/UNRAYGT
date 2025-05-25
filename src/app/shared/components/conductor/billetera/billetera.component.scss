@@ -1,0 +1,88 @@
+.billetera {
+  text-align: center;
+  background: orangered!important;
+  width: 100%;
+  height: 50px;
+  border-radius: 25px !important;
+  font-size: 18pt;
+  font-weight: bolder;
+  position: relative;
+  color: white;
+  display: flex;
+  text-align: center;
+  align-items: center;
+
+  justify-content: center;  /* Centra horizontalmente */
+
+}
+
+.icono-actualizar {
+  z-index: 5;
+  font-size: 19px;
+  color: white;
+  font-weight: bolder;
+  position: absolute;
+  top: 12px;
+  right: 7px;
+}
+
+.recargar-saldo {
+  margin-top: 1px;
+  font-size: 12px;
+}
+
+
+.elevation {
+  background: #fff;
+  /* Fondo blanco o cualquier color deseado */
+  padding-right: 8px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  // padding: 16px; /* Espaciado interno */
+  border-radius: 8px;
+  /* Bordes redondeados opcionales */
+  transition: box-shadow 0.3s ease-in-out;
+  /* Animación suave */
+}
+
+.elevation:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Sombra suave al pasar el mouse */
+}
+
+.elevation-1 {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  /* Elevación baja */
+}
+
+.elevation-2 {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  /* Elevación moderada */
+}
+
+.elevation-3 {
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  /* Elevación alta */
+  border: solid 2px rgb(235, 235, 235)
+}
+
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ganancia{
+  font-size: 10pt;
+  margin: 0px;
+  margin-top: -3px !important;
+}

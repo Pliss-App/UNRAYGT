@@ -1,0 +1,65 @@
+ion-content{
+    background-color: #f0f0f0; /* Solo para visualización */
+}
+  
+  img {
+    width: 180px;
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    font-size: 22px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+
+    gap: 8px;
+  }
+  
+  button:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+
+  .contenedor {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100vh; /* Hace que el contenedor tenga altura de toda la pantalla */
+  }
+  
+  .centrado {
+    text-align: center;
+    width: 90%; /* Ajusta según el tamaño que desees */
+    height: auto; /* Ajusta según el tamaño que desees */
+
+  }

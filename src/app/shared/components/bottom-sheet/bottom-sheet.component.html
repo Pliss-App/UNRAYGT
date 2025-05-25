@@ -1,0 +1,113 @@
+<!-- bottom-sheet.component.html -->
+<div class="alert-search-driver" *ngIf="estadoSolicitud">
+
+  <div [class]="responseSolicitud =='success' ? 'success' : 'danger'">
+    <div class="estado-solicitud">
+      <p>{{ estadoSolicitud }}</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="bottom-sheet" #bottomSheet [ngStyle]="{'height.px': currentHeight}">
+
+  <div *ngIf="services.length>0" class="horizontal-scroll-service">
+    <div  class="contenido-publicidad"> <app-publicidad></app-publicidad> </div>
+   
+    <ion-card class="card-service" [ngClass]="{ 'selected-card': item.id === selectedServiceId }"
+      *ngFor="let item of services" (click)="getService(item)">
+      <img [src]="item.foto" class="imagen-service" alt="Imagen" />
+      <p class="name-service">{{ item.nombre == 'Moto Ray' ? 'Moto' : item.nombre == 'Un Ray' ? 'Carro' : item.nombre }}
+        <span *ngIf="item.id == 1 || item.id==2"> <ion-icon name="person" style="margin-right: 1px;"></ion-icon>
+          {{ item.id == 1 ? 2 : (item.id == 2 ? 3 : '') }}</span>
+      </p>
+    </ion-card>
+    <!--<div class="card" *ngFor="let item of services" (click)="getService(item)"
+      [ngClass]="{ 'selected-card': item.id === selectedServiceId }">
+      <img [src]="item.foto" class="imagen-service" alt="Imagen" />
+      <h3 class="nombre-servicio">{{ item.nombre }}</h3>
+    </div>  -->
+  </div>
+
+  <div *ngIf="services.length==0" class="horizontal-scroll">
+    <div class="card" *ngFor="let item of [0,1,2,3,4]">
+      <ion-item style="border-radius: 10px; margin-right: 5px;">
+        <ion-thumbnail style="width: 100%; border-radius: 10px;" animated>
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+      </ion-item>
+    </div>
+  </div>
+
+  <!-- Contenido del bottom sheet -->
+  <div class="content" #contentDiv>
+    <div *ngIf="distance && !kmInvalido" class="data-distance">
+      <ion-row>
+        <ion-col size="1">
+          <ion-icon style="font-size: 18pt;" name="time-outline"></ion-icon>
+        </ion-col>
+        <ion-col size="11">
+          <p class="p-precio">Precio de viaje <span style="font-size: 16pt;">Q{{costoViaje}}</span></p>
+          <p class="p-tiempo-distancia">Tiempo de viaje {{distance.durationtext}} </p>
+        </ion-col>
+      </ion-row>
+      <!-- Distancia y duración a la izquierda -->
+
+      <!--  <div style="display: flex; gap: 10px; align-items: center;">
+        <p style="margin: 0;">
+          <ion-icon name="navigate-circle-outline"></ion-icon> {{distance.distancetext}} -
+          {{distance.durationtext}}
+        </p>
+      </div>
+    
+      <div>
+        <span style=" margin-right: 10px; color: green; font-weight: bolder; font-size: 20pt;">Q{{costoViaje}}</span>
+      </div> -->
+    </div>
+    <!-- Si el KM está fuera de rango, mostrar mensaje -->
+<div *ngIf="kmInvalido" class="fuera-de-rango">
+  🚫 Dirección fuera del rango límite.
+</div>
+
+    <ion-grid style="margin-bottom: -25px;" class="centered-card">
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" size-md="12" size-lg="12">
+          <ion-searchbar [(ngModel)]="directionSalida" (ionInput)="onSearch($event,'salida')"
+            (ionFocus)="onSearch($event, 'salida')" show-clear-button="never" class="rounded-searchbar"
+            placeholder="Buscar dirección...">
+            <ion-icon name="locate-outline" slot="start"></ion-icon>
+          </ion-searchbar>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid class="centered-card" style="margin-top: -30px;">
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" size-md="12" size-lg="12">
+          <ion-searchbar [(ngModel)]="directionDestino" animated show-clear-button="never" class="rounded-searchbar"
+            (ionInput)="onSearch($event,'destino')" (ionFocus)="onSearch($event, 'destino')" placeholder="¿A dónde vas?"
+            debounce="500">
+            <ion-icon slot="start" name="location"></ion-icon>
+          </ion-searchbar>
+        </ion-col>
+        <!-- <ion-col size="2" size-md="2" size-lg="2">
+          <ion-button fill="clear" shape="round" (click)="addDestination('add')">
+            <ion-icon name="add-circle" size="large" ></ion-icon>
+          </ion-button>
+        </ion-col> -->
+      </ion-row>
+    </ion-grid>
+    <ion-button size="large" shape="round"
+      [disabled]="
+    isActive === true ||
+    estadoSolicitud === 'Buscando el conductor más cercano...' ||
+    kmInvalido
+  "
+      (click)="solicitar()" class="btn-buscar-conductor" expand="block">
+      Buscar conductor
+    </ion-button>
+
+
+  </div>
+</div>

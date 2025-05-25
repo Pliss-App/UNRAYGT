@@ -1,0 +1,29 @@
+.contenedor-nombre{
+    padding: 10px;
+    text-align: center;
+}
+
+.contenido{
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: none !important;
+}
+
+.outlined-input {
+    --border-width: 1px;
+    --border-style: solid;
+    --border-color: var(--ion-color-medium);
+    /* Cambia el color si lo deseas */
+    --border-radius: 8px;
+    /* Ajusta el radio del borde según el diseño deseado */
+    --background: transparent;
+    /* Asegúrate de que el fondo sea transparente */
+    padding: 4px;
+    /* Quitar padding interno */
+  }
+  
+  .outlined-input ion-input {
+     margin: 0px;
+    padding-left: -10px !important;
+    /* Ajusta el padding del input */
+  }

@@ -1,0 +1,120 @@
+.centered-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  /* Ajusta el tamaño según tus necesidades */
+}
+
+.white-placeholder {
+  
+  --placeholder-color: white;
+  /* Cambia el color del placeholder */
+  color: white;
+  /* Asegura que el texto del input también sea blanco */
+  font-size: 12pt;
+
+  ion-input::placeholder {
+    color: white !important;
+    padding-left: 4px !important;
+    /* Respaldo adicional */
+  }
+}
+
+.card-register{
+  color:white;
+   background: rgba(0, 0, 0, 0.5); 
+   box-shadow: none;
+   border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.outlined-input {
+  --border-width: 1px;
+  --border-style: solid;
+  --border-color: var(--ion-color-medium);
+  /* Cambia el color si lo deseas */
+  --border-radius: 8px;
+  /* Ajusta el radio del borde según el diseño deseado */
+  --background: transparent;
+  /* Asegúrate de que el fondo sea transparente */
+  padding: 4px;
+  /* Quitar padding interno */
+}
+
+.outlined-input ion-input {
+   margin: 0px;
+  padding-left: -10px !important;
+  /* Ajusta el padding del input */
+}
+
+.ion-margin-top {
+  --border-radius: 10px !important;
+}
+
+.custom-alert .alert-title {
+  text-align: center;
+  font-weight: bold;
+  /* Opcional: dar estilo al título */
+}
+
+.custom-alert .alert-sub-title {
+  text-align: center;
+}
+
+.sign-up {
+  font-size: 130px;
+  color: orangered;
+  text-align: center !important;
+}
+
+.background-image {
+  --background: url('../../../../../assets/img/registro.jpg') no-repeat center center / cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+ion-card {
+  box-shadow: none !important;
+  /* Quita las sombras */
+  background: rgba(255, 255, 255, 0.5);
+  /* Bordes opcionales */
+  color: white;
+  /* Ajusta el color del texto si es necesario */
+}
+
+a {
+  color: orangered;
+  box-shadow: none !important;
+  font-weight: bolder;
+}
+
+
+.outlined-input-referido {
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  --background: transparent;
+}
+
+
+.phone-input {
+  --padding-start: 0;
+  display: flex;
+  align-items: center;
+
+  ion-select.country-code-select {
+    color:white !important;
+    max-width: 100px;
+    font-size: 12pt;
+    padding-left: 10px;
+  }
+
+  ion-input {
+    flex: 1;
+  }
+}

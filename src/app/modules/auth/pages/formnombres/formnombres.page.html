@@ -1,0 +1,43 @@
+<ion-content [fullscreen]="true">
+<br>
+  <div class="contenedor-nombre">
+    <ion-icon style="font-size: 100px; margin-top: 30px; color:orangered" name="person"></ion-icon>
+    <h2 style="font-weight: bolder;">Datos personales</h2>
+    <ion-card class="contenido">
+  
+      <form [formGroup]="registro" (ngSubmit)="onSubmit()">
+        <ion-grid style="padding: 0px; margin: 0px;">
+          <ion-row style="padding: 0px; margin: 0px;">
+            <ion-col size="12" size-md="6" size-lg="12" style="padding: 0px; margin: 0px;">
+              <ion-item class="outlined-input">
+                <ion-input class="white-placeholder" formControlName="nombre" type="text"
+                  placeholder="Nombre"></ion-input>
+              </ion-item>
+              <ion-text class="text-required" color="danger" *ngIf="isFieldInvalid('nombre')">
+                Nombre es requerido.
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" size-md="6" size-lg="12" style="padding: 0px; margin: 0px;">
+              <ion-item class="outlined-input">
+                <ion-input class="white-placeholder" formControlName="apellido" type="text"
+                  placeholder="Apellido"></ion-input>
+              </ion-item>
+              <ion-text class="text-required" color="danger" *ngIf="isFieldInvalid('apellido')">
+                Apellido es requerido.
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-button shape="round" [disabled]="!registro.valid || isSubmitting" expand="full" class="ion-margin-top"
+          type="submit">
+          <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+          <span *ngIf="!isLoading">Guardar</span>
+        </ion-button>
+      </form>
+    </ion-card>
+
+  </div>
+
+
+
+</ion-content>

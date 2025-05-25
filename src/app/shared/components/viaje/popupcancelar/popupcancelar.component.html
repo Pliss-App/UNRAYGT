@@ -1,0 +1,26 @@
+<ion-modal [isOpen]="isOpen" (ionModalDidDismiss)="closeModal()">
+  <ng-template>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>{{ title }}</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="closeModal()">Cerrar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-radio-group [(ngModel)]="selectedOption">
+        <ion-item *ngFor="let option of options">
+          <ion-label>{{ option?.title }}</ion-label>
+          <ion-radio slot="start" [value]="option?.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  
+    <ion-footer>
+      <ion-button expand="block" (click)="save()">Guardar</ion-button>
+    </ion-footer>
+  </ion-content>
+</ng-template>
+</ion-modal>

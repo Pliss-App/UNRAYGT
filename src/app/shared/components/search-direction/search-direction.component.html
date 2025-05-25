@@ -1,0 +1,33 @@
+<ion-header class="transparent-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button size="large" (click)="closeAndReturnData()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar class="rounded-searchbar"
+    [(ngModel)]="searchText"
+    (ionInput)="searchAddress($event)"
+    (ionClear)="onClearSearch()"
+    placeholder="Buscar dirección"
+    showCancelButton="never"
+    debounce="500">
+  </ion-searchbar>
+
+  </ion-toolbar> 
+</ion-header>
+<ion-content style="position: relative;">
+<ion-list class="list-direction" *ngIf="savedAddresses.length>0">
+    <ion-item *ngFor="let address of savedAddresses"  (click)="chooseItem(address)">
+      <ion-label>
+        {{ address?.description }}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <div id="map_direction"></div>
+
+  <ion-button (click)="fijarAndReturnData()" [disabled]="!isFijar" shape="round" class="btn-fijar">Confirmar ubicación</ion-button>
+</ion-content>
+
+
+

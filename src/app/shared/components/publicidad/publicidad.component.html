@@ -1,0 +1,20 @@
+<div (click)="abrirPublicidad()" class="contenido-publicidad" *ngIf="publicidades.length !== 0 && currentPublicidad">
+
+
+  <!-- Mostrar solo imagen si es tipo 'img' -->
+  <div class="publicidad-item-img" *ngIf="currentPublicidad.tipopublicidad === 'img'">
+    <img class="img-publicidad" [src]="currentPublicidad.url" />
+  </div>
+
+  <!-- Mostrar texto si es diferente de 'img' -->
+  <div class="publicidad-item" *ngIf="currentPublicidad.tipopublicidad !== 'img'">
+    <h4>{{ currentPublicidad.titulo }}</h4>
+    <h5>{{ currentPublicidad.subtitulo }}</h5>
+    <p>{{ currentPublicidad.descripcion }}</p>
+  </div>
+</div>
+
+<ng-container  *ngIf="publicidades.length == 0 && !currentPublicidad">
+  <ion-skeleton-text animated style="width: 90%; height: 60px; border-radius: 10px;"></ion-skeleton-text>
+
+</ng-container>

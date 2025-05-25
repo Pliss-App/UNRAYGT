@@ -1,0 +1,11 @@
+<ion-card (click)="handleClick()" button="true" class="upload-card">
+  <ion-card-content>
+    <ion-img *ngIf="imageSrc; else placeholder" [src]="imageSrc"></ion-img>
+    <ng-template #placeholder>
+      <div class="placeholder-content">
+        <ion-icon name="camera" size="large"></ion-icon>
+        <p>{{ label }}</p>
+      </div>
+    </ng-template>
+  </ion-card-content>
+</ion-card>

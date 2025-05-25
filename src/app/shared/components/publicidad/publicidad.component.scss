@@ -1,0 +1,39 @@
+
+
+.contenido-publicidad {
+    height: 75px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .publicidad-item {
+    position: absolute;
+    width: 100%;
+    animation: slide-up 0.5s ease;
+  }
+
+  .publicidad-item-img {
+    border-radius: 15px;
+    width: 100%; 
+    height: 61px; 
+    position: absolute;
+    animation: slide-up 0.5s ease;
+    .img-publicidad{
+        border-radius: 15px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+  }
+  
+  
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }

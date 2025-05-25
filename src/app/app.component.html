@@ -1,0 +1,118 @@
+<ion-app>
+  <ion-menu contentId="main-content" menuId="userMenu" side="start">
+    <ion-header *ngIf="user">
+      <div class="header-menu">
+        <ion-item lines="none" color="primary">
+          <app-foto-menu></app-foto-menu>
+
+          <ion-label style="font-size: 12pt;">{{ user.nombre }} {{ user.apellido }}
+            <div class="rating">
+              <ion-icon class="start" *ngFor="let star of stars" [name]="star"></ion-icon>
+              <span *ngIf="rating"> {{rating.rating}} <!-- ({{rating.total_viajes}})--></span>
+            </div>
+          </ion-label>
+
+          <ion-icon class="icon-navegate" slot="end" routerLink="/user/profile" (click)="closeMenu('')"
+            name="chevron-forward-outline"></ion-icon>
+
+        </ion-item>
+      </div>
+    </ion-header>
+    <ion-content>
+      <ion-list lines="none">
+        <ion-item routerLink="/user/home" (click)="closeMenu('viajar')"> <ion-icon slot="start"
+            name="location-outline"></ion-icon>Inicio</ion-item>
+
+        <ion-item *ngIf="user" routerLink="/user/referidos" (click)="closeMenu('')"><ion-icon slot="start"
+            name="gift-outline"></ion-icon>Referidos</ion-item>
+        <!--<ion-item routerLink="/user/profile" (click)="closeMenu('')"><ion-icon slot="start"
+            name="person-outline"></ion-icon>Perfil</ion-item> -->
+        <ion-item routerLink="/user/historial" (click)="closeMenu('')"> <ion-icon slot="start"
+            name="list-outline"></ion-icon>Historial</ion-item>
+        <ion-item routerLink="/user/ayuda" (click)="closeMenu('')">
+          <ion-icon slot="start" name="help-circle-outline"></ion-icon>
+          Ayuda
+        </ion-item>
+
+        <ion-item routerLink="/user/soporte" (click)="closeMenu('')">
+          <ion-icon slot="start" name="headset-outline"></ion-icon>
+          Soporte
+        </ion-item>
+
+        <ion-item routerLink="/user/configuracion" (click)="closeMenu('')">
+          <ion-icon slot="start" name="settings-outline"></ion-icon>
+          Configuración
+        </ion-item>
+      </ion-list>
+
+    </ion-content>
+  </ion-menu>
+
+  <ion-menu contentId="main-content" menuId="driverMenu" side="start">
+    <ion-header *ngIf="user">
+      <div class="header-menu">
+        <ion-item lines="none" color="primary">
+          <app-foto-menu></app-foto-menu>
+
+          <ion-label style="font-size: 12pt;">{{ user.nombre }} {{ user.apellido }}
+            <div class="rating">
+              <ion-icon class="start" *ngFor="let star of stars" [name]="star"></ion-icon>
+              <span *ngIf="rating"> {{rating.rating}} ({{rating.total_viajes}})</span>
+            </div>
+          </ion-label>
+
+          <ion-icon class="icon-navegate" slot="end" routerLink="/driver/profile" (click)="closeMenu('')"
+            name="chevron-forward-outline"></ion-icon>
+
+        </ion-item>
+      </div>
+    </ion-header>
+    <ion-content>
+      <ion-list lines="none">
+        <ion-item routerLink="/driver/home" (click)="closeMenu('inicio')"><ion-icon slot="start"
+            name="home-outline"></ion-icon>Inicio</ion-item>
+        <ion-item *ngIf="user" routerLink="/driver/referidos" (click)="closeMenu('')"><ion-icon slot="start"
+            name="gift-outline"></ion-icon>Referidos</ion-item>
+
+        <ion-item routerLink="/driver/billetera" (click)="closeMenu('')"> <ion-icon slot="start"
+            name="wallet-outline"></ion-icon>Billetera</ion-item>
+        <ion-item routerLink="/driver/detalle-ganancia" (click)="closeMenu('')"> <ion-icon slot="start"
+            name="trending-up-outline"></ion-icon>Ganancias</ion-item>
+        <ion-item routerLink="/driver/historial" (click)="closeMenu('')"> <ion-icon slot="start"
+            name="list-outline"></ion-icon>Historial</ion-item>
+        <!-- <ion-item routerLink="/driver/historial-billetera" (click)="closeMenu('')"> <ion-icon slot="start"
+              name="receipt-outline"></ion-icon>Historial Billetera</ion-item>-->
+        <ion-item routerLink="/driver/ayuda" (click)="closeMenu('')">
+          <ion-icon slot="start" name="help-circle-outline"></ion-icon>
+          Ayuda
+        </ion-item>
+
+        <ion-item routerLink="/driver/soporte" (click)="closeMenu('')">
+          <ion-icon slot="start" name="headset-outline"></ion-icon>
+          Soporte
+        </ion-item>
+
+        <ion-item routerLink="/driver/configuracion" (click)="closeMenu('')">
+          <ion-icon slot="start" name="settings-outline"></ion-icon>
+          Configuración
+        </ion-item>
+      </ion-list>
+
+
+      <!--<div class="btn-modo">
+        <ion-button (click)="cambiarModo('conductor')" class="btn-modo-conductor" style="  text-transform: none;"
+          expand="block" shape="round"> Modo Usuario</ion-button>
+
+      </div> -->
+
+    </ion-content>
+    <!-- <ion-footer>
+      <ion-toolbar lines="none">
+        <ion-button color="danger" expand="full" (click)="logout()" block>SALIR</ion-button>
+
+      </ion-toolbar>
+    </ion-footer>  -->
+  </ion-menu>
+
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+</ion-app>

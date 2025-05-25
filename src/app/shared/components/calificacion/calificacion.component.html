@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start"></ion-buttons> <!-- Espacio vacío -->
+    <ion-title>Califica tu experiencia</ion-title>
+    <ion-buttons slot="end"></ion-buttons> <!-- Espacio vacío -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!--<h2>{{ message }} {{ user.nombre }}</h2> -->
+
+  <!-- Avatar centrado encima de las estrellas -->
+  <div class="avatar-container">
+    <!-- Skeleton mientras la imagen carga -->
+    <ion-avatar class="avatar" *ngIf="!loading">
+      <ion-skeleton-text animated></ion-skeleton-text>
+    </ion-avatar>
+  
+    <!-- Imagen cuando ya cargó -->
+    <ion-avatar class="avatar" *ngIf="loading">
+      <img [src]="user.foto" alt="User Avatar"  />
+    </ion-avatar> 
+  </div>
+
+  <p>¿Cómo fue tu viaje con <b>{{user.nombre}}</b></p>
+
+  <!-- Contenedor de estrellas -->
+  <div class="star-container">
+    <ion-icon 
+      *ngFor="let star of stars; let i = index"
+      [name]="i < calificacion ? 'star' : 'star-outline'"
+      (click)="setCalificacion(i + 1)"
+      class="star">
+    </ion-icon>
+  </div>
+
+  <!-- Área de texto para comentarios -->
+  <ion-textarea [(ngModel)]="comentario" placeholder="Escribe aqui..."
+
+
+  ></ion-textarea>
+
+  <!-- Botón de enviar -->
+  <ion-button expand="full" color="success" (click)="enviarCalificacion()">
+    Enviar Calificación
+  </ion-button>
+</ion-content>

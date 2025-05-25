@@ -1,0 +1,92 @@
+<ion-header color="primary">
+  <ion-toolbar  color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="openMenu()">
+        <!--<ion-icon class="icon-back" name="arrow-back"></ion-icon>-->
+        <ion-icon class="icon-back" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Billetera </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <!-- Saldo Disponible -->
+  <div class="balance-container">
+    <ion-card>
+      <ion-card-header style="position: relative;">
+        <ion-card-title>Saldo Disponible</ion-card-title>
+     </ion-card-header>
+      <ion-card-content>
+        <div class="balance">
+          <span class="currency-symbol">Q</span>
+          <span class="amount">{{saldo}}</span>
+        </div>
+        <ion-button expand="block" color="primary"  routerLink="/driver/recargar">
+         Recargar
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+        <ion-card>
+      <ion-card-header style="position: relative;">
+        <ion-card-title>¿Dónde debo depositar?</ion-card-title>
+     </ion-card-header>
+      <ion-card-content>
+
+            <ion-button expand="block" (click)="navigateToPayments()"   fill="outline">Ver No. de Cuenta</ion-button>
+     
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+    <!-- Comisiones -->
+   <!-- <ion-card>
+      <ion-card-header>
+        <ion-card-title>Comisiones de la Plataforma</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="commission-details">
+          <p>Comisión por viaje: <strong>10%</strong></p>
+          <p>Comisión por mantenimiento: <strong>0%</strong></p>
+        </div>
+      </ion-card-content>
+    </ion-card>-->
+  
+  <!-- Historial de Transacciones -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Historial de Transacciones</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+  
+      <!-- Filtros -->
+      <ion-item>
+        <ion-label>Tipo</ion-label>
+        <ion-select [(ngModel)]="filtroTipo" (ionChange)="filtrarMovimientos()">
+          <ion-select-option value="">Todos</ion-select-option>
+          <ion-select-option value="débito">Débito</ion-select-option>
+          <ion-select-option value="crédito">Crédito</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Lista de Transacciones Filtradas -->
+      <ion-list>
+        <ion-item *ngFor="let movimiento of movimientosFiltrados">
+          <ion-label>
+            <strong>{{movimiento.descripcion}}</strong>
+            <p>{{movimiento.fecha | date:'yyyy-MM-dd'}}</p>
+          </ion-label>
+          <ion-badge [color]="movimiento.tipo == 'débito' ? 'danger' : 'success'">
+            {{movimiento.cantidad | currency}}
+          </ion-badge>
+        </ion-item>
+      </ion-list>
+  
+    </ion-card-content>
+  </ion-card>
+  
+
+
+</ion-content>

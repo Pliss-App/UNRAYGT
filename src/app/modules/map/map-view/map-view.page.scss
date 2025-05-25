@@ -1,0 +1,10 @@
+
+  
+  #map {
+    width: 100%;             // Ocupa todo el ancho disponible
+    height: 100% !important;            // Ocupa todo el alto disponible
+    position: absolute;      // Posición absoluta para llenar el contenedor
+    top: 0;                  // Alinea al top
+    left: 0;    
+    overflow: hidden;             // Alinea al lado izquierdo
+  }

@@ -1,0 +1,55 @@
+.center-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+  }
+
+  .custom-avatar {
+    width: 70px !important; /* Ancho del avatar */
+    height: 70px !important; /* Altura del avatar */
+    border: 2px solid white;
+    background: white;
+  }
+
+  .avatar-container {
+    position: relative;
+    display: inline-block;
+  }
+
+
+  .camera-button {
+    margin-right: 15px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 1em;
+    background-color: orangered;
+    border-radius: 50%;
+    color: white; /* Cambia el color según el diseño */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid white;
+  }
+
+
+  .checkmark-button{
+    margin-right: 15px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 1em;
+    background-color: rgb(3, 161, 3);
+    border-radius: 50%;
+    color: white; /* Cambia el color según el diseño */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid white;
+  }
+  

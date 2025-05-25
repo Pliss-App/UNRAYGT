@@ -1,0 +1,41 @@
+<ion-content [fullscreen]="true">
+
+  <div class="otp-container">
+    <ion-text class="instruction">
+      <h2 style="font-weight: bolder;">Verifica tu cuenta</h2>
+
+      <div class="contenedor-icon-seguridad">
+        <div class="icon-seguridad">
+          <ion-icon class="icon-background" color="primary" name="shield" class="icon-bordered"></ion-icon>
+          <ion-icon class="icon-foreground" name="shield-outline"></ion-icon>
+          <ion-icon name="lock-closed-outline" class="icon-candado"></ion-icon>
+        </div>
+      </div>
+      <p>Ingresa el código que recibiste por SMS.</p>
+    </ion-text>
+
+    <ion-grid style="margin-top: -10px;">
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12">
+          <p>Código de verificación</p>
+          <ion-input [(ngModel)]="codigoIngresado" type="text" maxlength="4" class="otp-input">
+          </ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div class="verify-button-container">
+    <ion-button shape="round" expand="block"  (click)="resendOtp()" fill="clear" style="text-transform: none;">
+      <span  style="color:blue !important">Reenviar Código</span>
+    </ion-button>
+  </div>
+    <!-- Botón fijo abajo sin footer -->
+    <div class="verify-button-container">
+      <ion-button style="text-transform: none;" [disabled]="!codigoIngresado || codigoIngresado.length < 4" shape="round" expand="block" (click)="verificarCodigo()">
+        Verificar
+      </ion-button>
+    </div>
+  </div>
+
+
+</ion-content>

@@ -1,0 +1,27 @@
+
+<ion-content [fullscreen]="true">
+  <div *ngIf="isActiveMenu"   class="efecto-busqueda" >
+
+    <p class="msg-busqueda-conductor">Buscando...</p>
+    <div class="circle-container">
+      <div class="circle wave"></div>
+      <div class="circle wave"></div>
+      <div class="circle wave"></div>
+    </div>
+    <ion-button color="danger" (click)="cancelarViaje()" size="large"  expand="block"  class="btn-cancelar">Cancelar</ion-button>
+</div>
+ <div *ngIf="!isActiveMenu" class="menu "><ion-button class="btn-menu" fill="clear" shape="round" (click)="openMenu()">  <ion-icon  name="menu"></ion-icon></ion-button></div> 
+<app-map></app-map>
+<ion-fab   style="z-index: 7 !important;" vertical="center" horizontal="end" slot="fixed" size="small">
+  <ion-fab-button size="small" (click)="locate()">
+    <ion-icon color="primary"  name="locate"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<div class="notification-btn elevation-3">
+  <ion-button (click)="notification()" fill="clear" shape="round">
+    <ion-icon slot="icon-only" name="notifications"></ion-icon>
+  </ion-button>
+</div>
+<app-bottom-sheet [data]="message" style="position: absolute; z-index: 7;"></app-bottom-sheet>
+</ion-content>
