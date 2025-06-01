@@ -24,3 +24,58 @@
 -keep class com.getcapacitor.** { *; }
 -keep class com.capacitorjs.plugins.geolocation.** { *; }
 -dontwarn com.getcapacitor.**
+
+# Firebase
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
+
+# Capacitor Preferences
+-keep class com.getcapacitor.plugin.preferences.** { *; }
+
+# Mantener todas las clases de tu plugin nativo personalizado
+-keep class com.unrayinternational.plugin.fcm.** { *; }
+
+# Evita que R8 elimine métodos anotados con @Keep
+-keep @interface androidx.annotation.Keep
+-keep class ** {
+    @androidx.annotation.Keep *;
+}
+
+# Mantener el plugin personalizado de Capacitor
+-keep class com.unrayinternational.app.FcmTokenPlugin { *; }
+-keep class com.unrayinternational.app.FcmTokenPlugin$* { *; }
+
+# Mantener el FirebaseMessagingService personalizado
+-keep class com.unrayinternational.app.MyFirebaseMessagingService { *; }
+-keep class com.unrayinternational.app.MyFirebaseMessagingService$* { *; }
+
+-keep class com.unrayinternational.app.callscreen.MyFirebaseMessagingService { *; }
+-keep class com.unrayinternational.app.callscreen.MyFirebaseMessagingService$* { *; }
+
+
+
+# Evitar que se pierdan anotaciones que Capacitor necesita
+-keepattributes RuntimeVisibleAnnotations
+-keep @interface com.getcapacitor.annotation.CapacitorPlugin
+-keep @interface com.getcapacitor.PluginMethod
+
+# Extensiones de Plugin
+-keepclassmembers class * extends com.getcapacitor.Plugin {
+    public *;
+}
+
+
+-keep public class com.unrayinternational.app.FcmTokenPlugin {
+    public <init>();
+    public *;
+}
+-keepclassmembers class com.unrayinternational.app.FcmTokenPlugin {
+    @com.getcapacitor.PluginMethod <methods>;
+}
+
+-keepclassmembers class * {
+    @com.getcapacitor.annotation.CapacitorPlugin *;
+    @com.getcapacitor.PluginMethod *;
+}
+
+-keep class com.google.android.gms.** { *; }

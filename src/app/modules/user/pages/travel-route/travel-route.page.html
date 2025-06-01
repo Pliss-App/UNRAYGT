@@ -1,38 +1,29 @@
-
-
-<ion-content [fullscreen]="true" >
+<ion-content [fullscreen]="true">
 
   <app-map-routing [idSoli]="solicitud.id" [origin]="{ lat: solicitud.start_lat, lng:solicitud.start_lng}"
-  [destination]="{ lat:solicitud.end_lat, lng: solicitud.end_lng}"
-  [waypoints]="[]"
-  [estado_viaje]="solicitud.estado_viaje"
-  [idConductor]="idConductor" *ngIf="idConductor"  
-    class="mapa-viaje"    [style.top]="'0px'"
-    [style.bottom]="(sheetHeight - 20) + 'px'"
-    ></app-map-routing> 
+    [destination]="{ lat:solicitud.end_lat, lng: solicitud.end_lng}" [waypoints]="[]"
+    [estado_viaje]="solicitud.estado_viaje" [idConductor]="idConductor" *ngIf="idConductor" class="mapa-viaje"
+    [style.top]="'0px'" [style.bottom]="(sheetHeight - 20) + 'px'"></app-map-routing>
 
 
- <app-viaje-sheet class="viaje-sheet"  (sheetHeightChange)="actualizarAlturaMapa($event)"
- >
- <ion-button (click)="initializeGeolocation()" shape="round" fill="solid" class="btn-shared-location"
- > <ion-icon 
- slot="icon-only" 
- [name]="isSharingLocation ? 'stop-circle' : 'location'"
-></ion-icon></ion-button>
-<ion-text class="location-status" color="medium">
-  {{ isSharingLocation ? 'Compartiendo ubicación.' : 'Compartir ubicación' }}
-</ion-text>
- <app-user-driver *ngIf="idConductor" 
- [idViaje]="solicitud.id" 
- [estado_viaje]="solicitud.estado_viaje"
- [rol]="'conductor'"
- [idUser]="user.idUser" 
- [idConductor]="idConductor" 
- [pointA]="solicitud.start_direction"
- [pointB]="solicitud.end_direction"
- [coste]="solicitud.costo"
- class="user-driver"></app-user-driver> 
+  <app-viaje-sheet class="viaje-sheet" (sheetHeightChange)="actualizarAlturaMapa($event)">
 
-</app-viaje-sheet>
+    <ion-button (click)="callSecurity()" shape="round" fill="clear" class="btn-security"> <img
+        src="assets/icon/security.png" alt="Seguridad" /></ion-button>
+
+
+    <ion-button (click)="initializeGeolocation()" shape="round" fill="clear" class="btn-shared-location"> <!--<ion-icon
+        slot="icon-only" [name]="isSharingLocation ? 'stop-circle' : 'location'"></ion-icon>-->
+      <img src="assets/icon/location.gif" alt="Location animada" class="location-icon" />
+    </ion-button>
+
+    <ion-text class="location-status" color="medium">
+      {{ isSharingLocation ? 'Compartiendo ubicación.' : 'Compartir ubicación' }}
+    </ion-text>
+    <app-user-driver *ngIf="idConductor" [idViaje]="solicitud.id" [estado_viaje]="solicitud.estado_viaje"
+      [rol]="'conductor'" [idUser]="user.idUser" [idConductor]="idConductor" [pointA]="solicitud.start_direction"
+      [pointB]="solicitud.end_direction" [coste]="solicitud.costo" class="user-driver"></app-user-driver>
+
+  </app-viaje-sheet>
 
 </ion-content>

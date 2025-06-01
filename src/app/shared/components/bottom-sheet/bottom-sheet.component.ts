@@ -61,9 +61,10 @@ export class BottomSheetComponent implements AfterViewInit, OnChanges {
     public modalController: ModalController, private gestureCtrl: GestureController,
     private renderer: Renderer2, private userService: UserService,
     private service: ServicioService) {
-          this.positionSalida();
+    this.positionSalida();
     this.idUser = this.authService.getUser();
     this.solicitud.idService = this.selectedServiceId;
+   
     this.solicitud.idConductor = null;
     this.location.location$.subscribe(async coords => {
       this.lat = coords.lat;
@@ -92,6 +93,7 @@ export class BottomSheetComponent implements AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit() {
+        this.sharedService.getServiceSelect(this.selectedServiceId);
     this.getServicios();
     this.initializeGesture();
     this.meDestination();
@@ -100,7 +102,8 @@ export class BottomSheetComponent implements AfterViewInit, OnChanges {
   }
 
   async ngOnInit() {
-    await this.checkSolicitudEstado();
+     
+    this.checkSolicitudEstado();
 
     // Escuchar si la solicitud expira
 
@@ -157,7 +160,7 @@ export class BottomSheetComponent implements AfterViewInit, OnChanges {
   positionSalida() {
     this.sharedService.currentData.subscribe(async (data) => {
       if (data) {
-  
+
         this.lat = data.lat;
         this.lng = data.lng;
 
@@ -312,6 +315,7 @@ export class BottomSheetComponent implements AfterViewInit, OnChanges {
   async getService(item: any) {
     this.selectedServiceId = item.id;
     this.solicitud.idService = this.selectedServiceId;
+    this.sharedService.getServiceSelect(this.selectedServiceId);
     const response = await this.service.getCostoServicios(item.id);
     response.subscribe((re) => {
       this.listadoCostos = re.result;
@@ -338,14 +342,17 @@ export class BottomSheetComponent implements AfterViewInit, OnChanges {
       this.kmInvalido = false;
     } else {
 
-      
+
       this.kmInvalido = true;
     }
   }
 
 
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
-  solicitar() {
+  async solicitar() {
     try {
       this.sharedService.activeMenuLat(true);
       this.estadoSolicitud = '';
@@ -353,7 +360,7 @@ export class BottomSheetComponent implements AfterViewInit, OnChanges {
       const user: any = this.authService.getUser();
       this.solicitud.idUser = user.idUser;
       this.solicitud.fecha_hora = new Date().toISOString();
-
+      await this.delay(3000); // esto funciona
       this.storage.setItem('solicitudEstado', JSON.stringify({ estado: 'pendiente', solicitud: this.solicitud }))
       this.solicitudService.enviarSolicitudAConductor(
         this.solicitud,
@@ -377,10 +384,12 @@ export class BottomSheetComponent implements AfterViewInit, OnChanges {
     this.storage.setItem('solicitudEstado', JSON.stringify({ estado, solicitud: this.solicitud }))
 
     // Limpiar el estado después de un tiempo
-    setTimeout(() => {
-      this.estadoSolicitud = ''
-
-    }, 3000)
+    await this.delay(5000);
+    this.estadoSolicitud = ''
+    /* setTimeout(() => {
+      
+ 
+     }, 5000) */
   }
 
 

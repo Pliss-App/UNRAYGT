@@ -81,11 +81,11 @@
           <!--  <ion-button (click)="callSeguridad()" color="warning" class="btn-seguridad">
           <ion-icon slot="icon-only" name="shield-checkmark" style="color: white !important;" class="custom-icon"></ion-icon>
         </ion-button>   -->
-          <ion-button (click)="makeCall(profile.telefono)" color="primary" class="btn-seguridad">
-            <ion-icon slot="icon-only" name="call-outline" class="custom-icon"></ion-icon>
+          <ion-button fill="clear" (click)="makeCall(profile.telefono)" color="primary" class="btn-seguridad">
+            <ion-icon slot="icon-only" name="call" class="custom-icon"></ion-icon>
           </ion-button>
-          <ion-button (click)="openChatModal()" color="primary" class="btn-sms">
-            <ion-icon slot="icon-only" name="chatbubble-ellipses-outline" style="color: white !important;"
+          <ion-button fill="clear" (click)="openChatModal()" color="primary" class="btn-sms">
+            <!--<img src="assets/icon/chat.png" alt="Seguridad" class="chat-icon" />--> <ion-icon slot="icon-only" name="chatbubble-ellipses"
               class="custom-icon"></ion-icon>
           </ion-button>
         </ion-col>
@@ -174,7 +174,7 @@
     </ion-row>
   </div>
 
-  <div class="seguridad">
+  <!-- <div class="seguridad">
     <h5> <ion-icon slot="icon-only" color="tertiary" name="shield-checkmark"></ion-icon> Seguridad</h5>
     <ion-row style="text-align: center;">
       <ion-col size="4">
@@ -197,7 +197,7 @@
       </ion-col>
     </ion-row>
 
-  </div>
+  </div>  -->
 
   <div class="finalizar">
     <ion-row>
@@ -206,7 +206,7 @@
           expand="block">Finalizar</ion-button>
       </ion-col>
       <ion-col size="6" [attr.size]="user?.rol=='conductor'? '6' : '12'">
-        <ion-button (click)="openPopup()" style="border-radius: 10px;" expand="block">Cancelar</ion-button>
+        <ion-button (click)="openPopup(user.rol)" style="border-radius: 10px;" expand="block">Cancelar</ion-button>
       </ion-col>
     </ion-row>
   </div>

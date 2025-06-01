@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MenuController, NavController, Platform } from '@ionic/angular';
+import { MenuController, Platform } from '@ionic/angular';
+
 import { AuthService } from './core/services/auth.service';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
@@ -8,7 +9,6 @@ import { IonRouterOutlet } from '@ionic/angular';
 import { UserService } from './core/services/user.service';
 import { LocationService } from './core/services/location.service';
 import { SolicitudService } from './core/services/solicitud.service';
-import { OnesignalService } from './core/services/onesignal.service';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -24,6 +24,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   stars: string[] = [];
   watch: any = null;
   role: any = null;
+  isAuthenticated: boolean = false;
   constructor(
     private location: LocationService,
     private soli: SolicitudService,
@@ -34,7 +35,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     private router: Router) {
   }
 
+  async getLocationInit() {
+    this.location.init().then(async coords => {
+    });
+  }
+
   async ngAfterViewInit() {
+
+
     // Espera un pequeño tiempo para asegurarse que Capacitor cargó bien
     setTimeout(() => {
       this.verificarPermisosGeolocalizacion();
@@ -44,7 +52,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   async verificarPermisosGeolocalizacion() {
     try {
       const permission = await Geolocation.checkPermissions();
-
       if (permission.location !== 'granted') {
         const newPerm = await Geolocation.requestPermissions();
         if (newPerm.location !== 'granted') {
@@ -52,10 +59,7 @@ export class AppComponent implements OnInit, AfterViewInit {
           return;
         }
       }
-
-     
       await this.initializeApp();
-
     } catch (error) {
       console.error('Error revisando o solicitando permisos:', error);
       this.router.navigate(['/auth/permissionlocation']);
@@ -66,49 +70,18 @@ export class AppComponent implements OnInit, AfterViewInit {
   async ngOnInit() {
     await this.platform.ready();
     await this.getSplash();
-
+    this.isAuthenticated = this.authService.isAuthenticated();
     App.addListener('pause', () => {
       this.saveState();
     });
 
     App.addListener('resume', () => {
       this.restoreState();
+      this.alcenarUltimaUbicacion();
     });
+
+
   }
-  /*
-    async ngOnInit() {
-  
-      this.platform.ready().then(async () => {
-      await this.getSplash();
-        try {
-          let permission = await Geolocation.checkPermissions();
-  
-          if (permission.location !== 'granted') {
-            permission = await Geolocation.requestPermissions(); // <-- importante
-          }
-  
-          if (permission.location === 'granted') {
-            await this.location.init();
-            await this.initializeApp();
-          } else {
-            this.router.navigate(['/auth/permissionlocation']);
-          }
-        } catch (error) {
-          console.error('Error revisando o solicitando permisos:', error);
-          this.router.navigate(['/auth/permissionlocation']);
-        }
-  
-  
-      });
-  
-      App.addListener('pause', () => {
-        this.saveState();  // Guardar estado cuando se minimiza
-      });
-  
-      App.addListener('resume', () => {
-        this.restoreState();  // Restaurar estado cuando se reanuda
-      });
-    } */
 
   async getSplash() {
     await SplashScreen.show({
@@ -119,47 +92,36 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   async initializeApp() {
-
     const isAuthenticated = this.authService.isAuthenticated();
     const currentUrl = this.router.url;
     if (isAuthenticated) {
-       await this.location.init();
+     // this.getLocationInit();
       this.user = this.authService.getUser();
       const userRole = this.authService.getRole();
       this.role = userRole;
       this.getRating()
-      // Solo redirige al módulo principal si el usuario no está ya en una ruta interna válida
       if (userRole === 'usuario' && !currentUrl.startsWith('/user')) {
-
-          if (this.user.nombre == "" && this.user.apellido == "") {
-
-            this.router.navigate(['/auth/formnombres'], { replaceUrl: true });
-          } else {
-
-            this.menuCtrl.enable(true, 'userMenu');
-            this.menuCtrl.enable(false, 'driverMenu');
-
-            this.soli.startPolling();
-            this.router.navigate(['/user'], { replaceUrl: true });
-          }
-      
-        //  this.initializeGeolocation();
-      } else if (userRole === 'conductor' && !currentUrl.startsWith('/driver')) {
-        //  this.getRating()
+        if (this.user.nombre == "" && this.user.apellido == "") {
+          this.router.navigate(['/auth/formnombres'], { replaceUrl: true });
+        } else {
+          this.menuCtrl.enable(true, 'userMenu');
+          this.menuCtrl.enable(false, 'driverMenu');
           this.soli.startPolling();
-          this.menuCtrl.enable(true, 'driverMenu');
-          this.menuCtrl.enable(false, 'userMenu');
-          this.router.navigate(['/driver'], { replaceUrl: true });
-      }
+          this.router.navigate(['/user'], { replaceUrl: true });
+        }
 
+      } else if (userRole === 'conductor' && !currentUrl.startsWith('/driver')) {
+        this.soli.startPolling();
+        this.menuCtrl.enable(true, 'driverMenu');
+        this.menuCtrl.enable(false, 'userMenu');
+        this.router.navigate(['/driver'], { replaceUrl: true });
+      }
     } else {
       this.menuCtrl.enable(false, 'userMenu');
       this.menuCtrl.enable(false, 'driverMenu');
-      // Redirige a la autenticación si no está autenticad
-      this.router.navigate(['/auth'], { replaceUrl: true });
+
+      this.router.navigate(['/auth'], { replaceUrl: true }); 
     }
-
-
   }
 
 
@@ -249,4 +211,27 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.menuCtrl.close();
   }
 
+
+  async alcenarUltimaUbicacion() {
+
+    try {
+      const position = await Geolocation.getCurrentPosition();
+      const coords = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+      await Preferences.set({
+        key: 'lastLocationn',
+        value: JSON.stringify(coords),
+      });
+    } catch (err) {
+      console.error('Error obteniendo ubicación al salir:', err);
+    }
+
+  }
+
+
+
 }
+
+

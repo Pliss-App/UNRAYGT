@@ -7,6 +7,10 @@ const config: CapacitorConfig = {
   bundledWebRuntime: false,
 
   plugins: {
+
+      FirebaseMessaging: {
+      presentationOptions: ['badge', 'sound', 'alert']
+    },
     FirebaseAuthentication: {
       skipNativeAuth: false,
       providers: ["phone"],

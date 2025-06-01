@@ -72,15 +72,30 @@
 }
 
 .btn-sms {
-    width: 35px;
-    height: 35px;
     --border-radius: 50%;
     --box-shadow: none;
     box-shadow: none !important;
+
+  width: 45px;
+  height: 45px;
+  min-width: 45px;
+  min-height: 45px;
+
+}
+
+.chat-icon{
+
+   width: 35px;
+  height: 35px;
+  object-fit: contain;
+  display: block;
+  //filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
 }
 
 .custom-icon {
+    color:orangered;
     --ion-icon-size: 45px;
+    font-size: 35px;
     /* Cambia el tamaño del ícono */
 }
 
@@ -314,7 +329,7 @@
     }
 
     .precio {
-        font-size: 18pt;
+        font-size: 28pt;
         margin: 0px;
         font-weight: 900;
     }

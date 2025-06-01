@@ -10,6 +10,9 @@ import { WebSocketService } from 'src/app/core/services/web-socket.service';
 import { CalificacionComponent } from 'src/app/shared/components/calificacion/calificacion.component';
 import { UserService } from 'src/app/core/services/user.service';
 import { Geolocation } from '@capacitor/geolocation';
+import { Capacitor, Plugins } from '@capacitor/core';
+import { FirebaseMessaging } from '@capacitor-firebase/messaging';
+const { FcmToken } = Plugins as any; // Reemplaza 'MyFCMPlugin' con el nombre de tu plugin
 
 @Component({
   selector: 'app-home',
@@ -21,23 +24,24 @@ export class HomePage implements OnInit {
   message: string = '';
   user: any = null;
   interSoli: any = null;
-  idViaje: any= null;
+  idViaje: any = null;
   isActiveMenu: boolean = false;
 
-  constructor(private onesignal: OnesignalService, private alertController: AlertController,
+  constructor( private onesignal: OnesignalService, private alertController: AlertController,
     private sharedDataService: SharedService, private soli: SolicitudService, private socketService: WebSocketService,
     private router: Router, private location: LocationService,
     private auth: AuthService, private userService: UserService, private modalController: ModalController, private menuController: MenuController) {
     this.userRole = this.auth.getRole();
     this.user = this.auth.getUser();
-
     this.sharedDataService.menu.subscribe((re) => {
       this.isActiveMenu = re;
     });
+    this.requestFcmPermissionAndGetToken()
+    this.onesignal.initialize(this.userRole, this.user.idUser);
   }
 
   async ngOnInit() {
-    this.onesignal.initialize(this.userRole, this.user.idUser);
+     this.location.watchUserLocation();
     this.getSolicitudCreada();
     //this.soli.startPolling();
     this.escucharSolicitud();
@@ -45,12 +49,13 @@ export class HomePage implements OnInit {
 
     await this.getEstadoCalificacion();
 
+
   }
 
-  getSolicitudCreada(){
+  getSolicitudCreada() {
     this.socketService.listen('solicitud_creada', async (data: any) => {
       if (data.estado == true) {
-        this.idViaje = data. solicitudId;
+        this.idViaje = data.solicitudId;
       }
     })
   }
@@ -137,7 +142,7 @@ export class HomePage implements OnInit {
         idViaje: idViaje,
         rol: 'user'
       },
-      cssClass: 'small-modal', 
+      cssClass: 'small-modal',
       backdropDismiss: false // Evita que el usuario cierre el modal sin calificar
     });
     await modal.present();
@@ -154,21 +159,30 @@ export class HomePage implements OnInit {
     this.auth.logout();
   }
 
-
-  cancelarViaje(){
-    this.socketService.emit(`respuesta_solicitud`, { estado: 'Cancelado', solicitudId:this.idViaje, conductorId: this.user.idUser, idUser: this.user.idUser });
-     
-  }
-
-  onSearch() {
-
-
-    this.location.getAutocompleteSuggestions('Plaza Madero GUATEMALA').subscribe((response: any) => {
-      console.log(" viende data ", response.results);
-    });
+  cancelarViaje() {
+    this.socketService.emit(`respuesta_solicitud`, { estado: 'Cancelado', solicitudId: this.idViaje, conductorId: this.user.idUser, idUser: this.user.idUser });
   }
 
   notification() {
     this.router.navigate(['/user/notificaciones']);
+  }
+
+
+  async requestFcmPermissionAndGetToken() {
+    // Solicita permiso para notificaciones (solo necesario en iOS)
+    const { receive } = await FirebaseMessaging.requestPermissions();
+    if (receive === 'granted') {
+
+      if (Capacitor.getPlatform() !== 'web') {
+        const { token } = await FirebaseMessaging.getToken();
+        const data = {
+          id: this.user.idUser,
+          token: token
+        }
+        const response = await this.userService.updateTokenFcm(data).toPromise();
+      } else {
+        console.warn('🔒 Permiso para notificaciones no concedido.');
+      }
+    }
   }
 }

@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalNotifications } from '@capacitor/local-notifications';
-import { AlertController, LoadingController, MenuController, ModalController } from '@ionic/angular';
+import { MenuController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { ConductorService } from 'src/app/core/services/conductor.service';
-import { io, Socket } from 'socket.io-client';
 import { WebSocketService } from 'src/app/core/services/web-socket.service';
-import { interval, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { OnesignalService } from 'src/app/core/services/onesignal.service';
 import { CalificacionComponent } from 'src/app/shared/components/calificacion/calificacion.component';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { SolicitudService } from 'src/app/core/services/solicitud.service';
-import { StorageService } from 'src/app/core/services/storage.service';
+
 import { NativeAudio } from '@capacitor-community/native-audio';
+import { FirebaseMessaging } from '@capacitor-firebase/messaging';
+import { Capacitor } from '@capacitor/core';
 
 
 @Component({
@@ -24,7 +25,7 @@ import { NativeAudio } from '@capacitor-community/native-audio';
 
 })
 export class HomePage implements OnInit {
-  private socket!: Socket;
+
   solicitud: any;
   solicitudes: any;
   user: any;
@@ -54,29 +55,29 @@ export class HomePage implements OnInit {
     private router: Router,
     private soliService: SolicitudService,
     private modalController: ModalController,
-    private loadingController: LoadingController,
     private auth: AuthService,
-    private storageService: StorageService,
-    private userService: UserService,
-    private alertCtrl: AlertController) {
+    private userService: UserService) {
+    this.requestFcmPermissionAndGetToken();
     this.preloadSound();
     this.user = this.auth.getUser();
     this.userRole = this.auth.getRole();
     this.locationService.location$.subscribe(async coords => {
-    
     })
+
+    
+      this.locationService.watchUserLocation();
+
+    this.locationService.init();
   }
 
   async ngOnInit() {
+
     this.escucharSolicitud();
     this.onesignal.initialize(this.userRole, this.user.idUser);
     this.getEstado();
     this.escucharSolicitudes();
     this.checkDocumentation();
-
-
     this.getEstadoCalificacion()
-
   }
 
   ionViewDidEnter() {
@@ -202,7 +203,7 @@ export class HomePage implements OnInit {
       if (response.success) {
         var data = response.result;
         this.solicitud.foto = data.foto;
-    
+
       }
     })
 
@@ -494,6 +495,24 @@ export class HomePage implements OnInit {
   notification() {
     this.router.navigate(['/driver/notificaciones']);
   }
+
+    async requestFcmPermissionAndGetToken() {
+      // Solicita permiso para notificaciones (solo necesario en iOS)
+      const { receive } = await FirebaseMessaging.requestPermissions();
+      if (receive === 'granted') {
+  
+        if (Capacitor.getPlatform() !== 'web') {
+          const { token } = await FirebaseMessaging.getToken();
+          const data = {
+            id: this.user.idUser,
+            token: token
+          }
+          const response = await this.userService.updateTokenFcm(data).toPromise();
+        } else {
+          console.warn('🔒 Permiso para notificaciones no concedido.');
+        }
+      }
+    }
   // Limpia el intervalo al destruir el componente
   ngOnDestroy(): void {
     this.limpiarTemporizador();

@@ -185,8 +185,8 @@ export class UserService {
     return this.apiService.get(`viaje/estado_viaje/${id}`);
   }
 
-  getCancelacionRoute() {
-    return this.apiService.get(`viaje/motivos_cancelacion`);
+  getCancelacionRoute(rol: any) {
+    return this.apiService.get(`viaje/motivos_cancelacion/${rol}`,);
   }
 
   getNoCalificacionUsuario(id: any, rol: any) {
@@ -243,13 +243,13 @@ export class UserService {
   // Actualizar perfil del usuario
   updateProfile(data: any) {
     return this.apiService.post(`user/upload_profile`, data);
-   
+
   }
 
-    updateDocumentacion(data: any) {
+  updateDocumentacion(data: any) {
     return this.apiService.post(`user/upload_documentacion`, data);
 
-  
+
   }
 
   getLocationUbicationuser(id: any) {
@@ -313,6 +313,18 @@ export class UserService {
   // Actualizar perfil del usuario
   loginRolModo(data: any) {
     return this.apiService.post(`user/login-modo-conductor`, data);
+  }
+
+
+
+  updateTokenFcm(data: any) {
+    return this.apiService.put(`user/tokenfcm`, data);
+  }
+
+
+  getListadoConductores(data: any) {
+    return this.apiService.post(`user/consultarConductores`, data);
+
   }
 
 }

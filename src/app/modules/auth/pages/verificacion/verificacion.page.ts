@@ -1,6 +1,5 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, IonInput, ToastController, LoadingController } from '@ionic/angular';
+import { AlertController, IonInput, ToastController, LoadingController, MenuController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -28,10 +27,10 @@ export class VerificacionPage implements OnInit {
   telefono: string = '';
 
   constructor(private authService: AuthService,
+
     private loadingController: LoadingController,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private router: Router,
+    private menuController: MenuController, 
     private api: UserService,
     public toastController: ToastController, // Servicio para la API
     private alertController: AlertController
@@ -72,10 +71,11 @@ export class VerificacionPage implements OnInit {
         }
         this.api.updateLogout(data).subscribe((re) => {
           const user = response.user;
+          console.log("DATO ", user)
           // window.location.reload();
           if (user.rol == 'conductor') {
             window.location.replace('/driver/home');
-          } else if (user.rol == 'user') {
+          } else if (user.rol == 'usuario') {
             window.location.replace('/user/home');
           }
         })
@@ -188,6 +188,25 @@ export class VerificacionPage implements OnInit {
       position: 'bottom', // puedes cambiarlo a 'top' o 'middle'
     });
     toast.present();
+  }
+
+  onInputChange() {
+    // Si quieres validar automáticamente al completar 4 dígitos:
+    if (this.codigoIngresado.length === 4) {
+      this.verificarCodigo();
+    }
+  }
+
+
+  logout() {
+    this.menuController.close();
+    const data = {
+      telefono: this.user.telefono
+    }
+    this.api.updateLogout(data).subscribe((re) => {
+      this.authService.logout();
+    })
+
   }
 
 }

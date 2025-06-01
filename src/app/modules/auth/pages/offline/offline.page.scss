@@ -1,65 +1,118 @@
-ion-content{
-    background-color: #f0f0f0; /* Solo para visualización */
+ion-content {
+  --background: #f5f5f5 !important;
+  /* Solo para visualización */
 }
-  
-  img {
-    width: 180px;
-    margin-bottom: 20px;
-  }
-  
-  h2 {
-    font-size: 22px;
-    color: #333;
-    font-weight: 600;
-  }
-  
-  p {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 20px;
-  }
-  
-  button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out, transform 0.2s;
 
-    gap: 8px;
-  }
-  
-  button:hover {
-    background: #0056b3;
-    transform: scale(1.05);
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
+img {
+  width: 180px;
+  margin-bottom: 20px;
+}
 
-  .contenedor {
-    display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
-    height: 100vh; /* Hace que el contenedor tenga altura de toda la pantalla */
-  }
-  
-  .centrado {
-    text-align: center;
-    width: 90%; /* Ajusta según el tamaño que desees */
-    height: auto; /* Ajusta según el tamaño que desees */
+h2 {
+  font-size: 22px;
+  color: #333;
+  font-weight: 600;
+}
 
+p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+button {
+
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s;
+
+  gap: 8px;
+}
+
+button:hover {
+
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.contenedor {
+
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1); /* Sombra solo arriba */
+  border-top-left-radius: 20px; /* Opcional: bordes redondeados */
+  border-top-right-radius: 20px;
+  background: white;
+  position: absolute;
+  bottom: 0px;
+  display: flex;
+  justify-content: center;
+  /* Centra horizontalmente */
+  align-items: center;
+  padding-top: 10px;
+  /* Centra verticalmente */
+
+}
+
+.centrado {
+  text-align: center;
+  width: 90%;
+  /* Ajusta según el tamaño que desees */
+  height: auto;
+  /* Ajusta según el tamaño que desees */
+  margin-bottom: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  padding: 16px;
+}
+
+
+
+
+.icon-wrapper {
+  background-color: #fafafa;
+  /* gris claro */
+  border-radius: 50%;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-alerta {
+  font-size: 70px;
+  color: #ff3b30;
+  /* rojo alerta, puedes ajustarlo */
+}
+
+ion-button {
+  text-transform: none !important;
+ --padding: 8px;
+  font-size: 16px;
+}
+
+p{
+  margin: 2px;
+  font-size: 12pt;
+}

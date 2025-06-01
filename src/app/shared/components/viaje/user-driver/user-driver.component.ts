@@ -62,7 +62,7 @@ export class UserDriverComponent implements OnInit {
   callPolicia: any = '';
   callBomberos: any = '';
   callCruzRoja: any = '';
-
+  soliCancelar: any = "";
   // URL del placeholder
   placeholderImage: string = 'assets/img/profile.jpg';
   constructor(private http: HttpClient, private actionSheetController: ActionSheetController,
@@ -89,7 +89,7 @@ export class UserDriverComponent implements OnInit {
     });
     this.verificarEstadoViaje();
     this.getMotivosCancelacion();
-    this.getCallSecurity();
+
   }
 
   getUpdateEstado() {
@@ -118,7 +118,7 @@ export class UserDriverComponent implements OnInit {
   getAlertaLlego() {
     this.socketService.listen('alerta_llegada', async (data: any) => {
       if (!data) {
-        console.log("AUN HAY DATA")
+        console.log("...")
       } else {
         if (data.estado == 'Conductor Llego a Salida') {
           this.estado_viaje = data.estado
@@ -138,7 +138,8 @@ export class UserDriverComponent implements OnInit {
 
   getMotivosCancelacion() {
     try {
-      const response = this.api.getCancelacionRoute();
+      this.soliCancelar = this.user.rol;
+      const response = this.api.getCancelacionRoute(this.soliCancelar);
       response.subscribe((resp) => {
         this.options = resp.result;
       })
@@ -164,7 +165,6 @@ export class UserDriverComponent implements OnInit {
         await this.api.getDriverProfile(this.idConductor).subscribe((re) => {
           if (re.success) {
             this.profile = re?.result;
-            console.log("DAOTS DEL CONDUCTOR", this.profile)
             this.loading = false;
             if (!this.profile.foto) {
               this.profile.foto = this.placeholderImage;
@@ -208,7 +208,6 @@ export class UserDriverComponent implements OnInit {
           idUser: this.idConductor
         }
         this.onesignal.enviarNotificacion(data).subscribe((re) => {
-          console.log("Notificado");
           return 0;
         });
 
@@ -226,7 +225,6 @@ export class UserDriverComponent implements OnInit {
     try {
       // Intentar realizar la llamada directamente
       await CallNumber.call({ number: phoneNumber, bypassAppChooser: false });
-      console.log('Llamada iniciada');
     } catch (error) {
       console.error('Error al realizar la llamada', error);
     }
@@ -279,7 +277,6 @@ export class UserDriverComponent implements OnInit {
         idUser: this.idConductor
       }
       this.onesignal.enviarNotificacion(noti).subscribe((re) => {
-        console.log("Notificado")
       });
     }
 
@@ -301,7 +298,8 @@ export class UserDriverComponent implements OnInit {
     return 0;
   }
 
-  openPopup() {
+  openPopup(item: any) {
+    this.soliCancelar = item;
     this.isPopupOpen = true;
     // this.shared.actionPopUp(true);//
   }
@@ -312,30 +310,59 @@ export class UserDriverComponent implements OnInit {
 
   handleSave(selectedOption: any) {
     try {
-      var data = {
-        id: this.idViaje,
-        option: selectedOption
-      }
-      this.api.cancelarSolicitud(data).subscribe((resp) => {
-        if (resp) {
-          var data = {
-            userId: this.idTokenOne,
-            sonido: 'vacio',
-            title: 'Viaje - Cancelado',
-            message: `${this.profile.nombre}, acaba de cancelar la solicitud.`,
-            fecha: this.obtenerFechaHoraLocal(),
-            idUser: this.idConductor
-          }
-          this.onesignal.enviarNotificacion(data).subscribe((re) => {
-            var val = re;
-          });
+      if (this.esValido(selectedOption)) {
+        let data = {
+          id: this.idViaje,
+          option: 0,
+          comentario: selectedOption
         }
-      })
+        this.api.cancelarSolicitud(data).subscribe((resp) => {
+          if (resp) {
+            var data = {
+              userId: this.idTokenOne,
+              sonido: 'vacio',
+              title: 'Viaje - Cancelado',
+              message: `${this.profile.nombre}, acaba de cancelar la solicitud.`,
+              fecha: this.obtenerFechaHoraLocal(),
+              idUser: this.idConductor
+            }
+            this.onesignal.enviarNotificacion(data).subscribe((re) => {
+              var val = re;
+            });
+          }
+        })
+      }
+      else {
+        let data = {
+          id: this.idViaje,
+          option: selectedOption,
+          comentario: ""
+        }
+        this.api.cancelarSolicitud(data).subscribe((resp) => {
+          if (resp) {
+            var data = {
+              userId: this.idTokenOne,
+              sonido: 'vacio',
+              title: 'Viaje - Cancelado',
+              message: `${this.profile.nombre}, acaba de cancelar la solicitud.`,
+              fecha: this.obtenerFechaHoraLocal(),
+              idUser: this.idConductor
+            }
+            this.onesignal.enviarNotificacion(data).subscribe((re) => {
+              var val = re;
+            });
+          }
+        })
+      }
     } catch (error) {
 
     }
   }
 
+
+  esValido(selectedOption: any): boolean {
+    return selectedOption && selectedOption.length > 2;
+  }
   async finalizar() {
     const alert = await this.alertController.create({
       header: 'Finalizar Viaje',
@@ -535,7 +562,6 @@ export class UserDriverComponent implements OnInit {
 
   // Método para hacer la llamada (lo puedes personalizar según el número)
   makeCallSeguridad(phoneNumber: string) {
-    console.log(`Llamando al número: ${phoneNumber}`);
     // Aquí usarías algo como `window.open('tel:' + phoneNumber)` para realizar la llamada en una app móvil
     window.open(`tel:${phoneNumber}`, '_system');
   }
@@ -585,7 +611,6 @@ export class UserDriverComponent implements OnInit {
         this.callBomberos = data.find((item: any) => item.nombre === 'Bomberos');
         this.callCruzRoja = data.find((item: any) => item.nombre === 'Cruz Roja');
 
-                console.log("DATOS DE SEGURIDAO ",      this.callPolicia ,  "  - ",  this.callBomberos, " -- ", this.callCruzRoja);
       }
     } catch (error) {
       console.log("No se recuperaron los numero :", error)

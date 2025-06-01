@@ -37,6 +37,14 @@ export class SharedService {
   private viaje = new BehaviorSubject<any>(null);
   getValVia = this.viaje.asObservable();
 
+
+  private selectService = new BehaviorSubject<any>(null);
+  service = this.selectService.asObservable();
+
+
+    private coordUserDirver = new BehaviorSubject<any>(null);
+  _coordUserDirver = this.coordUserDirver.asObservable();
+
   constructor() { }
 
   // Método para actualizar el dato
@@ -85,4 +93,14 @@ export class SharedService {
   datViaPre(param: any) {
     this.viaje.next(param);  // Cambia el valor
   }
+
+
+  getServiceSelect(param: any) {
+    this.selectService.next(param);  // Cambia el valor
+  }
+
+    getCoordUserDriver(param: any) {
+    this.coordUserDirver.next(param);  // Cambia el valor
+  }
+
 }

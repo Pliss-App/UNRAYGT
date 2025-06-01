@@ -1,32 +1,30 @@
-.user-driver{
-  
+.user-driver {}
+
+
+
+
+
+.mapa-viaje {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: bottom 0.2s ease-in-out; // Animación al mover el sheet
+  overflow: hidden; // Evita espacios en blanco
 }
 
-
-
-
-
-  .mapa-viaje {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transition: bottom 0.2s ease-in-out; // Animación al mover el sheet
-    overflow: hidden; // Evita espacios en blanco
-  }
-
-  .viaje-sheet {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    max-height: max-content;
-    background: white;
-    border-radius: 15px 15px 0 0;
-    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
-    transition: height 0.2s ease-in-out;
-    overflow: hidden;
-  }
+.viaje-sheet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: max-content;
+  background: white;
+  border-radius: 15px 15px 0 0;
+  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
+  transition: height 0.2s ease-in-out;
+  overflow: hidden;
+}
 
 /*
 
@@ -42,27 +40,83 @@
   } 
    */
 
-  .tt-attribution {
-    font-size: 10px; /* Ajusta el tamaño del texto */
-    margin: 0; /* Elimina el margen */
-    opacity: 0.4; /* Cambia la opacidad si es necesario */
-  }
+.tt-attribution {
+  font-size: 10px;
+  /* Ajusta el tamaño del texto */
+  margin: 0;
+  /* Elimina el margen */
+  opacity: 0.4;
+  /* Cambia la opacidad si es necesario */
+}
 
-  .btn-shared-location{
-    box-shadow: 0px -1px 10px rgba(0, 0, 0, 0.2);
-    --background: white !important;
-     color: orangered !important;
-     position: absolute;
-     top:-70px;
-     right: 5px;
-     border-radius: 50%;
-    
-  }
+.btn-shared-location {
+ // box-shadow: 0px -1px 10px rgba(0, 0, 0, 0.2);
+  //--background: white !important;
+  color: orangered !important;
+  position: absolute;
+  top: -75px;
+  right: 5px;
+  border-radius: 50%;
 
-  .location-status{
+    --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
 
-     position: absolute;
-     top:-23px;
-     right: 5px;
-   
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+
+}
+
+.location-icon{
+  border-radius: 50%;
+   width: 45px;
+  height: 45px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.btn-security {
+  box-shadow: none !important;
+  --background: transparent;
+  position: absolute;
+  top: -125px;
+  right: 5px;
+--padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+}
+
+.btn-security img {
+  box-shadow: none !important;
+ width: 32px;
+  height: 32px;
+  object-fit: contain;
+  display: block;
+   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+.location-status {
+
+  position: absolute;
+  top: -28px;
+  right: 5px;
+
+}

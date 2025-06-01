@@ -61,8 +61,6 @@ export class MapRoutingComponent implements OnInit, OnChanges {
     private uSer: UserService) {
     this.rol = this.auth.getRole();
     this.user = this.auth.getUser();
-
-    console.log("Datos del usuario ", this.user)
   }
 
   async ngOnInit() {
@@ -179,6 +177,8 @@ export class MapRoutingComponent implements OnInit, OnChanges {
 
         // 👉 Aquí agregamos un interval para actualizar el marker
         setInterval(async () => {
+
+
           const newResponse = await this.uSer.getLocationUbicationuser(this.user.idUser);
 
           newResponse.subscribe((re) => {
@@ -198,7 +198,7 @@ export class MapRoutingComponent implements OnInit, OnChanges {
 
           })
 
-        }, 4000); // Cada 5 segundos
+        }, 5000); // Cada 5 segundos
 
       })
 
@@ -264,7 +264,7 @@ export class MapRoutingComponent implements OnInit, OnChanges {
       this.getRouteLocationDriver(re);
       this.intervalLocationId = setInterval(() => {
         this.getRouteLocationDriver(re);
-      }, 10000);
+      }, 6000);
     },
       (error) => {
         console.error('Error al obtener coordenadas:', error);

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { App } from '@capacitor/app';
+import { Preferences } from '@capacitor/preferences';
 //import { OneSignal } from 'onesignal-ngx';
 //import { OneSignal } from '@ionic-native/onesignal/ngx';
 import OneSignal from 'onesignal-cordova-plugin';
-
 import { UserService } from './user.service';
 import { ApiService } from './api.service';
 //import { OneSignal, OSNotificationPayload } from '@ionic-native/onesignal/ngx'; 
@@ -18,7 +17,7 @@ export class OnesignalService {
 
   constructor(private api: UserService, private platform: Platform, private apiService: ApiService/*, private oneSignal:  OneSignal*/) {
     // this.initialize();
- 
+
   }
 
   async initialize(item: any, id: any) {
@@ -29,15 +28,15 @@ export class OnesignalService {
       try {
         OneSignal.initialize(this.appId);
 
-           // 🛑 Verifica si los permisos de notificación ya fueron concedidos
-           const permission = await OneSignal.Notifications.hasPermission();
-           console.log("📢 Permisos de notificación:", permission);
-   
-           if (!permission) {
-             console.log("⚠️ El usuario no ha concedido permisos. Solicitándolos...");
-             await OneSignal.Notifications.requestPermission(true);
-           }
-   
+        // 🛑 Verifica si los permisos de notificación ya fueron concedidos
+        const permission = await OneSignal.Notifications.hasPermission();
+        console.log("📢 Permisos de notificación:", permission);
+
+        if (!permission) {
+          console.log("⚠️ El usuario no ha concedido permisos. Solicitándolos...");
+          await OneSignal.Notifications.requestPermission(true);
+        }
+
 
         const subscription = await OneSignal.User.pushSubscription.getIdAsync();
         var data = {
@@ -46,12 +45,11 @@ export class OnesignalService {
         }
 
         const rsult = this.api.updateTokenOneSignal(data);
-        rsult.subscribe((re)=>
-        {
+        rsult.subscribe((re) => {
           return;
         })
 
-       // OneSignal.User.addTag(`notif-${item}`, "true");
+        // OneSignal.User.addTag(`notif-${item}`, "true");
 
         // Manejar la recepción de notificaciones
         OneSignal.Notifications.addEventListener("foregroundWillDisplay", (event: any) => {
@@ -60,16 +58,16 @@ export class OnesignalService {
           event.preventDefault();
 
           event.notification.display();
-       
+
         });
 
         // Manejar cuando se abre una notificación
-        OneSignal.Notifications.addEventListener("click", (event) => {
-          console.log("Notificación abierta:", event);
-          // Aquí puedes redirigir a una página específica
+        OneSignal.Notifications.addEventListener("click", async (event: any) => {
+          const data = event.notification.additionalData;
+
         });
 
-        
+
 
       } catch (error) {
         console.error('Error inicializando OneSignal:', error);
@@ -95,13 +93,14 @@ export class OnesignalService {
     return this.apiService.get(`viaje/get-token/${id}`);
   }
 
-  
-async requestNotificationPermission() {
-  const status = await OneSignal.Notifications.requestPermission(true);
-  
-  console.log("Estado del permiso:", status);
-}
+
+  async requestNotificationPermission() {
+    const status = await OneSignal.Notifications.requestPermission(true);
+
+    console.log("Estado del permiso:", status);
+  }
 
 
-  
+
+
 }

@@ -5,6 +5,7 @@ import { async, Subscription } from 'rxjs';
 import { LocationService } from 'src/app/core/services/location.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
+import { IMAGES } from '../../../constaints/image-data';  // Importar la imagen
 declare var google: any;
 
 @Component({
@@ -28,6 +29,7 @@ export class MapComponent implements OnInit {
   coordDestino: any = null;
   ruteEstimate: any = null;
   routeLayer: any = null;
+  private intervaloDrivers: any;
   lastPosition: google.maps.LatLng | null = null;
   directionsServiceUserCli = new google.maps.DirectionsService();
   directionsDisplayUserCli = new google.maps.DirectionsRenderer({
@@ -40,34 +42,54 @@ export class MapComponent implements OnInit {
       strokeLineJoin: 'round'       // Unión suave entre segmentos
     }
   });
-
+  private currentTipoVehiculo: string | null = null; // Guarda el último tipo
   user: any;
+  iconDriver: any;
+  listDriver: any = [];
+  driverMarkers: { [id: number]: google.maps.Marker } = {};
+
+
+
+  coordUserDriver: any = null;
 
   constructor(private location: LocationService,
     private sharedDataService: SharedService,
     private api: UserService,
     private auth: AuthService) {
     this.user = this.auth.getUser();
-    this.getCurrentPosition();
-    /* console.log("COORDENDAS De Geolocation Tiempo real 1")
-     const response = this.api.getLocationUbicationuser(this.user.idUser);
- 
-     response.subscribe((re) => {
-       console.log("DATOS DEL USUARIO ", re)
-     }) */
+
   }
 
   async ngOnInit() {
     await this.getCurrentPosition();
     this.meLocation();
-    this.meLocationMapa();
+
     this.meDestination();
+    this.sharedDataService.service.subscribe((data) => {
+      if (data && data !== this.currentTipoVehiculo) {
+        this.currentTipoVehiculo = data;
+        this.clearDriverMarkers(); // Solo si cambia el tipo
+        this.getListadoConductores(); // Ejecuta inmediatamente
+      }
+    });
+
+    // Suscripción a coordenadas del usuario
+    this.sharedDataService._coordUserDirver.subscribe((coords: any) => {
+      if (coords) {
+        this.coordUserDriver = coords;
+      }
+    });
+
+    // Inicia el intervalo cada 10 segundos
+    this.iniciarIntervaloConductores();
   }
 
 
   ionViewWillEnter() {
     this.routeLayer = null;
+
   }
+
 
   ionViewWillLeave() {
     if (this.markerDestination) {
@@ -78,6 +100,11 @@ export class MapComponent implements OnInit {
     this.coordSalida = null;
     this.coordDestino = null;
     this.ruteEstimate = null;
+
+    if (this.intervaloDrivers) {
+      clearInterval(this.intervaloDrivers);
+      this.intervaloDrivers = null;
+    }
   }
 
   async getCurrentPosition() {
@@ -85,6 +112,7 @@ export class MapComponent implements OnInit {
     this.location.getUserLocation().then(async (re: any) => {
       if (re) {
         this.initializeMap(re?.lat, re?.lon);
+
         this.currentPosition.lat = re?.lat;
         this.currentPosition.lon = re?.lon;
       }/* else {
@@ -99,8 +127,24 @@ export class MapComponent implements OnInit {
           }
         });
       }*/
+      this.sharedDataService.getCoordUserDriver(re);
+      this.meLocationMapa();
     })
+
+
+
   }
+
+
+  iniciarIntervaloConductores() {
+    this.getListadoConductores(); // Ejecuta una vez al inicio
+    this.intervaloDrivers = setInterval(() => {
+      this.getListadoConductores(); // Solo usa la última coordenada almacenada
+    }, 10000);
+  }
+
+
+
 
   async initializeMap(lat: number, lon: number) {
     let latLng = new google.maps.LatLng(lat, lon);
@@ -173,6 +217,7 @@ export class MapComponent implements OnInit {
 
       this.coordSalida = { lng: lng, lat: lat }
       this.actualizarDato(lng, lat);
+      this.sharedDataService.getCoordUserDriver(this.coordSalida);
 
       if (this.coordDestino != null) {
         this.calculeRouter();
@@ -189,29 +234,53 @@ export class MapComponent implements OnInit {
 
   async startWatchPosition() {
     this.location.watchLocation$.subscribe((coords) => {
-      const newLatLng = new google.maps.LatLng(
-        coords.lat,
-        coords.lon
-      );
+      const newLatLng = new google.maps.LatLng(coords.lat, coords.lon);
 
       const rotation = this.lastPosition
         ? this.calculateRotation(this.lastPosition, newLatLng)
-        : 0; // Si es null, inicia con rotación en 0
+        : 0;
 
-      // Actualizar la posición y rotación del marcador
-      this.markeWatchPosition?.setPosition(newLatLng);
-      this.markeWatchPosition?.setIcon({
-        url: `assets/marker/position.png`, // Ícono clásico de Google Maps
+      if (!this.markeWatchPosition) return;
+
+      this.markeWatchPosition.setIcon({
+        url: `assets/marker/position.png`,
         scaledSize: new google.maps.Size(18, 18),
         anchor: new google.maps.Point(25, 25),
       } as any);
 
-      // Mover la cámara
-      //   this.map?.setCenter(newLatLng);
+      if (this.lastPosition) {
+        this.animateMarker(this.markeWatchPosition, this.lastPosition, newLatLng, 500); // 500ms animación
+      } else {
+        this.markeWatchPosition.setPosition(newLatLng);
+      }
 
-      // Actualizar la última posición
       this.lastPosition = newLatLng;
-    })
+    });
+  }
+
+  animateMarker(marker: google.maps.Marker, from: google.maps.LatLng, to: google.maps.LatLng, duration: number) {
+    const start = performance.now();
+
+    const fromLat = from.lat();
+    const fromLng = from.lng();
+    const toLat = to.lat();
+    const toLng = to.lng();
+
+    const animate = (now: number) => {
+      const elapsed = now - start;
+      const t = Math.min(elapsed / duration, 1); // progreso [0,1]
+
+      const currentLat = fromLat + (toLat - fromLat) * t;
+      const currentLng = fromLng + (toLng - fromLng) * t;
+
+      marker.setPosition(new google.maps.LatLng(currentLat, currentLng));
+
+      if (t < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
   }
 
   calculateRotation(start: google.maps.LatLng, end: google.maps.LatLng): number {
@@ -229,6 +298,7 @@ export class MapComponent implements OnInit {
       if (data) {
 
         this.actualizarDato(data.lng, data.lat);
+        this.sharedDataService.getCoordUserDriver(data);
         this.coordSalida = { lng: data.lng, lat: data.lat }
         this.currentMarker.setLngLat([data.lng, data.lat]);
         this.map.setZoom(15);
@@ -251,11 +321,11 @@ export class MapComponent implements OnInit {
           data.lat,
           data.lng
         );
-        this.coordSalida = { lng: data.lng, lat: data.lat }
+        this.coordSalida = { lng: data.lng, lat: data.lat };
+        this.sharedDataService.getCoordUserDriver(this.coordSalida);
         if (this.currentMarker) {
 
           this.currentMarker?.setPosition(newLatLng);
-          //this.markerDestination.setLngLat([data.lng, data.lat]);
         } else {
 
           this.currentMarker = new google.maps.Marker({
@@ -263,14 +333,12 @@ export class MapComponent implements OnInit {
             map: this.map,
             title: 'Tu Destino',
             icon: {
-              url: `assets/marker/destino2.png`, // Ícono clásico de Google Maps
+              url: `assets/marker/destino2.png`,
               scaledSize: new google.maps.Size(45, 45),
-              // anchor: new google.maps.Point(25, 50),
+
               anchor: new google.maps.Point(17.5, 35),
             } as any
           });
-
-          // this.actualizarDato(data.lng, data.lat);
         }
 
         if (data.direction === 'destino') {
@@ -368,6 +436,33 @@ export class MapComponent implements OnInit {
     }
   }
 
+  async getListadoConductores() {
+    if (!this.coordUserDriver || !this.currentTipoVehiculo) return;
+
+    const value = {
+      lat: this.coordUserDriver.lat,
+      lng: this.coordUserDriver.lng,
+      idService: this.currentTipoVehiculo,
+    };
+
+    try {
+      const response = await this.api.getListadoConductores(value).toPromise();
+      if (response.success) {
+        this.listDriver = response.result;
+           
+        this.updateDriverMarkers();
+      } else {
+        console.log("No se encontraron conductores");
+      }
+    } catch (error: any) {
+      if (error.status == 404) {
+        this.clearDriverMarkers();
+        console.log("No se encontraron conductores para el servicio seleccionado.");
+      } else {
+        console.log("Error al obtener conductores");
+      }
+    }
+  }
 
   ngOnDestroy() {
     if (this.map) {
@@ -380,4 +475,87 @@ export class MapComponent implements OnInit {
       this.map = null;   // Limpia la referencia
     }
   }
+
+
+  updateDriverMarkers() {
+    this.listDriver.forEach(async (driver: any) => {
+      const driverLatLng = new google.maps.LatLng(driver.lat, driver.lon);
+
+      const existingMarker = this.driverMarkers[driver.id];
+
+      if (existingMarker) {
+        // Si el marcador ya existe, animamos suavemente el movimiento
+        this.animateMarkerTo(existingMarker, driverLatLng, driver.angle,  driver.marker);
+      } else {
+        // Crear nuevo marca
+        const newMarker = new google.maps.Marker({
+          position: driverLatLng,
+          map: this.map,
+          icon: {
+            url: this.createCustomPointElement(driver.angle, driver.marker),
+            scaledSize: new google.maps.Size(30, 30),
+            rotation: driver.angle
+          },
+          title: `${driver.nombre} ${driver.apellido}`,
+        });
+
+        this.driverMarkers[driver.id] = newMarker;
+      }
+    });
+  }
+
+  animateMarkerTo(marker: google.maps.Marker, newPosition: google.maps.LatLng, newAngle: number,tipmarker:any) {
+    const currentPosition = marker.getPosition();
+    if (!currentPosition) return;
+
+    const deltaLat = (newPosition.lat() - currentPosition.lat()) / 10;
+    const deltaLng = (newPosition.lng() - currentPosition.lng()) / 10;
+
+    let step = 0;
+    const interval = setInterval(() => {
+      if (step >= 10) {
+        clearInterval(interval);
+        return;
+      }
+
+      const updatedLat = currentPosition.lat() + deltaLat * step;
+      const updatedLng = currentPosition.lng() + deltaLng * step;
+
+      const interpolatedPosition = new google.maps.LatLng(updatedLat, updatedLng);
+      marker.setPosition(interpolatedPosition);
+
+      // Puedes también actualizar la rotación si usas íconos rotables personalizados (ej. con canvas o SVG)
+       marker.setIcon({  url: this.createCustomPointElement(newAngle,tipmarker), // Mismo ícono
+        scaledSize: new google.maps.Size(30, 30),
+        anchor: new google.maps.Point(25, 25),
+        rotation: newAngle});
+
+      step++;
+    }, 50); // total ~500ms animación suave
+  }
+
+  createCustomPointElement(angle: number, marker:any): string {
+    var img: any;
+    if (marker == 'moto') {
+      img = IMAGES.moto;
+    } else {
+      img = IMAGES.carro;
+    }
+    const svgIcon = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 100 100">
+      <g transform="rotate(${angle}, 50, 50)">
+        <image href="${img}" x="0" y="0" height="100" width="100"/>
+      </g>
+    </svg>
+  `;
+    return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgIcon);
+  }
+
+  clearDriverMarkers() {
+    Object.values(this.driverMarkers).forEach(marker => {
+      marker.setMap(null); // Quita el marcador del mapa
+    });
+    this.driverMarkers = {}; // Limpia el objeto
+  }
+
 }

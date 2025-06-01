@@ -1,41 +1,18 @@
-<ion-header class="hidden"></ion-header>
 
 <ion-content class="offline-container">
 
   <div class="contenedor">
     <div class="centrado">
-      <svg width="300" height="250" viewBox="0 0 24 24" fill="none" 
-      xmlns="http://www.w3.org/2000/svg">
-      <path d="M3 5h18M3 10h18M3 15h10M3 20h5" stroke="#007bff" 
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="18" cy="18" r="4" stroke="red" stroke-width="2"/>
-      <path d="M20 20l-4-4" stroke="red" stroke-width="2" stroke-linecap="round"/>
-    </svg>
-    <h2>¡Oops! Sin conexión</h2>
-    <p>Parece que has perdido la conexión a internet o el servidor no responde.  
-      Verifica tu conexión e intenta nuevamente.</p>
-      <button (click)="reintentarConexion()">  
-        <ion-icon name="refresh-outline"></ion-icon> Reintentar  
-      </button>
+<div class="icon-wrapper">
+  <ion-icon class="icon-alerta" name="alert-circle-outline"></ion-icon>
+</div>
+    <h2>Error al cargar</h2>
+    <p>No se pudo conectar. Verifica tu conexión o intenta más tarde.</p>
+      <ion-button shape="round" color="primary" (click)="reintentarConexion()">  
+        Intentar de nuevo 
+      </ion-button>
     </div>
+    <br>
   </div>
-  <!--<div class="content" >
 
-    <svg width="300" height="250" viewBox="0 0 24 24" fill="none" 
-    xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 5h18M3 10h18M3 15h10M3 20h5" stroke="#007bff" 
-    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="18" cy="18" r="4" stroke="red" stroke-width="2"/>
-    <path d="M20 20l-4-4" stroke="red" stroke-width="2" stroke-linecap="round"/>
-  </svg>
-  
-
-    <h2>¡Oops! Sin conexión</h2>
-    <p>Parece que has perdido la conexión a internet o el servidor no responde.  
-       Verifica tu conexión e intenta nuevamente.</p>
-
-    <button (click)="reintentarConexion()">  
-      <ion-icon name="refresh-outline"></ion-icon> Reintentar  
-    </button>
-  </div> -->
 </ion-content>

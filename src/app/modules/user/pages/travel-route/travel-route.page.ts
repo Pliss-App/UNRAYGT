@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { ActionSheetController, LoadingController } from '@ionic/angular';
 import { interval, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Share } from '@capacitor/share';
@@ -11,6 +11,8 @@ import { UserService } from 'src/app/core/services/user.service';
 import { Platform } from '@ionic/angular';
 import { BackgroundGeolocationPlugin } from '@capacitor-community/background-geolocation';
 import { registerPlugin } from '@capacitor/core';
+import { ConductorService } from 'src/app/core/services/conductor.service';
+import { CallNumber } from 'capacitor-call-number';
 
 const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>('BackgroundGeolocation');
 
@@ -33,25 +35,27 @@ export class TravelRoutePage implements OnInit {
   private pollingSubscription: any;
   private intervalId: any;
   watch: any = null;
-
+  callPolicia: any = '';
+  callBomberos: any = '';
+  callCruzRoja: any = '';
   loading: any;
 
   constructor(private router: Router,
     private shared: SharedService,
     private soli: SolicitudService,
+    private apiCon: ConductorService,
     private loadingCtrl: LoadingController,
     private api: UserService,
+    private actionSheetCtrl: ActionSheetController,
     private platform: Platform,
     private auth: AuthService,) {
 
     this.user = this.auth.getUser();
 
-    console.log("Entro a cargar soliciud")
 
   }
 
   ngOnInit() {
-    console.log("Entro a cargar soliciud w")
     this.startPolling();
   }
 
@@ -78,7 +82,6 @@ export class TravelRoutePage implements OnInit {
 
       const timestamp = new Date().getTime();
       this.api.checkActiveTravel(this.user.idUser, timestamp).subscribe((response) => {
-        console.log("DATOS DEL VIAJE ", response)
         if (response?.success) {
 
           this.solicitud = response.result;
@@ -220,7 +223,73 @@ export class TravelRoutePage implements OnInit {
       var resp = re;
     })
 
-    console.log('Se dejó de compartir ubicación.');
+  }
+
+
+  async getCallSecurity() {
+    try {
+      const res = await this.apiCon.getCallSecurity().toPromise();
+      if (res.success === true) {
+        const data = res.result;
+        this.callPolicia = data.find((item: any) => item.nombre === 'Policia');
+        this.callBomberos = data.find((item: any) => item.nombre === 'Bomberos');
+        this.callCruzRoja = data.find((item: any) => item.nombre === 'Cruz Roja');
+
+      }
+    } catch (error) {
+      console.log("No se recuperaron los numero :", error)
+    }
+  }
+
+
+  async callSecurity() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Llamar a',
+      buttons: [
+        {
+          text: 'Policía',
+          icon: 'call',
+          handler: () => {
+            this.llamarNumero(this.callPolicia); // O número local de la policía
+          }
+        },
+        {
+          text: 'Bomberos',
+          icon: 'flame',
+          handler: () => {
+            this.llamarNumero(this.callBomberos);
+          }
+        },
+        {
+          text: 'Ambulancia',
+          icon: 'medkit',
+          handler: () => {
+            this.llamarNumero(this.callCruzRoja);
+          }
+        },
+        {
+          text: 'Cancelar',
+          icon: 'close',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await actionSheet.present();
+  }
+
+  llamarNumero(numero: string) {
+    // window.open(`tel:${numero}`, '_system'); // para Capacitor
+    CallNumber.call({
+      number: numero,
+      bypassAppChooser: true
+    })
+      .then(result => {
+        console.log('Llamada lanzada con éxito', result);
+      })
+      .catch(error => {
+        console.error('Error al hacer la llamada', error);
+      });
   }
 
   ngOnDestroy(): void {

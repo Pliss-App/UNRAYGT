@@ -8,11 +8,13 @@ import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
+import { Preferences } from '@capacitor/preferences';
+import { SharedService } from './shared.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LocationService  {
+export class LocationService {
   public watch: any;
   private locationSubject = new BehaviorSubject<{ lat: number, lon: number, heading: any }>({ lat: 0, lon: 0, heading: 0 });
   private watchLocationSubject = new BehaviorSubject<{ lat: number, lon: number, heading: any }>({ lat: 0, lon: 0, heading: 0 });
@@ -23,23 +25,40 @@ export class LocationService  {
   longitude: number = 0;
   user: any;
   watchId: string | null = null;
-  constructor(private http: HttpClient, private platform: Platform,
+  constructor(private http: HttpClient, private platform: Platform, private shared: SharedService,
     private userAuth: UserService, private auth: AuthService,
   ) {
 
   }
 
-async init() {
-  const permiso = await this.checkPermissions();
-  if (permiso) {
-    await this.getUserLocation();
-    this.user = this.auth.getUser();
-    this.watchUserLocation();
-  } else {
-    console.warn('Permiso de geolocalización no concedido.');
-  }
-}
+  async init() {
+    const lastLocation = await Preferences.get({ key: 'lastLocationn' });
+    if (lastLocation.value) {
+      const coords = JSON.parse(lastLocation.value);
+      this.locationSubject.next(coords);
+    }
 
+    const permiso = await this.checkPermissions();
+    if (permiso) {
+      const coords = await this.getUserLocation();
+      this.user = this.auth.getUser();
+
+      return coords;
+    } else {
+      console.warn('Permiso de geolocalización no concedido.');
+      return null;
+    }
+  }
+
+
+  async lastgetUserLocation() {
+    let lastLocation = await Preferences.get({ key: 'lastLocationn' });
+    if (lastLocation.value) {
+      const coords = JSON.parse(lastLocation.value); // usar mientras llega la nueva
+      this.locationSubject.next(coords);
+      return coords;
+    }
+  }
 
   async getUserLocation() {
     try {
@@ -50,6 +69,8 @@ async init() {
         heading: coordinates.coords.heading
       };
       this.locationSubject.next(coords);
+
+      this.shared.getCoordUserDriver(coords);
       return coords;
     } catch (error) {
       console.error('Error obteniendo la ubicación:', error);
@@ -102,6 +123,7 @@ async init() {
           var angle = position?.coords.heading;
           var angl: number = Number(angle);
           if (this.auth.isLoggedIn()) {
+
             if (this.auth.getRole() == 'conductor') {
               this.saveCoordinates(position?.coords.latitude, position?.coords.longitude, angl);
             } else {
@@ -121,12 +143,10 @@ async init() {
     }
   }
 
-  getAutocompleteSuggestions(query: string) {
-    const url = `https://api.tomtom.com/search/2/search/${encodeURIComponent(query)}.json?key=yhGwpc1KP3yK4Pqb7KZXjJD91wf3aTy9&limit=100`;
-    return this.http.get(url);
-  }
+
 
   saveCoordinates(lat: any, lng: any, heading: any) {
+    this.user = this.auth.getUser();
     var data = {
       iduser: this.user.idUser,
       lat: lat,

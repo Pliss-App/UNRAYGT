@@ -48,3 +48,33 @@
   }
 
 
+
+  .btn-security {
+  box-shadow: none !important;
+  --background: transparent;
+  position: absolute;
+  top: -110px;
+  right: 5px;
+--padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+}
+
+.btn-security img {
+  box-shadow: none !important;
+ width: 36px;
+  height: 36px;
+  object-fit: contain;
+  display: block;
+   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}

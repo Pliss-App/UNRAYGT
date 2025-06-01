@@ -1,9 +1,8 @@
-
 .otp-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 35px;
   padding: 20px !important;
 
   ion-input {
@@ -143,4 +142,29 @@ ion-footer ion-toolbar {
 
 .icon-foreground {
   z-index: 2;
+}
+
+.btn-reenviar {}
+
+.btn-verificar {
+  font-size: 14pt;
+  --padding-top: 9px !important;
+  --padding-bottom: 9px !important
+}
+
+.btn-reenviar {
+  margin-top: 5px;
+}
+
+.btn-icono {
+  width: 100px;
+  --box-shadow: none !important;
+  position: absolute;
+  left: 8px;
+  --background-color: none !important;
+  top: 4px;
+  padding-left:5px !important;
+  font-size: 14pt;
+  color:orangered;
+  --border-radius: 10px !important;
 }
