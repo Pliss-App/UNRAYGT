@@ -10,9 +10,10 @@ import { WebSocketService } from 'src/app/core/services/web-socket.service';
 import { CalificacionComponent } from 'src/app/shared/components/calificacion/calificacion.component';
 import { UserService } from 'src/app/core/services/user.service';
 import { Geolocation } from '@capacitor/geolocation';
-import { Capacitor, Plugins } from '@capacitor/core';
-import { FirebaseMessaging } from '@capacitor-firebase/messaging';
-const { FcmToken } = Plugins as any; // Reemplaza 'MyFCMPlugin' con el nombre de tu plugin
+import { FcmService } from 'src/app/core/services/fcm.service';
+import { Capacitor } from '@capacitor/core';
+import { CallActionService } from 'src/app/core/services/call-action.service';
+
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,9 @@ export class HomePage implements OnInit {
   idViaje: any = null;
   isActiveMenu: boolean = false;
 
-  constructor( private onesignal: OnesignalService, private alertController: AlertController,
+  constructor( private fcmService: FcmService,
+    private callActionService: CallActionService,
+    private onesignal: OnesignalService, private alertController: AlertController,
     private sharedDataService: SharedService, private soli: SolicitudService, private socketService: WebSocketService,
     private router: Router, private location: LocationService,
     private auth: AuthService, private userService: UserService, private modalController: ModalController, private menuController: MenuController) {
@@ -36,21 +39,61 @@ export class HomePage implements OnInit {
     this.sharedDataService.menu.subscribe((re) => {
       this.isActiveMenu = re;
     });
-    this.requestFcmPermissionAndGetToken()
-    this.onesignal.initialize(this.userRole, this.user.idUser);
+
+
+
+      this.onesignal.initialize(this.userRole, this.user.idUser);
+    
+
+
   }
 
   async ngOnInit() {
-     this.location.watchUserLocation();
+          this.initFcm();
+    // Escucha el evento emitido desde el plugin nativo
+     this.callActionService.accion$.subscribe(async ({ accion, idViaje, idUser }) => {
+ 
+       if (accion === 'aceptar') {
+         const alert = await this.alertController.create({
+           header: 'ACEPTADA',
+           message: `
+          Acción:  ${accion}
+      ID Viaje: ${idViaje}
+     ID Usuario:${idUser}
+     `,
+           buttons: ['OK']
+         });
+
+         await alert.present();
+       } else {
+         const alert = await this.alertController.create({
+           header: 'RECHAZADA',
+           message: `
+          Acción:  ${accion}
+      ID Viaje: ${idViaje}
+     ID Usuario:${idUser}
+     `,
+           buttons: ['OK']
+         });
+
+         await alert.present();
+       }
+       await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje']();
+     });
+    this.callActionService.setUser(this.user.idUser);
+    this.callActionService.initListener(); 
+    this.location.watchUserLocation();
     this.getSolicitudCreada();
-    //this.soli.startPolling();
     this.escucharSolicitud();
     this.getCalificar();
 
     await this.getEstadoCalificacion();
-
-
   }
+
+
+  async ionViewDidEnter() {
+  }
+
 
   getSolicitudCreada() {
     this.socketService.listen('solicitud_creada', async (data: any) => {
@@ -168,21 +211,11 @@ export class HomePage implements OnInit {
   }
 
 
-  async requestFcmPermissionAndGetToken() {
-    // Solicita permiso para notificaciones (solo necesario en iOS)
-    const { receive } = await FirebaseMessaging.requestPermissions();
-    if (receive === 'granted') {
-
-      if (Capacitor.getPlatform() !== 'web') {
-        const { token } = await FirebaseMessaging.getToken();
-        const data = {
-          id: this.user.idUser,
-          token: token
-        }
-        const response = await this.userService.updateTokenFcm(data).toPromise();
-      } else {
-        console.warn('🔒 Permiso para notificaciones no concedido.');
-      }
+  async initFcm() {
+    const user = this.user.idUser;
+    if (user) {
+      await this.fcmService.requestFcmPermissionAndGetToken(user);
     }
-  }
+  } 
+
 }

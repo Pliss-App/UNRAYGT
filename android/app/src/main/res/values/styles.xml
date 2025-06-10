@@ -25,4 +25,15 @@
     <item name="android:windowNoTitle">true</item>
   </style>
 
+  <style name="AppTheme.NoPreview" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:backgroundDimEnabled">false</item>
+    <item name="android:windowIsFloating">true</item>
+  </style>
+
+  <style name="AppTheme.Launcher" parent="Theme.AppCompat.NoActionBar">
+    <item name="android:windowBackground">#FF4500</item>
+  </style>
 </resources>

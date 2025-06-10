@@ -41,8 +41,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   async ngAfterViewInit() {
-
-
     // Espera un pequeño tiempo para asegurarse que Capacitor cargó bien
     setTimeout(() => {
       this.verificarPermisosGeolocalizacion();
@@ -69,7 +67,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     await this.platform.ready();
-    await this.getSplash();
+   // await this.getSplash();
     this.isAuthenticated = this.authService.isAuthenticated();
     App.addListener('pause', () => {
       this.saveState();
@@ -79,16 +77,13 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.restoreState();
       this.alcenarUltimaUbicacion();
     });
-
-
   }
 
   async getSplash() {
     await SplashScreen.show({
       autoHide: true,
-      showDuration: 3000
+      showDuration: 2000
     })
-
   }
 
   async initializeApp() {
@@ -119,11 +114,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     } else {
       this.menuCtrl.enable(false, 'userMenu');
       this.menuCtrl.enable(false, 'driverMenu');
-
       this.router.navigate(['/auth'], { replaceUrl: true }); 
     }
   }
-
 
   async getRating() {
     try {
@@ -139,9 +132,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     } catch (error) {
       console.log("error consultando Rating")
     }
-
   }
-
 
   updateStars(valor: number) {
     this.stars = Array(5)
@@ -156,13 +147,11 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
       });
   }
+
   logout() {
     this.menuCtrl.close();
     this.authService.logout();
-
   }
-
-
 
   closeMenu(item: any) {
     if (item == 'viajar') {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalNotifications } from '@capacitor/local-notifications';
-import { MenuController, ModalController } from '@ionic/angular';
+import { AlertController, MenuController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -16,6 +16,11 @@ import { SolicitudService } from 'src/app/core/services/solicitud.service';
 import { NativeAudio } from '@capacitor-community/native-audio';
 import { FirebaseMessaging } from '@capacitor-firebase/messaging';
 import { Capacitor } from '@capacitor/core';
+import { CallActionService } from 'src/app/core/services/call-action.service';
+import { FcmService } from 'src/app/core/services/fcm.service';
+//import CallActionPlugin from 'src/plugins/call-action.plugin';
+//import { CallActionService } from 'src/app/core/services/call-action.service';
+//import { FcmService } from 'src/app/core/services/fcm.service';
 
 
 @Component({
@@ -48,30 +53,56 @@ export class HomePage implements OnInit {
   progreso: number = 1;         // Progreso de la barra, va de 0 a 1
   colorProgreso: string = 'success';  // Color de la barra de progreso
 
-  constructor(private onesignal: OnesignalService, private driverService: ConductorService,
+  constructor(private onesignal: OnesignalService,
+    private driverService: ConductorService,
     private socketService: WebSocketService,
     private menuController: MenuController,
+    private callActionService: CallActionService,
+    private fcmService: FcmService,
     private locationService: LocationService,
     private router: Router,
+    private alertController: AlertController,
     private soliService: SolicitudService,
     private modalController: ModalController,
     private auth: AuthService,
     private userService: UserService) {
-    this.requestFcmPermissionAndGetToken();
-    this.preloadSound();
     this.user = this.auth.getUser();
     this.userRole = this.auth.getRole();
+    if (this.user) {
+      this.initFcm();
+
+    }
+
+    this.preloadSound();
+
     this.locationService.location$.subscribe(async coords => {
     })
 
-    
-      this.locationService.watchUserLocation();
-
+    this.locationService.watchUserLocation();
     this.locationService.init();
   }
 
   async ngOnInit() {
 
+    if (this.user) {
+      /*this.callActionService.accion$.subscribe(async ({ accion, idViaje, idUser }) => {
+        this.solicitudId = Number(idViaje);
+        this.solicitudIdUser = Number(idUser);
+        if (accion === 'aceptar') {
+          this.aceptarSolicitud();
+        } else {
+          this.rechazarSolicitud()
+        }
+
+        // Opcional: limpiar el estado nativo
+        await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje']();
+      });*/
+    }
+
+
+
+  //  this.callActionService.setUser(this.user.idUser);
+  //  this.callActionService.initListener();
     this.escucharSolicitud();
     this.onesignal.initialize(this.userRole, this.user.idUser);
     this.getEstado();
@@ -80,16 +111,30 @@ export class HomePage implements OnInit {
     this.getEstadoCalificacion()
   }
 
-  ionViewDidEnter() {
 
+  async ionViewDidEnter() {
+  const accion = await Capacitor.Plugins['CallActionPlugin']['obtenerUltimaAccion']();
+  if (accion && accion.accion && accion.idViaje && accion.idUser) {
+    this.solicitudId = Number(accion.idViaje);
+    this.solicitudIdUser = Number(accion.idUser);
+
+    if (accion.accion === 'aceptar') {
+      this.aceptarSolicitud();
+    } else {
+      this.rechazarSolicitud();
+    }
+
+    await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje']();
   }
+
+  this.callActionService.setUser(this.user.idUser);
+  this.callActionService.initListener();
+}
+
+
 
   escucharSolicitud() {
     this.socketService.listen('solicitud_iniciar_viaje', async (data: any) => {
-      /*this.router.navigate(['/driver/travel-route']); // Ajusta la ruta según tu aplicación
-      if (this.userRole == 'conductor') {
-        //  this.sendTravelRequestNotification();
-      } */
     })
   }
 
@@ -262,14 +307,11 @@ export class HomePage implements OnInit {
   aceptarSolicitud() {
     if (this.solicitudId) {
       this.soliService.resumePollingOnTripEnd();
-      // this.procesarSolicitud('Aceptado');
       var data = {
         solicitudId: this.solicitudId,
         conductorId: this.user.idUser
       }
       this.driverService.aceptarSolicitud(data).subscribe((re) => {
-
-        //     this.storageService.removeItem('timeExpiration');
         this.tiempoRestante = 30;
 
         this.socketService.emit(`respuesta_solicitud`, { estado: 'Aceptado', solicitudId: this.solicitudId, conductorId: this.user.idUser, idUser: this.solicitudIdUser });
@@ -288,14 +330,11 @@ export class HomePage implements OnInit {
           var token = data.onesignal_token;
           noti.userId = token;
 
-          //this.idTokenOne = token;
-
           const response = this.onesignal.enviarNotificacion(noti);
           response.subscribe((resp) => {
             return 0;
           })
         }))
-
         return 0;
       })
     }
@@ -496,24 +535,13 @@ export class HomePage implements OnInit {
     this.router.navigate(['/driver/notificaciones']);
   }
 
-    async requestFcmPermissionAndGetToken() {
-      // Solicita permiso para notificaciones (solo necesario en iOS)
-      const { receive } = await FirebaseMessaging.requestPermissions();
-      if (receive === 'granted') {
-  
-        if (Capacitor.getPlatform() !== 'web') {
-          const { token } = await FirebaseMessaging.getToken();
-          const data = {
-            id: this.user.idUser,
-            token: token
-          }
-          const response = await this.userService.updateTokenFcm(data).toPromise();
-        } else {
-          console.warn('🔒 Permiso para notificaciones no concedido.');
-        }
-      }
+  async initFcm() {
+    const user = this.user.idUser;
+    if (user) {
+      await this.fcmService.requestFcmPermissionAndGetToken(user);
     }
-  // Limpia el intervalo al destruir el componente
+  } 
+
   ngOnDestroy(): void {
     this.limpiarTemporizador();
   }

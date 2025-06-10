@@ -45,6 +45,7 @@
 -keep class com.unrayinternational.app.FcmTokenPlugin { *; }
 -keep class com.unrayinternational.app.FcmTokenPlugin$* { *; }
 
+
 # Mantener el FirebaseMessagingService personalizado
 -keep class com.unrayinternational.app.MyFirebaseMessagingService { *; }
 -keep class com.unrayinternational.app.MyFirebaseMessagingService$* { *; }
@@ -79,3 +80,41 @@
 }
 
 -keep class com.google.android.gms.** { *; }
+
+
+# Conservar clases de Capacitor Plugin
+-keepclassmembers class * {
+    @com.getcapacitor.annotation.PluginMethod <methods>;
+}
+-keepclassmembers class com.unrayinternational.app.callscreen.CallActionPlugin { *; }
+
+# Conservar cualquier clase usada por reflección
+-keepclassmembers class * {
+    public <init>(...);
+}
+
+
+-keep class com.unrayinternational.** { *; }
+-keepclassmembers class * {
+    public static <fields>;
+}
+
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    !static !transient <fields>;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+-keepclassmembers class com.unrayinternational.app.callscreen.CallActionPlugin { *; }
+
+
+# No eliminar métodos de tu plugin Capacitor personalizado
+-keep class com.unrayinternational.app.callscreen.CallActionPlugin { *; }
+-keepclassmembers class * {
+    @com.getcapacitor.annotation.CapacitorPlugin <methods>;
+}
+-keepattributes *Annotation*

@@ -17,7 +17,7 @@ export class ApiService {
   private reconnecting = false;  // Para evitar reintentos simultáneos
   private isApiConnected = new BehaviorSubject<boolean>(false); // Estado de conexión a la API
   private reloaded = false;
-
+  private apiUrlDesarrollo = 'https://unraydesarrollo.onrender.com/api';
   constructor(private http: HttpClient, private router: Router, private authService: AuthService) {
     this.checkNetworkStatus();
     this.startApiMonitoring();
@@ -58,9 +58,9 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/${endpoint}`, data);
   }
 
-  getChat( endpoint: string, idViaje: string, emisor_id: number, receptor_id: number) {
+  getChat(endpoint: string, idViaje: string, emisor_id: number, receptor_id: number) {
     return this.http.get(`${this.apiUrl}/${endpoint}`, {
-      params: {idViaje:idViaje, emisor_id: emisor_id, receptor_id: receptor_id },
+      params: { idViaje: idViaje, emisor_id: emisor_id, receptor_id: receptor_id },
     });
   }
   // Detectar cambios en la red
@@ -142,4 +142,11 @@ export class ApiService {
       map(([internet, api]) => internet && api) // Devuelve true solo si ambos son true
     );
   }
+
+
+  // Método para enviar datos
+  postdesarrollo(endpoint: string, data: any): Observable<any> {
+    return this.http.post(`${this.apiUrlDesarrollo}/${endpoint}`, data, { headers: this.getHeaders() });
+  }
+
 }

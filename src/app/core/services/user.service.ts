@@ -327,4 +327,9 @@ export class UserService {
 
   }
 
+
+  postDesarrolloSoli (data:any){
+    return this.apiService.postdesarrollo(`viaje/aceptar_solicitud`, data)
+  }
+
 }

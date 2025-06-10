@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Permissions -->
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Geolocalizaci?n -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -10,8 +11,13 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- C?mara -->
     <uses-permission android:name="android.permission.CAMERA" /> <!-- Almacenamiento (si usas
     versiones antiguas de Android) -->
-  <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
+  <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
+
+  <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
   <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+  <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Llamadas
@@ -37,22 +43,23 @@
             android:name="com.onesignal.NotificationIcon"
             android:resource="@drawable/ic_stat_onesignal_default" />
 
-        <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
-            android:exported="true"
-            android:label="@string/title_activity_main"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBarLaunch">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+      <activity
+        android:name=".MainActivity"
+        android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+        android:exported="true"
+        android:label="@string/title_activity_main"
+        android:launchMode="singleTask"
+        android:theme="@style/AppTheme.NoActionBarLaunch">
+        <intent-filter>
+          <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+          <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+      </activity>
 
 
-      <activity    android:name=".callscreen.FullScreenActivity"
+
+      <activity android:name=".callscreen.FullScreenActivity"
         android:exported="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar.FullScreen"
         android:showWhenLocked="true"
@@ -65,7 +72,9 @@
         </intent-filter>
       </activity>
 
-        <service
+
+
+      <service
             android:name=".callscreen.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>
@@ -73,10 +82,22 @@
             </intent-filter>
         </service>
       <service
-        android:name=".callscreen.CallForegroundService"
+        android:name=".callscreen.CallNotificationService"
         android:exported="false"
-        android:foregroundServiceType="mediaProjection|phoneCall" />
+        android:foregroundServiceType="mediaPlayback|phoneCall" />
+      <receiver android:name=".callscreen.StopSoundReceiver"
+        android:exported="true">
+        <intent-filter>
+          <action android:name="com.unrayinternational.app.STOP_RINGTONE" />
+        </intent-filter>
+      </receiver>
 
+      <receiver android:name=".callscreen.CallActionReceiver" android:exported="true">
+        <intent-filter>
+          <action android:name="com.unrayinternational.ACCEPT" />
+          <action android:name="com.unrayinternational.REJECT" />
+        </intent-filter>
+      </receiver>
            <!-- Actividad de pantalla completa tipo llamada -->
 
       <provider

@@ -2,6 +2,10 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    
+     "paths": {
+      "src/*": ["src/*"]
+    },
     "esModuleInterop": true,
     "types": ["google.maps", "node"],  // Añadir 'node' aquí
     "baseUrl": "./",
