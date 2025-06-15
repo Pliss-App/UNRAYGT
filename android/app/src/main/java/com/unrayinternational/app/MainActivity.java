@@ -4,8 +4,8 @@ package com.unrayinternational.app;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -19,55 +19,46 @@ public class MainActivity extends BridgeActivity {
   private static final String PREFS_NAME = "CALLSCREEN_PREF";
   private static final int REQUEST_CODE_POST_NOTIFICATIONS = 101;
   // Solución híbrida para registro de plugin
-  /*public MainActivity() {
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) { // Android 12 o inferior
+  public MainActivity() {
       registerPlugin(CallActionPlugin.class);
-      Log.d(TAG, "Plugin registrado en constructor (Android <= 12)");
-    }
   }
- */
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    registerPlugin(CallActionPlugin.class);
-    Log.d("MainActivity", "Plugin registrado");
-    // Solicitar permiso en Android 13+
-    /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-      if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-        requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_POST_NOTIFICATIONS);
-      }
-    } */
     super.onCreate(savedInstanceState);
-
-
-    // Registro para Android 13+
-    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S) {
-      getWindow().getDecorView().post(() -> {
-        registerPlugin(CallActionPlugin.class);
-        Log.d(TAG, "Plugin registrado en onCreate (Android >= 13)");
-      });
-    }
-
-    // Manejo inicial del intent
     processIntent(getIntent());
   }
 
   @Override
   protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
-    processIntent(intent);
+    setIntent(intent); // muy importante para actualizar el intent activo
+    processIntent(intent); // asegúrate de tener este método
+    checkPendingAccion();
   }
 
   private void processIntent(Intent intent) {
     if (intent == null) {
-      Log.w(TAG, "Intent recibido es nulo");
       return;
     }
 
     String idViaje = intent.getStringExtra("idViaje");
     String idUser = intent.getStringExtra("idUser");
+    String idConductor = intent.getStringExtra("idConductor");
 
-    if (idViaje == null || idUser == null) {
+    if (idViaje == null || idUser == null || idConductor == null) {
       Log.w(TAG, "idViaje o idUser es nulo. Intent extras: " + intent.getExtras());
+      return;
+    }
+
+    // 🔍 Verificar si la notificación no ha expirado (30 segundos)
+    SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+    long timestamp = sharedPreferences.getLong("incoming_trip_time", 0);
+    long now = System.currentTimeMillis();
+    long elapsed = now - timestamp;
+
+    if (timestamp == 0 || elapsed > 30_000) {
+      Log.w(TAG, "⚠️ Notificación caducada (han pasado más de 30 segundos): " + elapsed + "ms");
       return;
     }
 
@@ -79,12 +70,13 @@ public class MainActivity extends BridgeActivity {
       .putString("accion", "aceptar")
       .putString("idViaje", idViaje)
       .putString("idUser", idUser)
+      .putString("idConductor", idConductor)
       .apply();
 
     // Intentar emitir la acción
     if (CallActionPlugin.pluginInstance != null) {
       Log.d(TAG, "Emisión directa a través de pluginInstance");
-      CallActionPlugin.pluginInstance.emitirAccionDesdeNativo("aceptar", idViaje, idUser);
+      CallActionPlugin.emitirAccionDesdeContexto(this, "aceptar", idViaje, idUser, idConductor);
     } else {
       Log.w(TAG, "pluginInstance es nulo, se guardó en SharedPrefs para recuperación posterior");
     }
@@ -126,6 +118,8 @@ public class MainActivity extends BridgeActivity {
       Log.w(TAG, "Reintentando registro de plugin en onResume");
       registerPlugin(CallActionPlugin.class);
     }
+
+    checkPendingAccion();
   }
 
   @Override
@@ -138,6 +132,29 @@ public class MainActivity extends BridgeActivity {
       } else {
         Log.w(TAG, "Permiso POST_NOTIFICATIONS denegado");
         // Opcional: notificar al usuario o deshabilitar funcionalidad
+      }
+    }
+  }
+
+  private void checkPendingAccion() {
+    SharedPreferences prefs = getSharedPreferences("CALLSCREEN_PREF", MODE_PRIVATE);
+    String accion = prefs.getString("accion", null);
+    String idViaje = prefs.getString("idViaje", null);
+    String idUser = prefs.getString("idUser", null);
+    String idConductor = prefs.getString("idConductor", null);
+
+    if (accion != null && idViaje != null && idUser != null) {
+      Log.d(TAG, "🔁 Reintentando emitir acción guardada: " + accion);
+
+      // Emitir al plugin
+      if (CallActionPlugin.pluginInstance != null) {
+        CallActionPlugin.emitirAccionDesdeContexto(this, accion, idViaje, idUser, idConductor);
+
+        // Limpiar después de emitir
+        prefs.edit().clear().apply();
+        Log.d(TAG, "✅ Acción emitida y limpiada de SharedPreferences");
+      } else {
+        Log.w(TAG, "⛔ pluginInstance sigue siendo null en checkPendingAccion()");
       }
     }
   }

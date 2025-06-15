@@ -83,26 +83,8 @@ export class HomePage implements OnInit {
   }
 
   async ngOnInit() {
-
-    if (this.user) {
-      /*this.callActionService.accion$.subscribe(async ({ accion, idViaje, idUser }) => {
-        this.solicitudId = Number(idViaje);
-        this.solicitudIdUser = Number(idUser);
-        if (accion === 'aceptar') {
-          this.aceptarSolicitud();
-        } else {
-          this.rechazarSolicitud()
-        }
-
-        // Opcional: limpiar el estado nativo
-        await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje']();
-      });*/
-    }
-
-
-
-  //  this.callActionService.setUser(this.user.idUser);
-  //  this.callActionService.initListener();
+    //this.callActionService.setUser(this.user.idUser);
+    //this.callActionService.initListener();
     this.escucharSolicitud();
     this.onesignal.initialize(this.userRole, this.user.idUser);
     this.getEstado();
@@ -113,28 +95,35 @@ export class HomePage implements OnInit {
 
 
   async ionViewDidEnter() {
-  const accion = await Capacitor.Plugins['CallActionPlugin']['obtenerUltimaAccion']();
-  if (accion && accion.accion && accion.idViaje && accion.idUser) {
-    this.solicitudId = Number(accion.idViaje);
-    this.solicitudIdUser = Number(accion.idUser);
-
-    if (accion.accion === 'aceptar') {
-      this.aceptarSolicitud();
-    } else {
-      this.rechazarSolicitud();
+    /*const accion = await Capacitor.Plugins['CallActionPlugin']['obtenerUltimaAccion']();
+    if (accion && accion.accion && accion.idViaje && accion.idUser) {
+     // this.solicitudId = Number(accion.idViaje);
+     // this.solicitudIdUser = Number(accion.idUser);
+  
+      if (accion.accion === 'aceptar') {
+       // this.aceptarSolicitud();
+      } else {
+       // this.rechazarSolicitud();
+      }
+  
+      await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje'](); 
     }
+  */
 
-    await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje']();
   }
-
-  this.callActionService.setUser(this.user.idUser);
-  this.callActionService.initListener();
-}
 
 
 
   escucharSolicitud() {
     this.socketService.listen('solicitud_iniciar_viaje', async (data: any) => {
+      if (data) {
+        this.soliService.resumePollingOnTripEnd();
+        this.tiempoRestante = 30;
+        this.detenerVibracion();
+        this.limpiarTemporizador();
+        this.solicitud = null;
+      }
+
     })
   }
 
@@ -311,11 +300,12 @@ export class HomePage implements OnInit {
         solicitudId: this.solicitudId,
         conductorId: this.user.idUser
       }
+       this.socketService.emit(`respuesta_solicitud`, { estado: 'Aceptado', solicitudId: this.solicitudId, conductorId: this.user.idUser, idUser: this.solicitudIdUser });
+        
       this.driverService.aceptarSolicitud(data).subscribe((re) => {
         this.tiempoRestante = 30;
 
-        this.socketService.emit(`respuesta_solicitud`, { estado: 'Aceptado', solicitudId: this.solicitudId, conductorId: this.user.idUser, idUser: this.solicitudIdUser });
-        this.detenerVibracion();
+       this.detenerVibracion();
         var noti = {
           userId: null,
           sonido: 'vacio',
@@ -325,16 +315,16 @@ export class HomePage implements OnInit {
           idUser: this.solicitudIdUser
         }
         this.router.navigate(['/driver/travel-route']);
-        this.onesignal.getToken(this.solicitudIdUser).subscribe((resp => {
-          var data = resp.result;
-          var token = data.onesignal_token;
-          noti.userId = token;
-
-          const response = this.onesignal.enviarNotificacion(noti);
-          response.subscribe((resp) => {
-            return 0;
-          })
-        }))
+        /* this.onesignal.getToken(this.solicitudIdUser).subscribe((resp => {
+           var data = resp.result;
+           var token = data.onesignal_token;
+           noti.userId = token;
+ 
+           const response = this.onesignal.enviarNotificacion(noti);
+           response.subscribe((resp) => {
+             return 0;
+           })
+         }))*/
         return 0;
       })
     }
@@ -540,7 +530,7 @@ export class HomePage implements OnInit {
     if (user) {
       await this.fcmService.requestFcmPermissionAndGetToken(user);
     }
-  } 
+  }
 
   ngOnDestroy(): void {
     this.limpiarTemporizador();

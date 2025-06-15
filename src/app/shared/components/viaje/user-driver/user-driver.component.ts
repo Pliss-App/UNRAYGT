@@ -322,7 +322,7 @@ export class UserDriverComponent implements OnInit {
               userId: this.idTokenOne,
               sonido: 'vacio',
               title: 'Viaje - Cancelado',
-              message: `${this.profile.nombre}, acaba de cancelar la solicitud.`,
+              message: `${this.profile.nombre}, se acaba de cancelar tu viaje.`,
               fecha: this.obtenerFechaHoraLocal(),
               idUser: this.idConductor
             }

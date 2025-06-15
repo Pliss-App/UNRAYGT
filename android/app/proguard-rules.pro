@@ -118,3 +118,6 @@
     @com.getcapacitor.annotation.CapacitorPlugin <methods>;
 }
 -keepattributes *Annotation*
+
+-keep class org.json.** { *; }
+-keep class io.socket.** { *; }

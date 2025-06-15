@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.CAMERA" /> <!-- Almacenamiento (si usas
     versiones antiguas de Android) -->
 
+
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
   <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
 
@@ -48,8 +49,8 @@
         android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
         android:exported="true"
         android:label="@string/title_activity_main"
-        android:launchMode="singleTask"
-        android:theme="@style/AppTheme.NoActionBarLaunch">
+        android:launchMode="singleTop"
+        android:theme="@style/AppTheme.Launcher">
         <intent-filter>
           <action android:name="android.intent.action.MAIN" />
 
@@ -92,7 +93,10 @@
         </intent-filter>
       </receiver>
 
-      <receiver android:name=".callscreen.CallActionReceiver" android:exported="true">
+      <receiver
+        android:name=".callscreen.CallActionReceiver"
+        android:exported="true"
+        android:permission="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS">
         <intent-filter>
           <action android:name="com.unrayinternational.ACCEPT" />
           <action android:name="com.unrayinternational.REJECT" />

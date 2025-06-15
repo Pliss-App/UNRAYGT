@@ -1,8 +1,9 @@
 package com.unrayinternational.app.callscreen;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -16,7 +17,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
   @Override
   public void onMessageReceived(RemoteMessage remoteMessage) {
-    Log.d(TAG, "Mensaje recibido");
     super.onMessageReceived(remoteMessage);
 
     if (remoteMessage.getData().size() > 0) {
@@ -30,6 +30,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String user = remoteMessage.getData().get("user");
         String idViaje = remoteMessage.getData().get("idViaje");
         String idUser = remoteMessage.getData().get("idUser");
+        String idConductor = remoteMessage.getData().get("idConductor");
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong("incoming_trip_time", System.currentTimeMillis());
+        editor.apply();
 
         Intent serviceIntent = new Intent(this, CallNotificationService.class);
         serviceIntent.putExtra("origin", origin);
@@ -39,12 +44,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         serviceIntent.putExtra("user", user);
         serviceIntent.putExtra("idViaje", idViaje);
         serviceIntent.putExtra("idUser", idUser);
+        serviceIntent.putExtra("idConductor", idConductor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
           startForegroundService(serviceIntent);
-          Log.d(TAG, "Entro aqui 1");
         } else {
           startService(serviceIntent);
-          Log.d(TAG, "Entro aqui 2");
         }
       }
     }
@@ -53,7 +57,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
   @Override
   public void onNewToken(@NonNull String token) {
     super.onNewToken(token);
-    Log.d(TAG, "Nuevo token FCM: " + token);
-    // Envía el token al backend si es necesario
   }
 }

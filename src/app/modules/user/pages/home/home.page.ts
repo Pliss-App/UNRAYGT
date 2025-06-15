@@ -28,7 +28,9 @@ export class HomePage implements OnInit {
   idViaje: any = null;
   isActiveMenu: boolean = false;
 
-  constructor( private fcmService: FcmService,
+  private listenerIniciado = false;
+
+  constructor(private fcmService: FcmService,
     private callActionService: CallActionService,
     private onesignal: OnesignalService, private alertController: AlertController,
     private sharedDataService: SharedService, private soli: SolicitudService, private socketService: WebSocketService,
@@ -42,46 +44,19 @@ export class HomePage implements OnInit {
 
 
 
-      this.onesignal.initialize(this.userRole, this.user.idUser);
-    
+    this.onesignal.initialize(this.userRole, this.user.idUser);
+
 
 
   }
 
   async ngOnInit() {
-          this.initFcm();
-    // Escucha el evento emitido desde el plugin nativo
-     this.callActionService.accion$.subscribe(async ({ accion, idViaje, idUser }) => {
- 
-       if (accion === 'aceptar') {
-         const alert = await this.alertController.create({
-           header: 'ACEPTADA',
-           message: `
-          Acción:  ${accion}
-      ID Viaje: ${idViaje}
-     ID Usuario:${idUser}
-     `,
-           buttons: ['OK']
-         });
+    this.initFcm();
 
-         await alert.present();
-       } else {
-         const alert = await this.alertController.create({
-           header: 'RECHAZADA',
-           message: `
-          Acción:  ${accion}
-      ID Viaje: ${idViaje}
-     ID Usuario:${idUser}
-     `,
-           buttons: ['OK']
-         });
-
-         await alert.present();
-       }
-       await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje']();
-     });
     this.callActionService.setUser(this.user.idUser);
-    this.callActionService.initListener(); 
+    this.callActionService.initListener();
+
+    // Escucha el evento emitido desde el plugin nativo
     this.location.watchUserLocation();
     this.getSolicitudCreada();
     this.escucharSolicitud();
@@ -92,6 +67,38 @@ export class HomePage implements OnInit {
 
 
   async ionViewDidEnter() {
+
+      this.callActionService.accion$.subscribe(async ({ accion, idViaje, idUser }) => {
+
+        if (accion === 'aceptar') {
+          const alert = await this.alertController.create({
+            header: 'ACEPTADA',
+            message: `
+          Acción:  ${accion}
+      ID Viaje: ${idViaje}
+     ID Usuario:${idUser}
+     `,
+            buttons: ['OK']
+          });
+
+          await alert.present();
+        } else {
+          const alert = await this.alertController.create({
+            header: 'RECHAZADA',
+            message: `
+          Acción:  ${accion}
+      ID Viaje: ${idViaje}
+     ID Usuario:${idUser}
+     `,
+            buttons: ['OK']
+          });
+
+          await alert.present();
+        }
+        await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje']();
+      });
+
+    
   }
 
 
@@ -216,6 +223,6 @@ export class HomePage implements OnInit {
     if (user) {
       await this.fcmService.requestFcmPermissionAndGetToken(user);
     }
-  } 
+  }
 
 }

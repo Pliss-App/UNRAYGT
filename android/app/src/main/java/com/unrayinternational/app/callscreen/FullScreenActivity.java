@@ -23,6 +23,21 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.unrayinternational.app.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 public class FullScreenActivity extends Activity {
   private final Handler timeoutHandler = new Handler(Looper.getMainLooper());
   private MediaPlayer mediaPlayer;
@@ -124,6 +139,7 @@ public class FullScreenActivity extends Activity {
     String _user = getIntent().getStringExtra("user");
     String imageUrl = getIntent().getStringExtra("url");
     String idUser = getIntent().getStringExtra("idUser");
+    String idConductor = getIntent().getStringExtra("idConductor");
 
     origin.setText("Salida: " + _origin);
     destination.setText("Destino: " + _destination);
@@ -141,10 +157,8 @@ public class FullScreenActivity extends Activity {
     btnAccept.setOnClickListener(v -> {
       stopRingtone();
       stopVibration();
-      guardarAccion("aceptar", idViaje, idUser);
-      emitirEventoJS("aceptar", idViaje, idUser);
-      Log.d("CALLSCREEN", "Viaje aceptado");
-      // Abrir la app (MainActivity)
+      guardarAccion("aceptar", idViaje, idUser, idConductor);
+      emitirEventoJS("aceptar", idViaje, idUser, idConductor);
       Intent launchIntent = getPackageManager().getLaunchIntentForPackage(getPackageName());
       if (launchIntent != null) {
         launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -156,34 +170,27 @@ public class FullScreenActivity extends Activity {
     btnReject.setOnClickListener(v -> {
       stopRingtone();
       stopVibration();
-      guardarAccion("rechazar", idViaje, idUser);
-      emitirEventoJS("rechazar", idViaje, idUser);
+      guardarAccion("rechazar", idViaje, idUser, idConductor);
+      emitirEventoJS("rechazar", idViaje, idUser, idConductor);
       Intent launchIntent = getPackageManager().getLaunchIntentForPackage(getPackageName());
       if (launchIntent != null) {
         launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(launchIntent);
       }
-      Log.d("CALLSCREEN", "Viaje rechazado");
       finishCallScreen();
     });
   }
-  private void guardarAccion(String accion,  String idViaje, String idUser) {
+  private void guardarAccion(String accion,  String idViaje, String idUser, String idConductor) {
     getSharedPreferences("CALLSCREEN_PREF", MODE_PRIVATE)
       .edit()
       .putString("accion", accion)
       .putString("idViaje", idViaje)// "aceptar" o "rechazar"
       .putString("idUser", idUser)
+      .putString("idConductor", idConductor)
       .apply();
-
-    Log.d("CALLSCREEN", "Viaje : " + " "+ accion);
+    enviarRespuestaViaje(accion, idViaje, idUser, idConductor);
   }
 
-  private void guardarIdViaje(String idViaje) {
-    getSharedPreferences("CALLSCREEN_PREF", MODE_PRIVATE)
-      .edit()
-      .putString("idViaje", idViaje)
-      .apply(); // o .apply()
-  }
   private void finishCallScreen() {
     timeoutHandler.removeCallbacksAndMessages(null);
     stopService(new Intent(this, CallNotificationService.class));
@@ -192,12 +199,9 @@ public class FullScreenActivity extends Activity {
 
   private void setupTimeout() {
     long tiempoRestante = getIntent().getLongExtra("tiempo_restante", 30);
-    Log.d("CALLSCREEN", "Tiempo restante para cerrar: " + tiempoRestante + " segundos");
-
     timeoutHandler.postDelayed(() -> {
       stopRingtone();
       stopVibration();
-      Log.d("CALLSCREEN", "Pantalla cerrada por timeout");
       finishCallScreen();
     },  tiempoRestante * 1000);
   }
@@ -271,13 +275,205 @@ public class FullScreenActivity extends Activity {
     timeoutHandler.removeCallbacksAndMessages(null);
   }
 
-  private void emitirEventoJS(String accion, String idViaje, String idUser) {
+  private void emitirEventoJS(String accion, String idViaje, String idUser, String idConductor) {
     Intent intent = new Intent("CALLSCREEN_ACCION");
     intent.putExtra("accion", accion);
     intent.putExtra("idViaje", idViaje);
     intent.putExtra("idUser", idUser);
+    intent.putExtra("idConductor", idConductor);
     sendBroadcast(intent); // Esto lo atrapa el plugin y lanza a JS
   }
+
+  private void enviarRespuestaViaje(String accion, String idViaje, String idUser, String idConductor) {
+    // 1. Petición HTTP
+    if ("aceptar".equals(accion)) {
+    try {
+      JSONObject json = new JSONObject();
+      json.put("solicitudId", idViaje);
+      json.put("conductorId", idConductor);
+      json.put("idUser", idUser);
+
+      RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/json"));
+      Request request = new Request.Builder()
+        .url("https://unrayappserver.onrender.com/api/viaje/aceptar_solicitud") // tu endpoint real aquí
+        .post(body)
+        .build();
+
+      OkHttpClient client = new OkHttpClient();
+      client.newCall(request).enqueue(new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+          Log.e("HTTP", "Error en aceptarSolicitud", e);
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+          Log.d("HTTP", "Respuesta aceptada: " + response.body().string());
+        }
+      });
+
+    } catch (Exception e) {
+      Log.e("enviarRespuestaViaje", "Error creando JSON", e);
+    }
+
+    // 2. Emitir evento socket
+      try {
+        // Configuración con manejo de errores mejorado
+        IO.Options options = new IO.Options();
+        options.forceNew = true;
+        options.secure = true;
+        options.reconnection = true;
+        options.reconnectionAttempts = 5;
+        options.reconnectionDelay = 1000;
+        options.timeout = 20000;
+        options.transports = new String[]{"websocket"};
+        options.path = "/api/socket";
+
+        // Conexión con try-catch específico
+        final Socket mSocket = IO.socket("https://unrayappserver.onrender.com", options);
+
+        mSocket.on(Socket.EVENT_CONNECT, args -> {
+          try {
+            JSONObject payload = new JSONObject();
+            payload.put("estado", accion.equals("aceptar") ? "Aceptado" : "Rechazado");
+            payload.put("solicitudId", idViaje);
+            payload.put("conductorId", idConductor);
+            payload.put("idUser", idUser);
+
+            mSocket.emit("respuesta_solicitud", payload);
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+              mSocket.disconnect();
+              mSocket.close();
+              Log.d("SocketIO", "Socket desconectado tras retraso");
+            }, 1000);
+          } catch (JSONException e) {
+            Log.e("SocketIO", "Error JSON", e);
+          }
+        });
+
+        mSocket.on(Socket.EVENT_CONNECT_ERROR, args -> {
+          for (Object arg : args) {
+            Log.e("SocketIO", "Connect error: " + arg.toString());
+          }
+        });
+
+        mSocket.connect();
+
+      } catch (URISyntaxException e) {
+        Log.e("SocketIO", "URI error", e);
+      } catch (Exception e) {
+        Log.e("SocketIO", "General exception", e);
+      }
+
+    } else {
+
+      try {
+        JSONObject json = new JSONObject();
+        json.put("id", idConductor);
+
+        RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/json"));
+        Request request = new Request.Builder()
+          .url("https://unrayappserver.onrender.com/api/solicitudes/update-estado-usuario") // tu endpoint real aquí
+          .post(body)
+          .build();
+
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new Callback() {
+          @Override
+          public void onFailure(Call call, IOException e) {
+            Log.e("HTTP", "Error en aceptarSolicitud", e);
+          }
+
+          @Override
+          public void onResponse(Call call, Response response) throws IOException {
+            Log.d("HTTP", "Respuesta aceptada: " + response.body().string());
+          }
+        });
+
+      } catch (Exception e) {
+        Log.e("enviarRespuestaViaje", "Error creando JSON", e);
+      }
+      // 2. Emitir evento socket
+      try {
+        // Configuración con manejo de errores mejorado
+        IO.Options options = new IO.Options();
+        options.forceNew = true;
+        options.secure = true;
+        options.reconnection = true;
+        options.reconnectionAttempts = 5;
+        options.reconnectionDelay = 1000;
+        options.timeout = 20000;
+        options.transports = new String[]{"websocket"};
+        options.path = "/api/socket";
+
+        // Conexión con try-catch específico
+        final Socket mSocket = IO.socket("https://unrayappserver.onrender.com", options);
+
+        mSocket.on(Socket.EVENT_CONNECT, args -> {
+          try {
+            JSONObject payload = new JSONObject();
+            payload.put("estado", accion.equals("aceptar") ? "Aceptado" : "Rechazado");
+            payload.put("solicitudId", idViaje);
+            payload.put("conductorId", idConductor);
+            payload.put("idUser", idUser);
+
+            mSocket.emit("respuesta_solicitud", payload);
+            cambiaStatus(idConductor);
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+              mSocket.disconnect();
+              mSocket.close();
+              Log.d("SocketIO", "Socket desconectado tras retraso");
+            }, 1000);
+          } catch (JSONException e) {
+            Log.e("SocketIO", "Error JSON", e);
+          }
+        });
+
+        mSocket.on(Socket.EVENT_CONNECT_ERROR, args -> {
+          for (Object arg : args) {
+            Log.e("SocketIO", "Connect error: " + arg.toString());
+          }
+        });
+
+        mSocket.connect();
+
+      } catch (URISyntaxException e) {
+        Log.e("SocketIO", "URI error", e);
+      } catch (Exception e) {
+        Log.e("SocketIO", "General exception", e);
+      }
+    }
+  }
+
+  private void cambiaStatus(String idConductor) {
+    try {
+      IO.Options options = new IO.Options();
+      options.forceNew = true;
+      options.reconnection = true;
+
+      Socket mSocket = IO.socket("https://unrayappserver.onrender.com/api/socket/", options);
+      mSocket.connect();
+
+      JSONObject payload = new JSONObject();
+      payload.put("driverId", idConductor);
+      payload.put("estado", 1);
+
+      mSocket.emit("cambiar_estado", payload);
+      Log.d("SocketIO", "Evento enviado: " + payload.toString());
+
+      // Opcional: desconectar después de unos segundos
+      new Handler(Looper.getMainLooper()).postDelayed(() -> {
+        mSocket.disconnect();
+      }, 2000);
+
+    } catch (URISyntaxException | JSONException e) {
+      Log.e("SocketIO", "Error al emitir socket", e);
+    }
+  }
+
+
   @Override
   public void onBackPressed() {
     // Bloquear botón atrás si es necesario

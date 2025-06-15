@@ -15,7 +15,7 @@ export class WebSocketService {
 
 
   private socket = io(environment.socketUrl, {
-    path: '/api/socket/',
+    path: '/api/socket',
     transports: ['websocket'], // Asegurar que coincide con el backend,
     reconnection: true,
     reconnectionAttempts: 10,

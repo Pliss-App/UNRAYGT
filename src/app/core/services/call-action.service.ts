@@ -8,9 +8,9 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class CallActionService {
-
+  private listenerActivo = false;
   // Observable que emitirá los datos al componente
-  private accionSubject = new Subject<{ accion: string, idViaje: string, idUser: string }>();
+  private accionSubject = new Subject<{ accion: string, idViaje: string, idUser: string, idConductor:string }>();
   public accion$ = this.accionSubject.asObservable(); // Observable público
 
   private user: any;
@@ -48,15 +48,29 @@ export class CallActionService {
     */
 
   initListener() {
-    Capacitor.Plugins['CallActionPlugin']['addListener']('viaje:accion', async (data: any) => {
-      const { accion, idViaje, idUser } = data;
 
-      if (!this.user) {
-        console.warn('⚠️ Usuario no definido aún en CallActionService');
-        return;
-      }
-      this.accionSubject.next({ accion, idViaje, idUser });
-    });
+      if (this.listenerActivo) return; // evita múltiples registros
+  this.listenerActivo = true;
+
+    Capacitor.Plugins['CallActionPlugin']['addListener']('viaje:accion', async (data: any) => {
+    const { accion, idViaje, idUser, idConductor } = data;
+    this.accionSubject.next({ accion, idViaje: idViaje, idUser: idUser, idConductor: idConductor});
+
+    // Limpiar estado guardado (opcional aquí si también lo haces en la carga inicial)
+    await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje']();
+  });
+
+ Capacitor.Plugins['CallActionPlugin']['getAccionViaje']().then(async (data: any) => {
+    const { accion, idViaje, idUser, idConductor } = data;
+    if (accion && idViaje && idUser && idConductor) {
+      this.accionSubject.next({ accion, idViaje: idViaje, idUser: idUser, idConductor: idConductor });
+
+      // Limpiar para evitar duplicados si el usuario vuelve a abrir la app
+      await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje']();
+    }
+  }).catch((err:any) => {
+    console.error('Error al obtener acción almacenada:', err);
+  });
   }
 
 }

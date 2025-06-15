@@ -64,6 +64,7 @@ public class CallNotificationService extends Service {
     String price = intent.getStringExtra("price");
     String idViaje = intent.getStringExtra("idViaje");
     String idUser = intent.getStringExtra("idUser");
+    String idConductor = intent.getStringExtra("idConductor");
     String imageUrl = intent.getStringExtra("url");
     // Intent para abrir la actividad de pantalla completa
     Intent fullScreenIntent = new Intent(this, FullScreenActivity.class);
@@ -77,25 +78,38 @@ public class CallNotificationService extends Service {
       PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
     );
 
-    Intent openAppIntent = new Intent(this, com.unrayinternational.app.MainActivity.class);
-    openAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    openAppIntent.putExtra("idViaje", idViaje);
-    openAppIntent.putExtra("idUser", idUser);
+    Intent acceptIntent = new Intent(this, CallActionReceiver.class);
+    acceptIntent.setAction("com.unrayinternational.ACCEPT");
+    acceptIntent.putExtra("timestamp", System.currentTimeMillis());
+    acceptIntent.putExtra("idViaje", idViaje);
+    acceptIntent.putExtra("idUser", idUser);
+    acceptIntent.putExtra("idConductor", idConductor);
+    acceptIntent.putExtra("origin", origin);
+    acceptIntent.putExtra("destination", destination);
+    acceptIntent.putExtra("price", price);
 
-    PendingIntent acceptPendingIntent = PendingIntent.getActivity(
+    PendingIntent acceptPendingIntent = PendingIntent.getBroadcast(
       this,
-      1,
-      openAppIntent,
+      0, // Request code único para Aceptar
+      acceptIntent,
       PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
     );
 
-
     Intent rejectIntent = new Intent(this, CallActionReceiver.class);
     rejectIntent.setAction("com.unrayinternational.REJECT");
+    rejectIntent.putExtra("timestamp", System.currentTimeMillis());
     rejectIntent.putExtra("idViaje", idViaje);
     rejectIntent.putExtra("idUser", idUser);
+    rejectIntent.putExtra("idConductor", idConductor);
+    rejectIntent.putExtra("origin", origin);
+    rejectIntent.putExtra("destination", destination);
+    rejectIntent.putExtra("price", price);
+
     PendingIntent rejectPendingIntent = PendingIntent.getBroadcast(
-      this, 2, rejectIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+      this,
+      1, // Request code único para Rechazar
+      rejectIntent,
+      PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
     );
 
 
@@ -107,7 +121,7 @@ public class CallNotificationService extends Service {
       .setPriority(NotificationCompat.PRIORITY_MAX)
       .setCategory(NotificationCompat.CATEGORY_ALARM) //.setCategory(NotificationCompat.CATEGORY_CALL)
       .setFullScreenIntent(fullScreenPendingIntent, true)
-      .setAutoCancel(true)
+      .setAutoCancel(false)
       .setOngoing(true)
       .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
       .addAction(new NotificationCompat.Action.Builder(
@@ -177,11 +191,12 @@ public class CallNotificationService extends Service {
       if (originalIntent != null) {
         String idViaje = originalIntent.getStringExtra("idViaje");
         String idUser = originalIntent.getStringExtra("idUser");
-
+        String idConductor = originalIntent.getStringExtra("idConductor");
         Intent rejectIntent = new Intent(this, CallActionReceiver.class);
         rejectIntent.setAction("com.unrayinternational.REJECT");
         rejectIntent.putExtra("idViaje", idViaje);
         rejectIntent.putExtra("idUser", idUser);
+        rejectIntent.putExtra("idConductor", idConductor);
         sendBroadcast(rejectIntent);
       }
       stopSelf();
@@ -233,11 +248,12 @@ public class CallNotificationService extends Service {
     if (originalIntent != null) {
       String idViaje = originalIntent.getStringExtra("idViaje");
       String idUser = originalIntent.getStringExtra("idUser");
-
+      String idConductor = originalIntent.getStringExtra("idConductor");
       Intent rejectIntent = new Intent(this, CallActionReceiver.class);
       rejectIntent.setAction("com.unrayinternational.REJECT");
       rejectIntent.putExtra("idViaje", idViaje);
       rejectIntent.putExtra("idUser", idUser);
+      rejectIntent.putExtra("idConductor", idConductor);
       sendBroadcast(rejectIntent);
     }
 
