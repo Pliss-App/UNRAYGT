@@ -86,6 +86,7 @@ export class HomePage implements OnInit {
     //this.callActionService.setUser(this.user.idUser);
     //this.callActionService.initListener();
     this.escucharSolicitud();
+    this.escucharSolicitudCancelada();
     this.onesignal.initialize(this.userRole, this.user.idUser);
     this.getEstado();
     this.escucharSolicitudes();
@@ -112,6 +113,18 @@ export class HomePage implements OnInit {
 
   }
 
+  escucharSolicitudCancelada() {
+    this.socketService.listen('solicitud_cancelada', async (data: any) => {
+      if (data) {
+        this.soliService.resumePollingOnTripEnd();
+        this.tiempoRestante = 30;
+        this.detenerVibracion();
+        this.limpiarTemporizador();
+        this.solicitud = null;
+      }
+
+    })
+  }
 
 
   escucharSolicitud() {
@@ -125,6 +138,9 @@ export class HomePage implements OnInit {
       }
 
     })
+
+
+
   }
 
   getEstado() {
@@ -300,12 +316,12 @@ export class HomePage implements OnInit {
         solicitudId: this.solicitudId,
         conductorId: this.user.idUser
       }
-       this.socketService.emit(`respuesta_solicitud`, { estado: 'Aceptado', solicitudId: this.solicitudId, conductorId: this.user.idUser, idUser: this.solicitudIdUser });
-        
+      this.socketService.emit(`respuesta_solicitud`, { estado: 'Aceptado', solicitudId: this.solicitudId, conductorId: this.user.idUser, idUser: this.solicitudIdUser });
+
       this.driverService.aceptarSolicitud(data).subscribe((re) => {
         this.tiempoRestante = 30;
 
-       this.detenerVibracion();
+        this.detenerVibracion();
         var noti = {
           userId: null,
           sonido: 'vacio',

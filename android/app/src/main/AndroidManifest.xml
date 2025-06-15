@@ -96,7 +96,7 @@
       <receiver
         android:name=".callscreen.CallActionReceiver"
         android:exported="true"
-        android:permission="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS">
+    >
         <intent-filter>
           <action android:name="com.unrayinternational.ACCEPT" />
           <action android:name="com.unrayinternational.REJECT" />

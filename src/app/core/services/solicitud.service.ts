@@ -150,7 +150,9 @@ export class SolicitudService {
     const response = this.api.enviarSolicitud(solicitud);
 
     response.subscribe((re) => {
-      this.enviarRespuesta(re);
+      if (re) {
+        this.enviarRespuesta(re);
+      }
 
     })
   }

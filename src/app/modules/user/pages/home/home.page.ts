@@ -68,37 +68,37 @@ export class HomePage implements OnInit {
 
   async ionViewDidEnter() {
 
-      this.callActionService.accion$.subscribe(async ({ accion, idViaje, idUser }) => {
+    this.callActionService.accion$.subscribe(async ({ accion, idViaje, idUser }) => {
 
-        if (accion === 'aceptar') {
-          const alert = await this.alertController.create({
-            header: 'ACEPTADA',
-            message: `
+      if (accion === 'aceptar') {
+        const alert = await this.alertController.create({
+          header: 'ACEPTADA',
+          message: `
           Acción:  ${accion}
       ID Viaje: ${idViaje}
      ID Usuario:${idUser}
      `,
-            buttons: ['OK']
-          });
+          buttons: ['OK']
+        });
 
-          await alert.present();
-        } else {
-          const alert = await this.alertController.create({
-            header: 'RECHAZADA',
-            message: `
+        await alert.present();
+      } else {
+        const alert = await this.alertController.create({
+          header: 'RECHAZADA',
+          message: `
           Acción:  ${accion}
       ID Viaje: ${idViaje}
      ID Usuario:${idUser}
      `,
-            buttons: ['OK']
-          });
+          buttons: ['OK']
+        });
 
-          await alert.present();
-        }
-        await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje']();
-      });
+        await alert.present();
+      }
+      await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje']();
+    });
 
-    
+
   }
 
 
@@ -146,7 +146,10 @@ export class HomePage implements OnInit {
 
   escucharSolicitud() {
     this.socketService.listen('solicitud_iniciar', async (data: any) => {
-      this.router.navigate(['/user/travel-route']); // Ajusta la ruta según tu aplicación
+      if (data) {
+        this.router.navigate(['/user/travel-route']); // Ajusta la ruta según tu aplicación
+      }
+
     })
   }
 
