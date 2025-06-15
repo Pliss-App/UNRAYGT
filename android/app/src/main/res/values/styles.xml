@@ -33,7 +33,11 @@
     <item name="android:windowIsFloating">true</item>
   </style>
 
-  <style name="AppTheme.Launcher" parent="Theme.AppCompat.NoActionBar">
-    <item name="android:windowBackground">#FF4500</item>
+  <style name="AppTheme.Launcher" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowBackground">@color/orange_background</item>
+    <item name="android:windowFullscreen">true</item>
+    <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    <item name="android:windowTranslucentStatus">true</item>
+    <item name="android:windowDisablePreview">true</item>
   </style>
 </resources>

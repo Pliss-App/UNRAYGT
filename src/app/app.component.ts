@@ -67,7 +67,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     await this.platform.ready();
-   // await this.getSplash();
+    await this.getSplash();
     this.isAuthenticated = this.authService.isAuthenticated();
     App.addListener('pause', () => {
       this.saveState();
