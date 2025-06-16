@@ -24,21 +24,24 @@ export class WebSocketService {
 
   constructor(private api: UserService, private auth: AuthService) {
     this.user = this.auth.getUser();
+    this.getIsAuth();
+  }
 
-    if (this.auth.isAuthenticated()) {
+
+  async getIsAuth() {
+    const isAuthenticated = await this.auth.isAuthenticated()
+
+    if (isAuthenticated) {
       this.socket.on('connect', () => {
         if (this.auth.getRole() == 'conductor') {
-      
-            this.socket.emit("registrar_conductor", this.user.idUser);
-          
+
+          this.socket.emit("registrar_conductor", this.user.idUser);
+
         } else {
           this.socket.emit('registrar_usuario', this.user.idUser);
         }
       });
-      /*
-          this.socket.on('disconnect', () => {
-            console.log('Desconectado del servidor');
-          }); */
+
 
     }
   }

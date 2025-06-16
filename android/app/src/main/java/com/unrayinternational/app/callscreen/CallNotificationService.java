@@ -142,10 +142,18 @@ public class CallNotificationService extends Service {
     // Iniciar sonido y vibración
     startSoundAndVibration();
 
-    // Abrir FullScreenActivity manualmente con un pequeño delay
+   /* // Abrir FullScreenActivity manualmente con un pequeño delay
     new Handler(Looper.getMainLooper()).postDelayed(() -> {
       startActivity(fullScreenIntent);
-    }, 300);
+    }, 300); */
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // Android 14 es "Upside Down Cake"
+      new Handler(Looper.getMainLooper()).postDelayed(() -> {
+        startActivity(fullScreenIntent);
+      }, 300);
+    } else {
+      Log.w(TAG, "Android 14+: no se permite abrir actividades desde servicio en background.");
+    }
 
     return START_NOT_STICKY;
   }

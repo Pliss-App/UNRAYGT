@@ -29,7 +29,7 @@ export class ProfilePage implements OnInit {
     this.userRole = this.auth.getRole();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.profileForm = this.fb.group({
       nombre: [''],        // Campo de nombre
       apellido: [''],    // Campo de apellido
@@ -41,7 +41,7 @@ export class ProfilePage implements OnInit {
       // Habilita el botón de actualizar si el formulario cambió, de lo contrario lo desactiva
       this.isUpdateButtonDisabled = this.profileForm.pristine;
     });
-    const isAuthenticated = this.authService.isAuthenticated();
+    const isAuthenticated = await this.authService.isAuthenticated();
     const userRole = this.authService.getRole();
 
     if (isAuthenticated) {

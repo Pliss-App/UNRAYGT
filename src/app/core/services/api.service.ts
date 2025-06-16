@@ -94,11 +94,11 @@ export class ApiService {
             this.handleDisconnection(); // No hay conexión con la API
             throw 'API no disponible';
           })
-        ).subscribe(() => {
+        ).subscribe(async () => {
           this.isApiConnected.next(true);
           this.reconnecting = false;
 
-          const isAuthenticated = this.authService.isAuthenticated();
+          const isAuthenticated = await this.authService.isAuthenticated();
           const userRole = this.authService.getRole();
           const currentUrl = this.router.url;
           if (isAuthenticated) {

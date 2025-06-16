@@ -2,7 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 
 
 import { Geolocation } from '@capacitor/geolocation';
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, registerPlugin } from '@capacitor/core';
 import { UserService } from './user.service';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -10,6 +10,9 @@ import { HttpClient } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
 import { Preferences } from '@capacitor/preferences';
 import { SharedService } from './shared.service';
+import { BackgroundGeolocationPlugin } from '@capacitor-community/background-geolocation';
+const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>('BackgroundGeolocation');
+
 
 @Injectable({
   providedIn: 'root'
@@ -175,6 +178,32 @@ export class LocationService {
       console.error('Error solicitando permisos:', error);
       return false;
     }
+  }
+
+
+  async getLocationSegundoPlano() {
+    this.watch = await BackgroundGeolocation.addWatcher(
+      {
+        requestPermissions: true,
+        stale: false,
+        backgroundMessage: 'Compartiendo Ubicación',
+        distanceFilter: 10,
+       backgroundTitle: 'Mi Ubicación',
+       
+      },
+      async (result, error) => {
+        if (error) {
+          console.error('Error obteniendo ubicación:', error);
+          return;
+        }
+
+        if (result) {
+          if (this.auth.getRole() == 'conductor') {
+            this.saveCoordinates(result.latitude, result.longitude, result.bearing || 0)
+          }
+        }
+      }
+    );
   }
 
 }

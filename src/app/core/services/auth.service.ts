@@ -178,11 +178,21 @@ export class AuthService { //'https://unrayappserver.onrender.com/api';
       window.location.reload();
     })
   }
-
+/*
   // Verificar si el usuario está autenticado
   isAuthenticated(): boolean {
     return !!this.currentUserSubject.value;
+  } */
+
+  async isAuthenticated(): Promise<boolean> {
+  if (!this.currentUserSubject.value) {
+    const user = localStorage.getItem('currentUser');
+    if (user) {
+      this.currentUserSubject.next(JSON.parse(user));
+    }
   }
+  return !!this.currentUserSubject.value;
+}
 
   isLoggedIn(): boolean {
     // Verifica el estado de autenticación del usuario

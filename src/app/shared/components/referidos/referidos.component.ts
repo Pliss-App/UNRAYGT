@@ -24,11 +24,7 @@ export class ReferidosComponent implements OnInit {
 
   constructor(private modalController: ModalController, private toastController: ToastController, private authService: AuthService,
     private navParams: NavParams, private socialSharing: SocialSharing, private api: UserService) {
-    /* const isAuthenticated = this.authService.isAuthenticated();
- 
-     if (isAuthenticated) {
- 
-     }*/
+
 
   }
 

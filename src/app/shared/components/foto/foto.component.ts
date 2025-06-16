@@ -52,8 +52,8 @@ export class FotoComponent implements OnInit {
     }
   }
 
-  getUser() {
-    const isAuthenticated = this.authService.isAuthenticated();
+  async getUser() {
+    const isAuthenticated = await this.authService.isAuthenticated();
     if (isAuthenticated) {
       this.user = this.authService.getUser();
       this.getFoto();

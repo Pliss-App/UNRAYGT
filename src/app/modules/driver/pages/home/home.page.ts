@@ -96,6 +96,7 @@ export class HomePage implements OnInit {
 
 
   async ionViewDidEnter() {
+    this.locationService.getLocationSegundoPlano();
     /*const accion = await Capacitor.Plugins['CallActionPlugin']['obtenerUltimaAccion']();
     if (accion && accion.accion && accion.idViaje && accion.idUser) {
      // this.solicitudId = Number(accion.idViaje);
@@ -116,11 +117,12 @@ export class HomePage implements OnInit {
   escucharSolicitudCancelada() {
     this.socketService.listen('solicitud_cancelada', async (data: any) => {
       if (data) {
-        this.soliService.resumePollingOnTripEnd();
+        this.solicitud = null;
         this.tiempoRestante = 30;
         this.detenerVibracion();
         this.limpiarTemporizador();
-        this.solicitud = null;
+
+        this.soliService.resumePollingOnTripEnd();
       }
 
     })
@@ -129,17 +131,12 @@ export class HomePage implements OnInit {
 
   escucharSolicitud() {
     this.socketService.listen('solicitud_iniciar_viaje', async (data: any) => {
-      if (data) {
-        this.soliService.resumePollingOnTripEnd();
-        this.tiempoRestante = 30;
-        this.detenerVibracion();
-        this.limpiarTemporizador();
-        this.solicitud = null;
-      }
-
+      this.solicitud = null;
+      this.detenerVibracion();
+      this.tiempoRestante = 30;
+      this.limpiarTemporizador();
+      this.soliService.resumePollingOnTripEnd();
     })
-
-
 
   }
 
@@ -311,17 +308,16 @@ export class HomePage implements OnInit {
 
   aceptarSolicitud() {
     if (this.solicitudId) {
-      this.soliService.resumePollingOnTripEnd();
       var data = {
         solicitudId: this.solicitudId,
         conductorId: this.user.idUser
       }
       this.socketService.emit(`respuesta_solicitud`, { estado: 'Aceptado', solicitudId: this.solicitudId, conductorId: this.user.idUser, idUser: this.solicitudIdUser });
-
+      this.detenerVibracion();
       this.driverService.aceptarSolicitud(data).subscribe((re) => {
         this.tiempoRestante = 30;
 
-        this.detenerVibracion();
+
         var noti = {
           userId: null,
           sonido: 'vacio',
@@ -343,6 +339,8 @@ export class HomePage implements OnInit {
          }))*/
         return 0;
       })
+
+      this.soliService.resumePollingOnTripEnd();
     }
     this.limpiarTemporizador();
     this.solicitud = null;

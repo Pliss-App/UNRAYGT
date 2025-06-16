@@ -68,7 +68,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   async ngOnInit() {
     await this.platform.ready();
     await this.getSplash();
-    this.isAuthenticated = this.authService.isAuthenticated();
+    this.isAuthenticated =  await this.authService.isAuthenticated();
     App.addListener('pause', () => {
       this.saveState();
     });
@@ -87,34 +87,38 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   async initializeApp() {
-    const isAuthenticated = this.authService.isAuthenticated();
+    const isAuthenticated = await this.authService.isAuthenticated();
     const currentUrl = this.router.url;
     if (isAuthenticated) {
-     // this.getLocationInit();
-      this.user = this.authService.getUser();
-      const userRole = this.authService.getRole();
-      this.role = userRole;
-      this.getRating()
-      if (userRole === 'usuario' && !currentUrl.startsWith('/user')) {
-        if (this.user.nombre == "" && this.user.apellido == "") {
-          this.router.navigate(['/auth/formnombres'], { replaceUrl: true });
-        } else {
-          this.menuCtrl.enable(true, 'userMenu');
-          this.menuCtrl.enable(false, 'driverMenu');
-          this.soli.startPolling();
-          this.router.navigate(['/user'], { replaceUrl: true });
-        }
+      // this.getLocationInit();
+      this.user =  await this.authService.getUser();
+      if (this.user.verificacion == 1) {
+        const userRole = this.authService.getRole();
+        this.role = userRole;
+        this.getRating()
+        if (userRole === 'usuario' && !currentUrl.startsWith('/user')) {
+          if (this.user.nombre == "" && this.user.apellido == "") {
+            this.router.navigate(['/auth/formnombres'], { replaceUrl: true });
+          } else {
+            this.menuCtrl.enable(true, 'userMenu');
+            this.menuCtrl.enable(false, 'driverMenu');
+            this.soli.startPolling();
+            this.router.navigate(['/user'], { replaceUrl: true });
+          }
 
-      } else if (userRole === 'conductor' && !currentUrl.startsWith('/driver')) {
-        this.soli.startPolling();
-        this.menuCtrl.enable(true, 'driverMenu');
-        this.menuCtrl.enable(false, 'userMenu');
-        this.router.navigate(['/driver'], { replaceUrl: true });
+        } else if (userRole === 'conductor' && !currentUrl.startsWith('/driver')) {
+          this.soli.startPolling();
+          this.menuCtrl.enable(true, 'driverMenu');
+          this.menuCtrl.enable(false, 'userMenu');
+          this.router.navigate(['/driver'], { replaceUrl: true });
+        }
+      } else {
+  this.menuCtrl.enable(false, 'userMenu');
+          this.menuCtrl.enable(false, 'driverMenu');
+        this.router.navigate([`/auth/verificacion/${this.user.telefono}`], { replaceUrl: true });
       }
     } else {
-      this.menuCtrl.enable(false, 'userMenu');
-      this.menuCtrl.enable(false, 'driverMenu');
-      this.router.navigate(['/auth'], { replaceUrl: true }); 
+      this.router.navigate(['/auth/'], { replaceUrl: true });
     }
   }
 
