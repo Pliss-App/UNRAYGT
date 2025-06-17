@@ -36,13 +36,15 @@ export class ChatPage implements OnInit {
     private modalController: ModalController,
     private uSer: UserService) {
     this.userRole = this.auth.getRole();
+
   }
 
   async ngOnInit() {
-  //  this.storageService.removeItem('sms-definido');
+    //  this.storageService.removeItem('sms-definido');
     this.getSMSAutomatico();
 
-    this.cargarMensajes();
+   await  this.cargarMensajes();
+       this.updateNoLeidos();
     setInterval(() => {
       this.cargarMensajes();
       if (this.isScrolledToBottom) {
@@ -123,8 +125,8 @@ export class ChatPage implements OnInit {
         sonido: 'vacio',
         title: 'Chat',
         message: this.mensaje,
-        fecha: this.  obtenerFechaHoraLocal(),
-        idUser:  this.receptorId,
+        fecha: this.obtenerFechaHoraLocal(),
+        idUser: this.receptorId,
       }
       this.onesignal.getToken(this.receptorId).subscribe((resp => {
 
@@ -143,6 +145,7 @@ export class ChatPage implements OnInit {
       }))
       const response = this.uSer.sendMensajes(data);
       response.subscribe((re) => {
+        this.updateNoLeidos();
         this.scrollToBottom();
         this.cargarMensajes();
       })
@@ -188,6 +191,16 @@ export class ChatPage implements OnInit {
       String(now.getHours()).padStart(2, "0") + ":" +
       String(now.getMinutes()).padStart(2, "0") + ":" +
       String(now.getSeconds()).padStart(2, "0");
+  }
+
+
+  updateNoLeidos() {
+    const data = {
+      idViaje: this.idViaje,
+      receptor_id: this.receptorId,
+    };
+    this.uSer.putMensajes(data).subscribe((re)=>{
+    })
   }
 
 

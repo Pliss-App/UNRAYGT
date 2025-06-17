@@ -165,8 +165,17 @@ export class UserService {
     return this.apiService.sendChat(`viaje/send/mensajes`, data);
   }
 
+  getMensajesNoLeidos(data: any) {
+    return this.apiService.getChatNoLeido(`viaje/get/mensajesNoLeidos`, data);
+  }
+
   getMensajes(idViaje: any, emisor_id: any, receptor_id: any) {
     return this.apiService.getChat(`viaje/obtener/mensajes`, idViaje, emisor_id, receptor_id);
+  }
+
+
+  putMensajes(data: any) {
+    return this.apiService.putChat(`viaje/updateMensajesNoLeidos`, data);
   }
 
   getLocation(id: any) {
@@ -224,6 +233,10 @@ export class UserService {
 
   getNotificacionesUser(id: any) {
     return this.apiService.get(`user/notificaciones/${id}`);
+  }
+
+  getNotificacionesUserNoLeidas(id: any) {
+    return this.apiService.get(`user/notificaciones-noleidas/${id}`);
   }
 
   updatetNotificacion(data: any) {
@@ -328,7 +341,7 @@ export class UserService {
   }
 
 
-  postDesarrolloSoli (data:any){
+  postDesarrolloSoli(data: any) {
     return this.apiService.postdesarrollo(`viaje/aceptar_solicitud`, data)
   }
 

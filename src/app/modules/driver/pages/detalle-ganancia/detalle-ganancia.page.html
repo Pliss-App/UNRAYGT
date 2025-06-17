@@ -1,4 +1,4 @@
-<ion-header color="primary">
+<ion-header style="box-shadow: none;">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-button (click)="openMenu()">
@@ -10,55 +10,41 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card>
-    <ion-card-content class="card-content">
-      <!-- Centrar el h1 -->
-      <h1>Q{{ totalGanancia }}</h1>
-      <!-- Texto debajo del h1 -->
-      <p class="ganancia-text">Ganancias</p>
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Seleccionar Fecha</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <!-- Botón para abrir el calendario -->
-      <ion-button shape="round" expand="full" (click)="toggleDatePicker()">
-        {{ selectedDate }}
-      </ion-button>
-
-      <!-- Calendario que se muestra/oculta según la variable `showDatePicker` -->
-      <ion-datetime *ngIf="showDatePicker" [value]="selectedDate" (ionChange)="onDateChange($event)"
-        presentation="date">
+<ion-content [fullscreen]="true" class="fondo-personalizado">
+  <div class="encabezado" style="padding-top: 5px;">
+    <div class="ganancia-container">
+      <label class="fecha-label">Selecciona una fecha:</label>
+      <ion-input readonly [value]="selectedDate" (click)="toggleDatePicker()" class="fecha-input">
+      </ion-input>
+    </div>
+    <div *ngIf="showDatePicker">
+      <ion-datetime presentation="date" [value]="selectedDate" (ionChange)="onDateChange($event)" [max]="hoy">
       </ion-datetime>
-    </ion-card-content>
-  </ion-card>
+    </div>
 
-  <ion-grid *ngIf="listado.length" style="padding: 0px;margin: 0px;">
-    <ion-row>
+    <ion-card class="total-card">
+      <ion-card-content>
+        <div class="total-label">Total Ganado</div>
+        <div class="total-value">Q{{ totalGanancia | number:'1.2-2' }}</div>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-col *ngFor="let g of listado" style="padding: 0px;margin: 0px;">
-      <ion-card class="car-list">
-        <ion-label style="padding: 0px;margin: 0px;">
-          <p><ion-icon color="danger" name="location-outline"></ion-icon> <!-- Indicador de inicio --> {{
-            g.start_direction }} </p>
-          <p> <ion-icon name="flag-outline"></ion-icon> {{ g.end_direction }}</p>
-          <p style="margin-top: 5px;">Costo: {{ g.costo | currency:'GTQ' }}</p>
-          <h2>Ganancia: <span style="color:rgb(4, 194, 4); font-weight: bolder;">{{ g.ganancia | currency:'GTQ'
-              }}</span></h2>
-          <p>Fecha: {{ g.fecha }} - Hora: {{ g.hora }}</p>
-        </ion-label>
-      </ion-card>
+  </div>
 
-    </ion-col>
- </ion-row>
-  </ion-grid>
+  <div *ngFor="let g of listado" class="trip-card">
+    <div class="trip-time">
+       {{ formatearFecha(g.fecha) }} - {{ formatearHora(g.hora) }}
+    </div>
+    <div class="texto-limitado"><strong>Origen:</strong> {{ g.start_direction }}</div>
+    <div class="texto-limitado"><strong>Destino:</strong> {{ g.end_direction }}</div>
+    <div><strong>Costo:</strong> {{ g.costo | currency:'GTQ' }}</div>
+    <div style="color:rgb(4, 194, 4); font-weight: bolder;" class="ganancia-text"><strong>Ganancia:</strong> Q{{
+      g.ganancia | number:'1.2-2' }}</div>
+  </div>
 
-  <ion-card *ngIf="!listado.length">
-    <ion-card-content>
-      <ion-label>No hay ganancias registradas para esta fecha.</ion-label>
-    </ion-card-content>
-  </ion-card>
+  <div *ngIf="listado.length === 0" class="no-data">
+    <ion-icon name="alert-circle-outline" size="large" color="medium"></ion-icon>
+    <p>No hay viajes registrados para esta fecha</p>
+  </div>
+
 </ion-content>

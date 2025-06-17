@@ -29,10 +29,17 @@
     <ion-button class="btn-menu" fill="clear" shape="round" (click)="openMenu()">  <ion-icon  name="menu"></ion-icon></ion-button></div> 
   <div class="billetera"> <app-billetera></app-billetera></div>
 
-  <div class="notification-btn elevation-3">
-  <ion-button (click)="notification()" fill="clear" shape="round">
-    <ion-icon slot="icon-only" name="notifications"></ion-icon>
-  </ion-button>
+<div class="notification-btn" >
+<ion-button
+  color="black"
+  (click)="notification()"
+  fill="clear"
+  shape="round">
+  <ion-icon class="icon-shadow" slot="icon-only" name="notifications"></ion-icon>
+</ion-button>
+  <ion-badge *ngIf="unreadCount > 0" color="danger" class="badge-count">
+    {{ unreadCount }}
+  </ion-badge>
 </div>
 
  <!-- <div *ngIf="solicitud; else noSolicitud" class="cajon-solicitud"></div> -->

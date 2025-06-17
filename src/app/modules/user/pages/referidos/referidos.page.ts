@@ -28,12 +28,10 @@ export class ReferidosPage implements OnInit {
 
   constructor( private menuController: MenuController, private navCtrl: NavController, private modalController: ModalController, private toastController: ToastController, private authService: AuthService,
  private socialSharing: SocialSharing, private api: UserService) {
-    /* const isAuthenticated = this.authService.isAuthenticated();
- 
-     if (isAuthenticated) {
- 
-     }*/
+
      this.userRole = this.authService.getRole();
+
+
   }
 
   ngOnInit() {

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import CallActionPlugin from 'src/plugins/call-action.plugin'; // ajusta ruta si cambia
 import { Capacitor } from '@capacitor/core';
-import { Subject } from 'rxjs';
+import { catchError, map, Observable, of, Subject } from 'rxjs';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class CallActionService {
 
   private user: any;
 
-  constructor(private alertController: AlertController) { }
+  constructor(private alertController: AlertController, private api: UserService) { }
 
   setUser(user: any) {
     this.user = user;
@@ -72,5 +73,26 @@ export class CallActionService {
     console.error('Error al obtener acción almacenada:', err);
   });
   }
+
+getNotificacionesNoLeidas(idUser:any): Observable<number> {
+
+
+  return this.api.getNotificacionesUserNoLeidas(idUser).pipe(
+    map(re => {
+      if (re.success && re.result) {
+        var data = re.result;
+        // asumiendo que `re.data` es un array de notificaciones
+        return data[0].total;
+      } else {
+        return 0;
+      }
+    }),
+    catchError(err => {
+      console.error('Error al obtener notificaciones', err);
+      return of(0); // en caso de error, devolver 0
+    })
+  );
+}
+
 
 }

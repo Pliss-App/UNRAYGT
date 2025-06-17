@@ -40,7 +40,7 @@
                 p {
                     margin-top: 5px;
                     font-size: 14pt;
-        
+
                     margin-bottom: 0px;
                     color: #000000;
                 }
@@ -75,25 +75,25 @@
     --border-radius: 50%;
     --box-shadow: none;
     box-shadow: none !important;
-
-  width: 45px;
-  height: 45px;
-  min-width: 45px;
-  min-height: 45px;
+    color: #000000;
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+    min-height: 45px;
 
 }
 
-.chat-icon{
+.chat-icon {
 
-   width: 35px;
-  height: 35px;
-  object-fit: contain;
-  display: block;
-  //filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    display: block;
+    //filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
 }
 
 .custom-icon {
-    color:orangered;
+    color: orangered;
     --ion-icon-size: 45px;
     font-size: 35px;
     /* Cambia el tamaño del ícono */
@@ -376,7 +376,7 @@
 
 
 .driver-placas {
-    display: inline-block; 
+    display: inline-block;
     margin: 0px !important;
     padding: 0px !important;
     top: -10px;
@@ -391,7 +391,7 @@
         margin: 0px !important;
         padding: 5px !important;
         font-size: 14pt;
-        font-weight:500
+        font-weight: 500
     }
 }
 
@@ -439,9 +439,24 @@
 
 
 
-.btn-shared-location{
+.btn-shared-location {
     position: absolute;
-    top:10px;
+    top: 10px;
     right: 5px;
     border-radius: 50%;
+}
+
+.chat-button-container {
+    position: relative;
+    display: inline-block;
+}
+
+.chat-badge {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 50%;
+    z-index: 10;
 }

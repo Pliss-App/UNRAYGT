@@ -38,7 +38,7 @@ export class HomePage implements OnInit {
   isOnline: boolean = false;
   isActive: boolean = false;
   loading: boolean = true;
-
+  unreadCount = 0;
   intervalo: any;
   subscription: Subscription | null = null;
   timerSubscription: Subscription | null = null;
@@ -80,6 +80,9 @@ export class HomePage implements OnInit {
 
     this.locationService.watchUserLocation();
     this.locationService.init();
+
+      this.getListNotifiacionesNotLeidas();
+     setInterval(() => this.getListNotifiacionesNotLeidas(), 15000); // cada 15s
   }
 
   async ngOnInit() {
@@ -117,10 +120,10 @@ export class HomePage implements OnInit {
   escucharSolicitudCancelada() {
     this.socketService.listen('solicitud_cancelada', async (data: any) => {
       if (data) {
-        this.solicitud = null;
-        this.tiempoRestante = 30;
-        this.detenerVibracion();
-        this.limpiarTemporizador();
+  //     this.solicitud = null;
+   //     this.tiempoRestante = 30;
+    //    this.detenerVibracion();
+    //    this.limpiarTemporizador();
 
         this.soliService.resumePollingOnTripEnd();
       }
@@ -131,10 +134,10 @@ export class HomePage implements OnInit {
 
   escucharSolicitud() {
     this.socketService.listen('solicitud_iniciar_viaje', async (data: any) => {
-      this.solicitud = null;
-      this.detenerVibracion();
-      this.tiempoRestante = 30;
-      this.limpiarTemporizador();
+   //   this.solicitud = null;
+    //  this.detenerVibracion();
+    //  this.tiempoRestante = 30;
+    //  this.limpiarTemporizador();
       this.soliService.resumePollingOnTripEnd();
     })
 
@@ -209,7 +212,7 @@ export class HomePage implements OnInit {
 
 
   escucharSolicitudes() {
-    this.socketService.listen('nueva_solicitud', async (data: any) => {
+ /*   this.socketService.listen('nueva_solicitud', async (data: any) => {
       if (data?.solicitudId) {
 
         this.getFotoPerfil(data.idUser);
@@ -223,16 +226,16 @@ export class HomePage implements OnInit {
         this.solicitud.foto = data.foto?.foto;
 
       }
-    })
+    })*/
 
-    this.socketService.listen('solicitud_cancelada', async (data: any) => {
+   /* this.socketService.listen('solicitud_cancelada', async (data: any) => {
       if (this.solicitudId === data.solicitudId) {
         this.detenerVibracion();
         this.solicitud = null; // Ocultar solicitud
         this.solicitudId = null;
         this.limpiarTemporizador();
       }
-    });
+    });*/
 
     // Escuchar si la solicitud expira
     this.socketService.listen('solicitud_expirada', (data: any) => {
@@ -548,6 +551,14 @@ export class HomePage implements OnInit {
 
   ngOnDestroy(): void {
     this.limpiarTemporizador();
+  }
+
+
+  
+  getListNotifiacionesNotLeidas(){
+      this.callActionService.getNotificacionesNoLeidas(this.user.idUser).subscribe(count => {
+    this.unreadCount = count;
+  });
   }
 
 }

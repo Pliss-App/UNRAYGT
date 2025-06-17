@@ -84,10 +84,13 @@
           <ion-button fill="clear" (click)="makeCall(profile.telefono)" color="primary" class="btn-seguridad">
             <ion-icon slot="icon-only" name="call" class="custom-icon"></ion-icon>
           </ion-button>
-          <ion-button fill="clear" (click)="openChatModal()" color="primary" class="btn-sms">
-            <!--<img src="assets/icon/chat.png" alt="Seguridad" class="chat-icon" />--> <ion-icon slot="icon-only"
-              name="chatbubble-ellipses" class="custom-icon"></ion-icon>
-          </ion-button>
+          <div class="chat-button-container">
+            <ion-button fill="clear" (click)="openChatModal()"  class="btn-sms">
+              <ion-icon slot="icon-only" name="chatbubble-ellipses-outline" class="custom-icon"></ion-icon>
+            </ion-button>
+
+            <ion-badge *ngIf="isChat" color="danger" class="chat-badge">!</ion-badge>
+          </div>
         </ion-col>
 
       </ion-row>

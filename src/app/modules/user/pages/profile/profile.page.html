@@ -19,7 +19,7 @@
         <!-- <span *ngIf="rating"> {{rating.rating}} ({{rating.total_viajes}})</span> -->
       </div>
 
-      <p class="nombre">{{user.nombre}} {{user.apellido}}</p>
+      <p *ngIf="user" class="nombre">{{user.nombre}} {{user.apellido}}</p>
       <!-- <p style="color: black;"> <ion-icon color="warning" name="pricetag"></ion-icon>
         Código:
 
@@ -34,7 +34,7 @@
 
   </div>
 
-  <div class="contenido-perfil">
+  <div class="contenido-perfil" *ngIf="user">
     <ion-card>
       <ion-card-header style="padding-left: 20px; font-weight: 900;">Datos personales</ion-card-header>
       <ion-card-content>

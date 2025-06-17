@@ -1,3 +1,7 @@
+
+.fondo-personalizado {
+  --background: #fff7f3; // Por ejemplo, un tono suave acorde a `orangered`
+}
 ion-item{
     font-size: 15pt;
 }
@@ -25,9 +29,7 @@ ion-item{
     margin-right: 8px;
   }
   
-  .amount {
-    font-size: 2rem;
-  }
+
   
   ion-card-header {
     background-color: #f4f4f4;
@@ -52,3 +54,99 @@ ion-item{
   
   
   
+
+
+  .wallet-content {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  background: #f8f8f8;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.card-box {
+  background: white;
+  border-radius: 20px;
+  padding: 16px;
+  margin: 12px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: orangered;
+  margin-bottom: 6px;
+}
+
+.amount {
+  font-size: 40px;
+  font-weight: bold;
+  color: #222;
+  margin: 8px 0 16px;
+}
+
+.btn-recargar {
+  --background: orangered;
+  --border-radius: 50px;
+  font-weight: bold;
+}
+
+.btn-outline {
+  --border-color: #ccc;
+  --color: #222;
+  --border-radius: 50px;
+  font-weight: 600;
+}
+
+.history-header {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  ion-select {
+    width: 120px;
+    font-size: 14px;
+  }
+}
+
+.transaction-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+
+  .left {
+    .desc {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .fecha {
+      font-size: 13px;
+      color: #888;
+    }
+  }
+
+  .right .badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
+  }
+
+  .badge-debito {
+    background: orangered;
+  }
+
+  .badge-credito {
+    background: #28a745;
+  }
+}

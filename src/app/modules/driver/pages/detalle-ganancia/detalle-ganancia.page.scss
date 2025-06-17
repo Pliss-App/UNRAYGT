@@ -1,3 +1,7 @@
+.fondo-personalizado {
+  --background: #fff7f3; // Por ejemplo, un tono suave acorde a `orangered`
+}
+
 ion-item {
     display: flex;
     justify-content: space-between;
@@ -49,3 +53,146 @@ ion-item {
     padding: 10px;
     border-radius: 10px;
   }
+
+
+  ion-toolbar {
+  --background: #fff;
+}
+
+.header-title {
+  color: orangered;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/*
+.ganancia-container {
+  padding: 10px;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+  background: white;
+
+  .fecha-label {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    color: rgb(0, 0, 0);
+  }
+
+  .fecha-input {
+        display: inline-block;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background-color: #fff;
+    font-weight: 500;
+  }
+} */
+
+.encabezado{
+    background: orangered;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 6px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.total-card {
+  background: rgb(216, 61, 5);
+  color: white;
+  border-radius: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+.total-label {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.total-value {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 0.3rem;
+}
+
+.trip-card {
+  margin-top: 15px;
+  margin-left: 13px;
+  margin-right: 13px;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+
+  .trip-time {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .ganancia-text {
+    color: orangered;
+    font-weight: bold;
+    margin-top: 6px;
+  }
+}
+
+.no-data {
+  text-align: center;
+  color: #999;
+  margin-top: 2rem;
+
+  ion-icon {
+    margin-bottom: 0.5rem;
+  }
+}
+
+
+
+.ganancia-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff; // fondo gris claro
+  padding: 10px 6px;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+
+.fecha-input {
+  width: 150px;
+  margin-left: 5px;
+  --background: #f0f0f0; /* fondo gris claro */
+  --color: #333;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --border-radius: 10px;
+  --highlight-height: 0;
+  --box-shadow: none;
+
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.1rem;
+
+  border-radius: 10px;
+  padding: 10px 16px;
+  height: 44px;
+}
+
+  .fecha-label {
+    margin-left: 10px;
+    color: #666;
+ 
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+}
+
+
+.texto-limitado {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -24,6 +24,7 @@ export class HomePage implements OnInit {
   userRole: any;
   message: string = '';
   user: any = null;
+  unreadCount = 0;
   interSoli: any = null;
   idViaje: any = null;
   isActiveMenu: boolean = false;
@@ -47,7 +48,8 @@ export class HomePage implements OnInit {
     this.onesignal.initialize(this.userRole, this.user.idUser);
 
 
-
+  this.getListNotifiacionesNotLeidas();
+     setInterval(() => this.getListNotifiacionesNotLeidas(), 15000); // cada 15s
   }
 
   async ngOnInit() {
@@ -61,8 +63,11 @@ export class HomePage implements OnInit {
     this.getSolicitudCreada();
     this.escucharSolicitud();
     this.getCalificar();
+   
 
     await this.getEstadoCalificacion();
+
+      
   }
 
 
@@ -218,6 +223,12 @@ export class HomePage implements OnInit {
 
   notification() {
     this.router.navigate(['/user/notificaciones']);
+  }
+
+  getListNotifiacionesNotLeidas(){
+      this.callActionService.getNotificacionesNoLeidas(this.user.idUser).subscribe(count => {
+    this.unreadCount = count;
+  });
   }
 
 

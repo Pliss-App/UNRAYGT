@@ -18,10 +18,17 @@
   </ion-fab-button>
 </ion-fab>
 
-<div class="notification-btn elevation-3">
-  <ion-button (click)="notification()" fill="clear" shape="round">
-    <ion-icon slot="icon-only" name="notifications"></ion-icon>
-  </ion-button>
+<div class="notification-btn" >
+<ion-button
+
+  (click)="notification()"
+  fill="clear"
+  shape="round">
+  <ion-icon class="icon-shadow" slot="icon-only" name="notifications"></ion-icon>
+</ion-button>
+  <ion-badge *ngIf="unreadCount > 0" color="danger" class="badge-count">
+    {{ unreadCount }}
+  </ion-badge>
 </div>
 <app-bottom-sheet [data]="message" style="position: absolute; z-index: 7;"></app-bottom-sheet>
 </ion-content>

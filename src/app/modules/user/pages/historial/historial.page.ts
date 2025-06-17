@@ -40,7 +40,6 @@ export class HistorialPage implements OnInit {
   loadViajes(event?: InfiniteScrollCustomEvent) {
     try {
         this.api.getHistorial(this.user.idUser, this.userRole, this.offset).subscribe((re)=>{
-          console.log(re)
           var data = re.result;
           this.viajes = [...this.viajes, ...re.result]; // Agrega más viajes
           this.offset += 10; // Aumenta el offset

@@ -58,10 +58,20 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/${endpoint}`, data);
   }
 
+    getChatNoLeido(endpoint: string, data: any) {
+    return this.http.post(`${this.apiUrl}/${endpoint}`, data);
+  }
+
+
+
   getChat(endpoint: string, idViaje: string, emisor_id: number, receptor_id: number) {
     return this.http.get(`${this.apiUrl}/${endpoint}`, {
       params: { idViaje: idViaje, emisor_id: emisor_id, receptor_id: receptor_id },
     });
+  }
+
+    putChat(endpoint: string, data: any) {
+    return this.http.post(`${this.apiUrl}/${endpoint}`, data);
   }
   // Detectar cambios en la red
   private async checkNetworkStatus() {

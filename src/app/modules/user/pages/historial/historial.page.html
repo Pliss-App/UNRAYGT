@@ -1,50 +1,45 @@
-<ion-header color="primary">
-  <ion-toolbar  color="primary">
+<ion-header translucent>
+  <ion-toolbar color="primary" style="--background: orangered; color: white;">
     <ion-buttons slot="start">
       <ion-button (click)="openMenu()">
         <!--<ion-icon class="icon-back" name="arrow-back"></ion-icon>-->
         <ion-icon class="icon-back" name="menu"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Historial </ion-title>
+
+
+    <ion-title style="font-weight: bold;">Historial </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true">
-  <ion-list>
-    <ion-item *ngFor="let viaje of viajes"> 
-      <ion-label>
-        <ion-grid>
-          <ion-row class="align-items-center">
-            <ion-col size="auto">
-              <ion-icon name="location-outline" style="color: green;"></ion-icon>
-            </ion-col>
-            <ion-col>
-              <p>{{ viaje.start_direction }}</p>
-            </ion-col>
-          </ion-row>
-          
-          <ion-row class="align-items-center">
-            <ion-col size="auto">
-              <ion-icon name="flag-outline" style="color: red;"></ion-icon>
-            </ion-col>
-            <ion-col>
-              <p>{{ viaje.end_direction }}</p>
-            </ion-col>
-          </ion-row>
-    
-          <ion-row>
-            <ion-col style="text-align: left; margin-left: 25px;">
-              <p>       <ion-icon name="time-outline"></ion-icon> {{ viaje.fecha_hora | date: 'dd/MM/yyyy' }}</p>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-label>
-    
-      <div class="info">
-        <strong>Q. {{ viaje.costo }}</strong>
-      </div>
-    </ion-item>
-    
+<ion-content class="ion-padding fondo-personalizado" [fullscreen]="true">
+  <ion-list lines="none">
+    <ion-card *ngFor="let viaje of viajes" class="card-ride">
+      <ion-item lines="none" style="--background: transparent;">
+      <ion-icon [name]=" viaje.idService == 2 ? 'car-sport-outline' :  'bicycle-outline'" slot="start"
+          style="zoom: 1; color: black;"></ion-icon>
+        <ion-label>
+          <h3 style="margin: 0 0 6px 0; font-size: 24px; font-weight: bold">{{ viaje.fecha_hora | date: 'MMMM d' }}
+          </h3>
+          <p class="texto-limitado" style="margin: 0; font-size: 14px; color: green ">
+            <ion-icon style="color: green; zoom: 0.6;" name="location"></ion-icon> {{ viaje.start_direction }}
+          </p>
+          <p class="texto-limitado" style="margin: 2px 0 0 0; font-size: 14px; font-weight: bold; color: orangered">
+            <ion-icon style="color: red; zoom: 0.6;" name="home"></ion-icon> {{ viaje.end_direction }}
+          </p>
+
+          <p [ngStyle]="{
+            'color': viaje.estado === 'Cancelado' ? 'red' : (viaje.estado === 'Finalizado' ? 'green' : 'black')
+          }" style="font-weight: bold; font-size: 18px; margin-top: 8px;">
+            {{ viaje.estado }}
+          </p>
+        </ion-label>
+    <div slot="end" style="display: flex; align-items: center; justify-content: center; height: 100%;">
+      <ion-note style="font-size: 16px; font-weight: bold; color: black;">
+        Q{{ viaje.costo | number:'1.2-2' }}
+      </ion-note>
+    </div>
+      </ion-item>
+    </ion-card>
   </ion-list>
 
   <ion-infinite-scroll (ionInfinite)="loadMore($event)">

@@ -282,10 +282,7 @@ public class FullScreenActivity extends Activity {
   }
 
   private void enviarRespuestaViaje(String accion, String idViaje, String idUser, String idConductor) {
-    // 1. Petición HTTP
     enviarPeticionHTTP(accion, idViaje, idUser, idConductor);
-
-    // 2. Emitir evento por socket usando SocketManager
     socketManager.emitRespuestaSolicitud(accion, idViaje, idUser, idConductor, success -> {
       if (success) {
         Log.d("FullScreenActivity", "Evento emitido con éxito");

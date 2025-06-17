@@ -15,8 +15,14 @@ export class DetalleGananciaPage implements OnInit {
   fecha: any = this.getCurrentDate(); // this.getCurrentDate();
   listado: any = [];
   totalGanancia: number = 0;
+
+selectedDate: string = new Date().toISOString().split('T')[0];
+hoy: string = new Date().toISOString().split('T')[0];
+// showDatePicker = false;
+
+  fechaHoy: string = new Date().toISOString();
   //selectedDate: string = new Date().toISOString();
-  selectedDate: string = new Date().toISOString(); // Fecha por defecto
+// selectedDate: any = ''; // Fecha por defecto
   showDatePicker: boolean = false; // Controla la visibilidad del calendario
 
   constructor(private api: ConductorService,
@@ -26,12 +32,26 @@ export class DetalleGananciaPage implements OnInit {
 
     this.userRole = this.auth.getRole();
     this.user = this.auth.getUser();
+    this. getFechaHoy();
   }
 
   ngOnInit() {
     this.getHistorial();
   }
 
+  ionViewWillEnter() {
+  this.resetVista();
+}
+
+resetVista() {
+  this.fecha = this.getCurrentDate();              // ddMMyyyy
+  this.selectedDate = new Date().toISOString().split('T')[0]; // yyyy-MM-dd
+  this.totalGanancia = 0;
+  this.listado = [];
+  this.showDatePicker = false;
+
+  this.getHistorial(); // Cargar nuevamente los datos del día
+}
   openMenu() {
     if (this.userRole === 'usuario') {
       this.menuController.open('userMenu'); // Especifica el menú a abrir
@@ -68,6 +88,15 @@ export class DetalleGananciaPage implements OnInit {
     this.showDatePicker = !this.showDatePicker;
   }
 
+  getFechaHoy() {
+    const fecha = new Date();
+    const year = fecha.getFullYear();
+    const month = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
+    const day = String(fecha.getDate()).padStart(2, '0');
+
+    this.selectedDate= `${year}-${month}-${day}`;
+  }
+
   onDateChange(event: any) {
     const value = event.detail.value;  // Obtener el valor del evento (fecha seleccionada)
     var year = value.slice(1 - 1, 4);
@@ -91,4 +120,21 @@ export class DetalleGananciaPage implements OnInit {
 
     return `${day}${month}${year}`;
   }
+
+
+  formatearFecha(fecha: string): string {
+  if (fecha.length !== 8) return fecha; // por si viene mal
+  const dia = fecha.slice(0, 2);
+  const mes = fecha.slice(2, 4);
+  const anio = fecha.slice(6, 8); // solo últimos dos dígitos
+  return `${dia}-${mes}-${anio}`;
+}
+
+formatearHora(hora: string): string {
+  if (hora.length !== 6) return hora;
+  const h = hora.slice(0, 2);
+  const m = hora.slice(2, 4);
+  const s = hora.slice(4, 6);
+  return `${h}:${m}:${s}`;
+}
 }

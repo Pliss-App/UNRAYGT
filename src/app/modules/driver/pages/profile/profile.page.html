@@ -10,11 +10,11 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="photo-profile">
+  <div class="photo-profile" *ngIf="user">
     <div style="text-align: center;">
 
       <app-foto></app-foto>
-      <div class="rating">
+      <div  class="rating">
         <ion-icon class="start" *ngFor="let star of stars" [name]="star"></ion-icon>
        <!-- <span *ngIf="rating"> {{rating.rating}} ({{rating.total_viajes}})</span> --> </div>  
        
@@ -30,7 +30,7 @@
 
   <div class="contenido-perfil">
   
-  <ion-card class="custom-card">
+  <ion-card class="custom-card" *ngIf="user">
     <ion-grid>
       <ion-row class="ion-justify-content-center">
         <ion-col size="4" class="center-content divider" *ngIf="saldo">
@@ -49,7 +49,7 @@
     </ion-grid>
   </ion-card>
 
-  <ion-card>
+  <ion-card *ngIf="user">
     <ion-card-header>Datos personales</ion-card-header>
     <ion-card-content>
     <form [formGroup]="profileForm">

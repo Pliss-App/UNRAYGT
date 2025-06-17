@@ -47,8 +47,10 @@ export class UserDriverComponent implements OnInit {
   vibrando: boolean = false; // Controla si está vibrando
   idTokenOne: any;
   intervalId: any;
+  intervalIdChat: any;
   vibracionInterval: any;
   profile: any = {};
+  isChat: boolean = false;
   tiempo: any = undefined;
   distancia: any = undefined;
   user: any;
@@ -73,7 +75,8 @@ export class UserDriverComponent implements OnInit {
     private api: UserService, private auth: AuthService, private storageService: StorageService,
     private route: Router, private launchNavigator: LaunchNavigator) {
     this.user = this.auth.getUser();
-
+ 
+    this.intervalIdChat = setInterval(() => this.getChatsNoLeido(), 15000);
   }
 
   ngOnInit() {
@@ -165,6 +168,7 @@ export class UserDriverComponent implements OnInit {
         await this.api.getDriverProfile(this.idConductor).subscribe((re) => {
           if (re.success) {
             this.profile = re?.result;
+             this.getChatsNoLeido();
             this.loading = false;
             if (!this.profile.foto) {
               this.profile.foto = this.placeholderImage;
@@ -178,6 +182,7 @@ export class UserDriverComponent implements OnInit {
         await this.api.getUserProfileDriver(this.idConductor).subscribe((re) => {
           if (re.success) {
             this.profile = re?.result;
+                  this.getChatsNoLeido();
             this.loading = false;
             if (!this.profile.foto) {
               this.profile.foto = this.placeholderImage;
@@ -185,8 +190,9 @@ export class UserDriverComponent implements OnInit {
           }
         })
       }
+ 
     }
-
+  
   }
 
   updateEstadoViaje(item: any, idUser: any, idSoli: any) {
@@ -617,9 +623,34 @@ export class UserDriverComponent implements OnInit {
     }
   }
 
+
+  getChatsNoLeido() {
+
+    if(this.user &&  this.rol && this.profile)
+    {
+
+    const data = {
+      idViaje: this.idViaje,
+      emisor_id: this.user.idUser,
+      receptor_id:this.profile.idUser
+    }
+
+    this.api.getMensajesNoLeidos(data).subscribe((re:any) => {
+      if(re.success){
+          this.isChat = re.result;
+      }
+    })
+
+  }
+  }
+
   ngOnDestroy() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
+    }
+
+    if (this.intervalIdChat) {
+      clearInterval(this.intervalIdChat);
     }
   }
 }
