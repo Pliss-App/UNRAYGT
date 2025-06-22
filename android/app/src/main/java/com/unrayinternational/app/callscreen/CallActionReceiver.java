@@ -33,7 +33,6 @@ public class CallActionReceiver extends BroadcastReceiver {
     String idConductor = intent.getStringExtra("idConductor");
 
     if (idViaje == null || idUser == null || idConductor == null) {
-      Log.e("CallActionReceiver", "❌ Datos incompletos");
       return;
     }
 
@@ -51,7 +50,6 @@ public class CallActionReceiver extends BroadcastReceiver {
     }
 
     context.stopService(new Intent(context, CallNotificationService.class));
-    Log.e("CallActionReceiver", "✅ Usuario ACEPTÓ el viaje");
     guardarAccion(context, "aceptar", idViaje, idUser, idConductor);
     context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
       .edit()
@@ -62,7 +60,6 @@ public class CallActionReceiver extends BroadcastReceiver {
   }
 
   private void handleRejectAction(Context context, String idViaje, String idUser, String idConductor) {
-    Log.e("CallActionReceiver", "❌ Usuario RECHAZÓ el viaje");
     guardarAccion(context, "rechazar", idViaje, idUser, idConductor);
     context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
       .edit()
@@ -83,12 +80,9 @@ public class CallActionReceiver extends BroadcastReceiver {
 
     if (CallActionPlugin.pluginInstance != null) {
       CallActionPlugin.emitirAccionDesdeContexto(context, accion, idViaje, idUser, idConductor);
-      Log.d("CallActionReceiver", "Evento emitido al plugin: " + accion);
     } else {
       CallActionPlugin.emitirAccionDesdeContexto(context, accion, idViaje, idUser, idConductor);
-      Log.w("CallActionReceiver", "pluginInstance es null");
     }
-
     enviarRespuestaViaje(accion, idViaje, idUser, idConductor);
   }
 
@@ -107,7 +101,6 @@ public class CallActionReceiver extends BroadcastReceiver {
         launchIntent.putExtra("idUser", idUser);
         launchIntent.putExtra("idConductor", idConductor);
         context.startActivity(launchIntent);
-        Log.d("CallActionReceiver", "✅ App lanzada");
       } else {
         Log.e("CallActionReceiver", "❌ No se encontró launchIntent");
       }
@@ -117,15 +110,12 @@ public class CallActionReceiver extends BroadcastReceiver {
   }
 
   private void enviarRespuestaViaje(String accion, String idViaje, String idUser, String idConductor) {
-    Log.d("CallActionReceiver", "Enviando respuesta: " + accion);
-
     // 1. Enviar petición HTTP
     enviarPeticionHTTP(accion, idViaje, idUser, idConductor);
 
     // 2. Emitir evento por socket usando SocketManager
     socketManager.emitRespuestaSolicitud(accion, idViaje, idUser, idConductor, success -> {
       if (success) {
-        Log.d("CallActionReceiver", "Evento emitido con éxito");
         socketManager.emitCambiarEstado(idConductor, 1, statusSuccess -> {
           if (statusSuccess) {
             Log.d("CallActionReceiver", "Estado del conductor actualizado");

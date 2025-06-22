@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalNotifications } from '@capacitor/local-notifications';
-import { AlertController, MenuController, ModalController } from '@ionic/angular';
+import { AlertController, MenuController, ModalController, ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -30,10 +30,11 @@ import { FcmService } from 'src/app/core/services/fcm.service';
 
 })
 export class HomePage implements OnInit {
-
+  saldo: any = "";
   solicitud: any;
   solicitudes: any;
   user: any;
+  estado_usuario: any;
   userRole: any;
   isOnline: boolean = false;
   isActive: boolean = false;
@@ -43,7 +44,8 @@ export class HomePage implements OnInit {
   subscription: Subscription | null = null;
   timerSubscription: Subscription | null = null;
   private solicitudSub: Subscription | undefined;
-
+  bloqueo: boolean = false;
+  saldoMinimo: any = 0;
   solicitudId: number | null = null;
   solicitudIdUser: number | null = null;
   solicitudTimer: any;
@@ -56,11 +58,13 @@ export class HomePage implements OnInit {
   constructor(private onesignal: OnesignalService,
     private driverService: ConductorService,
     private socketService: WebSocketService,
+    private soli: SolicitudService,
     private menuController: MenuController,
     private callActionService: CallActionService,
     private fcmService: FcmService,
     private locationService: LocationService,
     private router: Router,
+    private toastController: ToastController,
     private alertController: AlertController,
     private soliService: SolicitudService,
     private modalController: ModalController,
@@ -70,7 +74,6 @@ export class HomePage implements OnInit {
     this.userRole = this.auth.getRole();
     if (this.user) {
       this.initFcm();
-
     }
 
     this.preloadSound();
@@ -81,13 +84,11 @@ export class HomePage implements OnInit {
     this.locationService.watchUserLocation();
     this.locationService.init();
 
-      this.getListNotifiacionesNotLeidas();
-     setInterval(() => this.getListNotifiacionesNotLeidas(), 15000); // cada 15s
+    this.getListNotifiacionesNotLeidas();
+    setInterval(() => this.getListNotifiacionesNotLeidas(), 10000); // cada 15s
   }
 
   async ngOnInit() {
-    //this.callActionService.setUser(this.user.idUser);
-    //this.callActionService.initListener();
     this.escucharSolicitud();
     this.escucharSolicitudCancelada();
     this.onesignal.initialize(this.userRole, this.user.idUser);
@@ -99,32 +100,14 @@ export class HomePage implements OnInit {
 
 
   async ionViewDidEnter() {
-    this.locationService.getLocationSegundoPlano();
-    /*const accion = await Capacitor.Plugins['CallActionPlugin']['obtenerUltimaAccion']();
-    if (accion && accion.accion && accion.idViaje && accion.idUser) {
-     // this.solicitudId = Number(accion.idViaje);
-     // this.solicitudIdUser = Number(accion.idUser);
-  
-      if (accion.accion === 'aceptar') {
-       // this.aceptarSolicitud();
-      } else {
-       // this.rechazarSolicitud();
-      }
-  
-      await Capacitor.Plugins['CallActionPlugin']['limpiarAccionViaje'](); 
-    }
-  */
 
+    this.locationService.getLocationSegundoPlano();
+    this.soli.startPolling();
   }
 
   escucharSolicitudCancelada() {
     this.socketService.listen('solicitud_cancelada', async (data: any) => {
       if (data) {
-  //     this.solicitud = null;
-   //     this.tiempoRestante = 30;
-    //    this.detenerVibracion();
-    //    this.limpiarTemporizador();
-
         this.soliService.resumePollingOnTripEnd();
       }
 
@@ -134,10 +117,10 @@ export class HomePage implements OnInit {
 
   escucharSolicitud() {
     this.socketService.listen('solicitud_iniciar_viaje', async (data: any) => {
-   //   this.solicitud = null;
-    //  this.detenerVibracion();
-    //  this.tiempoRestante = 30;
-    //  this.limpiarTemporizador();
+      //   this.solicitud = null;
+      //  this.detenerVibracion();
+      //  this.tiempoRestante = 30;
+      //  this.limpiarTemporizador();
       this.soliService.resumePollingOnTripEnd();
     })
 
@@ -149,10 +132,11 @@ export class HomePage implements OnInit {
         if (re.msg == "SUCCESSFULLY") {
           var data = re.result;
           this.isOnline = data.estado;
-          /* 
-             this.socket.emit("registrar_conductor", this.user.idUser);
-           }*/
+          this.estado_usuario = data.estado_usuario;
+          if (this.estado_usuario === "bloqueo" && this.saldo < this.saldoMinimo) {
 
+            this.bloqueo = true;
+          }
           this.socketService.emit('cambiar_estado', {
             driverId: this.user.idUser,
             estado: this.isOnline ? 1 : 0
@@ -160,8 +144,6 @@ export class HomePage implements OnInit {
 
         }
       })
-
-
     } catch (error) {
       console.error(error);
     }
@@ -212,31 +194,6 @@ export class HomePage implements OnInit {
 
 
   escucharSolicitudes() {
- /*   this.socketService.listen('nueva_solicitud', async (data: any) => {
-      if (data?.solicitudId) {
-
-        this.getFotoPerfil(data.idUser);
-        this.iniciarVibracion();
-        this.tiempoRestante = this.calcularTiempoRestante(data.tiempoExpiracion);
-        this.mostrarSolicitud();
-
-        this.solicitud = data;
-        this.solicitudIdUser = data.idUser;
-        this.solicitudId = data.solicitudId;
-        this.solicitud.foto = data.foto?.foto;
-
-      }
-    })*/
-
-   /* this.socketService.listen('solicitud_cancelada', async (data: any) => {
-      if (this.solicitudId === data.solicitudId) {
-        this.detenerVibracion();
-        this.solicitud = null; // Ocultar solicitud
-        this.solicitudId = null;
-        this.limpiarTemporizador();
-      }
-    });*/
-
     // Escuchar si la solicitud expira
     this.socketService.listen('solicitud_expirada', (data: any) => {
       if (this.solicitudId === data.solicitudId) {
@@ -460,7 +417,6 @@ export class HomePage implements OnInit {
     })
   }
 
-
   stopTracking() {
     // Detener el seguimiento
     this.locationService.stopTracking();
@@ -488,11 +444,6 @@ export class HomePage implements OnInit {
 
 
   }
-  /*
-    playNotificationSound() {
-      const audio = new Audio('assets/sound/sound1.mp3');
-      audio.load(); // Precarga el sonido para que esté listo
-    }*/
 
   async preloadSound() {
     try {
@@ -516,7 +467,6 @@ export class HomePage implements OnInit {
       console.error('Error al reproducir el sonido:', error);
     }
   }
-
 
   calcularTiempoRestante(tiempoExpiracion: any) {
     const ahora = Date.now(); // Obtener la hora actual
@@ -553,12 +503,65 @@ export class HomePage implements OnInit {
     this.limpiarTemporizador();
   }
 
+  async getSaldoBloqueoViaje() {
+    try {
+      await this.driverService.getSaldoMinimo().subscribe(async (res: any) => {
+        if (res.success) {
+          const data = res.result;
+          this.saldoMinimo = Number(data.saldo);
+          await this.userService.getSaldo(this.user.idUser).subscribe((re: any) => {
+            if (re.result) {
+              const dat = re.result;
+              const saldo = dat.saldo;
+              if (Number(saldo) < Number(data.saldo)) {
 
-  
-  getListNotifiacionesNotLeidas(){
-      this.callActionService.getNotificacionesNoLeidas(this.user.idUser).subscribe(count => {
-    this.unreadCount = count;
-  });
+                if (this.estado_usuario == 'libre') {
+                  const data = {
+                    id: this.user.idUser
+                  }
+                  this.driverService.bloquear(data).subscribe((re: any) => {
+                    this.userService.getEstado(this.user.idUser).subscribe((re) => {
+                      this.bloqueo = true;
+                      if (re.success) {
+                        var data = re.result;
+                        this.isOnline = data.estado;
+                        this.estado_usuario = data.estado_usuario;
+                      }
+                    })
+
+                  })
+                }
+              }
+            }
+          })
+        }
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  getListNotifiacionesNotLeidas() {
+    this.callActionService.getNotificacionesNoLeidas(this.user.idUser).subscribe(count => {
+      this.unreadCount = count;
+    });
+  }
+
+  async mostrarMensaje() {
+    const toast = await this.toastController.create({
+      message: 'Cuenta inactiva por saldo bajo. Recarga tu billetera y recibe más viajes.',
+      duration: 5000, // 3 segundos
+      position: 'middle',
+      color: 'danger', // puedes usar: 'primary', 'success', 'warning', 'danger', etc.
+      buttons: [
+        {
+          text: 'OK',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await toast.present();
   }
 
 }

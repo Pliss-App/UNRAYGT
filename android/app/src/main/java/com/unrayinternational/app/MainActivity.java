@@ -47,7 +47,6 @@ public class MainActivity extends BridgeActivity {
     String idConductor = intent.getStringExtra("idConductor");
 
     if (idViaje == null || idUser == null || idConductor == null) {
-      Log.w(TAG, "idViaje o idUser es nulo. Intent extras: " + intent.getExtras());
       return;
     }
 
@@ -58,13 +57,9 @@ public class MainActivity extends BridgeActivity {
     long elapsed = now - timestamp;
 
     if (timestamp == 0 || elapsed > 30_000) {
-      Log.w(TAG, "⚠️ Notificación caducada (han pasado más de 30 segundos): " + elapsed + "ms");
       return;
     }
 
-    Log.d(TAG, "Procesando intent con idViaje: " + idViaje);
-
-    // Guardar en SharedPreferences
     getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
       .edit()
       .putString("accion", "aceptar")
@@ -75,7 +70,6 @@ public class MainActivity extends BridgeActivity {
 
     // Intentar emitir la acción
     if (CallActionPlugin.pluginInstance != null) {
-      Log.d(TAG, "Emisión directa a través de pluginInstance");
       CallActionPlugin.emitirAccionDesdeContexto(this, "aceptar", idViaje, idUser, idConductor);
     } else {
       Log.w(TAG, "pluginInstance es nulo, se guardó en SharedPrefs para recuperación posterior");
@@ -93,7 +87,6 @@ public class MainActivity extends BridgeActivity {
       NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
       if (notificationManager != null) {
         notificationManager.cancel(1);
-        Log.d(TAG, "Notificación cancelada");
       }
     } catch (Exception e) {
       Log.e(TAG, "Error al cancelar notificación", e);
@@ -104,7 +97,6 @@ public class MainActivity extends BridgeActivity {
     try {
       Intent stopServiceIntent = new Intent(this, CallNotificationService.class);
       stopService(stopServiceIntent);
-      Log.d(TAG, "Servicio detenido");
     } catch (Exception e) {
       Log.e(TAG, "Error al detener servicio", e);
     }
@@ -115,7 +107,6 @@ public class MainActivity extends BridgeActivity {
     super.onResume();
     // Verificación adicional por si el plugin no se registró correctamente
     if (CallActionPlugin.pluginInstance == null) {
-      Log.w(TAG, "Reintentando registro de plugin en onResume");
       registerPlugin(CallActionPlugin.class);
     }
 
@@ -128,7 +119,6 @@ public class MainActivity extends BridgeActivity {
 
     if (requestCode == REQUEST_CODE_POST_NOTIFICATIONS) {
       if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        Log.d(TAG, "Permiso POST_NOTIFICATIONS concedido");
       } else {
         Log.w(TAG, "Permiso POST_NOTIFICATIONS denegado");
         // Opcional: notificar al usuario o deshabilitar funcionalidad
@@ -144,15 +134,11 @@ public class MainActivity extends BridgeActivity {
     String idConductor = prefs.getString("idConductor", null);
 
     if (accion != null && idViaje != null && idUser != null) {
-      Log.d(TAG, "🔁 Reintentando emitir acción guardada: " + accion);
-
       // Emitir al plugin
       if (CallActionPlugin.pluginInstance != null) {
         CallActionPlugin.emitirAccionDesdeContexto(this, accion, idViaje, idUser, idConductor);
-
         // Limpiar después de emitir
         prefs.edit().clear().apply();
-        Log.d(TAG, "✅ Acción emitida y limpiada de SharedPreferences");
       } else {
         Log.w(TAG, "⛔ pluginInstance sigue siendo null en checkPendingAccion()");
       }

@@ -120,18 +120,16 @@ export class ChatPage implements OnInit {
       };
 
       var noti = {
-
         userId: null,
         sonido: 'vacio',
         title: 'Chat',
         message: this.mensaje,
         fecha: this.obtenerFechaHoraLocal(),
         idUser: this.receptorId,
+        tipo: 'chat'
       }
+
       this.onesignal.getToken(this.receptorId).subscribe((resp => {
-
-
-
         var data = resp.result;
         var token = data.onesignal_token;
         noti.userId = token

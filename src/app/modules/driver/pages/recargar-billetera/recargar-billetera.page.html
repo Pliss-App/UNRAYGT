@@ -7,91 +7,77 @@
     <ion-title>Recargar</ion-title>
     <ion-buttons slot="end">
       <!-- Opción de Pagos -->
-      <ion-button (click)="navigateToPayments()">Pagos</ion-button>
+      <ion-button (click)="mostrarApoyoBilletera()"><ion-icon name="settings"></ion-icon></ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 
+<ion-content fullscreen>
+  <div style="padding-left: 20px; padding-right: 20px;">
 
-<ion-content>
-  <div style="padding-left: 25px; padding-right: 25px;">
-  <!--  <p style="padding-left: 0px; padding-right: 10px;margin-bottom: 0px;">Recarga tu billetera para seguir recibiendo viajes.
-    </p>
-    <ion-grid style="margin-top: -12px;">
-      <ion-row style="margin-top: -5px; text-align: center;" class="ion-justify-content-center ion-align-items-center">
+    <!-- <p style="font-size: 1.1rem; font-weight: 600; color: #e65100; margin-bottom: 5px;">
+      Carga tu imagen, nosotros nos encargamos del resto.
+    </p>-->
 
-        <ion-col size="6" >
-          <p> <b>VisaLink:</b></p>
-          <ion-button expand="full" (click)="openVisaLink()"><ion-icon name="card"></ion-icon></ion-button>
-        </ion-col>
-    
-      
-        <ion-col size="6" >
-          <p><b>Depósito</b></p>
-          <ion-button expand="full" color="primary" (click)="mostrarDetallesCuenta()"><ion-icon name="business"></ion-icon></ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>  -->
-   <!-- <p>Link de pago: </p>
-    <ion-button expand="full" (click)="openVisaLink()">Abrir Visa Link</ion-button>
-
-    <h4>Realiza depósito a: </h4>
-    <ion-card class="custom-card">
-      <ion-card-header>
-        <ion-card-title>Banco Promerica</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p><b>Titular:</b> PLIISS TECHNOLOGY BUSINESSES</p>
-        <p><b>Tipo:</b> Monetaria</p>
-        <p><b>Moneda:</b> Quetzales</p>
-        <p><b>Número:</b> 12335010221476</p>
+    <ion-card style="border-radius: 12px; box-shadow: 0 4px 12px rgba(245,124,0,0.3); margin-bottom: 25px;">
+      <ion-card-content style="padding: 15px 20px; color: #4e342e;">
+        <p style="font-weight: 600; font-size: 1rem; margin-bottom: 8px;">📢 Importante:</p>
+        <ul style="list-style-type: none; padding-left: 0; font-size: 0.9rem; color: #6d4c41; line-height: 1.5;">
+          <li>✅ Tomar la foto en un lugar bien iluminado.</li>
+          <li>✅ Usar una imagen clara y enfocada.</li>
+          <li>✅ Evitar sombras, reflejos o fondos que dificulten la lectura del texto.</li>
+          <li>✅ Asegurarte de que todos los datos sean legibles y no estén borrosos.</li>
+        </ul>
       </ion-card-content>
     </ion-card>
-     <h4 style="margin-top: 15px;">Adjuntar comprobante</h4>
-    -->
+
+    <form [formGroup]="paymentForm" (ngSubmit)="submitForm()">
+
+      <ion-item class="outlined-input"
+        style="--border-color: orangered; --background: #fff; border-radius: 8px; margin-bottom: 15px;">
+        <ion-label position="floating" style="color: orangered; font-weight: 600;">Número de Boleta</ion-label>
+        <ion-input [(ngModel)]="formValidFields.receiptNumber" formControlName="receiptNumber" type="text"
+          (ionInput)="checkInput('receiptNumber')" style="color: #4e342e;">
+        </ion-input>
+        <ion-icon *ngIf="isFieldValid('receiptNumber')" name="checkmark-circle" color="success" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-item class="outlined-input"
+        style="--border-color: orangered; --background: #fff; border-radius: 8px; margin-bottom: 25px;">
+        <ion-label position="floating" style="color: orangered; font-weight: 600;">Monto Q.</ion-label>
+        <ion-input formControlName="amount" type="number" [(ngModel)]="formValidFields.amount"
+          (ionInput)="checkInput('amount')" style="color: #4e342e;">
+        </ion-input>
+        <ion-icon *ngIf="isFieldValid('amount')" name="checkmark-circle" color="success" slot="end"></ion-icon>
+      </ion-item>
+
+      <div style="margin-left: 5px; margin-right: 5px;">
+          <p style="font-weight: 600; color: #e65100; margin-bottom: 10px;">Adjunta tu voucher o boleta de depósito</p>
     
-
-    <form [formGroup]="paymentForm" (ngSubmit)="submitForm()" style="margin-top: 15px;">
-      <p>Carga tu imagen, nosotros nos encargamos del resto.</p>
-      📢 Importante: Para garantizar una correcta lectura de la imagen, asegúrate de:
-      <ul>
-        <li>✅ Tomar la foto en un lugar bien iluminado.</li>
-        <li>✅ Usar una imagen clara y enfocada.</li>
-        <li>✅ Evitar sombras, reflejos o fondos que dificulten la lectura del texto.</li>
-        <li>✅ Asegurarte de que todos los datos sean legibles y no estén borrosos.</li>
-      </ul>
-      <ion-item class="outlined-input">
-        <ion-label position="floating">Número de Boleta</ion-label>
-        <ion-input  [(ngModel)]="formValidFields.receiptNumber"  formControlName="receiptNumber" type="text" 
-        (ionInput)="checkInput('receiptNumber')"></ion-input>
-        <ion-icon *ngIf="isFieldValid('receiptNumber')" name="checkmark-circle" color="success" slot="end"></ion-icon>  </ion-item>
-
-        <ion-item class="outlined-input">
-          <ion-label position="floating">Monto Q.</ion-label>
-          <ion-input 
-            formControlName="amount" 
-            type="number"
-            [(ngModel)]="formValidFields.amount"
-            (ionInput)="checkInput('amount')">
-          </ion-input>
-          <ion-icon *ngIf="isFieldValid('amount')" name="checkmark-circle" color="success" slot="end"></ion-icon>
-        </ion-item>
-
-      <p>Adjunta tu vaucher o boleta de depósito</p>
-
-
-      <div class="photo-container" (click)="openPhotoOptions()">
-        <img *ngIf="photoBase64" [src]="photoBase64" />
-        <ion-icon *ngIf="!photoBase64" name="camera" size="large"></ion-icon>
+        <div class="photo-container" (click)="openPhotoOptions()" style="
+          border: 2px dashed orangered; 
+          border-radius: 15px; 
+          height: 180px; 
+          display: flex; 
+          justify-content: center; 
+          align-items: center; 
+          cursor: pointer;
+          margin-bottom: 30px;
+          overflow: hidden;
+          background: #fff;
+          box-shadow: 0 2px 10px rgba(245,124,0,0.2);
+        ">
+          <img *ngIf="photoBase64" [src]="photoBase64"
+            style="width: 100%; height: 100%; object-fit: contain; border-radius: 15px;" />
+          <ion-icon *ngIf="!photoBase64" name="camera" size="large" style="color: orangered;"></ion-icon>
+        </div>
       </div>
+      <ion-button  shape="round" expand="full" type="submit" [disabled]="!isImageValid"
+        style="--background: orangered; --border-radius: 15px;  font-weight: 700; font-size: 1.1rem;">
+        Enviar
+      </ion-button>
 
-      <ion-button
-      expand="full"
-      type="submit"
-      [disabled]="!isImageValid">  <!-- Aquí el botón se desactiva si la imagen no es válida -->
-      Enviar
-    </ion-button>
     </form>
   </div>
 </ion-content>

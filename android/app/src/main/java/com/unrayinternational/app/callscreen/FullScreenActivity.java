@@ -285,7 +285,6 @@ public class FullScreenActivity extends Activity {
     enviarPeticionHTTP(accion, idViaje, idUser, idConductor);
     socketManager.emitRespuestaSolicitud(accion, idViaje, idUser, idConductor, success -> {
       if (success) {
-        Log.d("FullScreenActivity", "Evento emitido con éxito");
         socketManager.emitCambiarEstado(idConductor, 1, statusSuccess -> {
           if (statusSuccess) {
             Log.d("FullScreenActivity", "Estado del conductor actualizado");

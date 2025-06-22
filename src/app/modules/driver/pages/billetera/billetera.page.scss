@@ -1,62 +1,62 @@
-
 .fondo-personalizado {
   --background: #fff7f3; // Por ejemplo, un tono suave acorde a `orangered`
 }
-ion-item{
-    font-size: 15pt;
+
+ion-item {
+  font-size: 15pt;
 }
-    
-  ion-icon {
-    margin-top: -10px;
-    font-size: 28px;
-  }
+
+ion-icon {
+  margin-top: -10px;
+  font-size: 28px;
+}
 
 
 
-  .balance-container {
-    margin-top: 20px;
-  }
-  
-  .balance {
-    font-size: 2rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-  }
-  
-  .currency-symbol {
-    font-size: 1.5rem;
-    margin-right: 8px;
-  }
-  
+.balance-container {
+  margin-top: 20px;
+}
 
-  
-  ion-card-header {
-    background-color: #f4f4f4;
-  }
-  
-  ion-button {
-    margin-top: 10px;
-  }
-  
-  .commission-details {
-    font-size: 1rem;
-    color: #666;
-  }
-  
-  ion-badge {
-    font-size: 1rem;
-  }
-  
-  ion-list {
-    padding: 0;
-  }
-  
-  
-  
+.balance {
+  font-size: 2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.currency-symbol {
+  font-size: 1.5rem;
+  margin-right: 8px;
+}
 
 
-  .wallet-content {
+
+ion-card-header {
+  background-color: #f4f4f4;
+}
+
+ion-button {
+  margin-top: 10px;
+}
+
+.commission-details {
+  font-size: 1rem;
+  color: #666;
+}
+
+ion-badge {
+  font-size: 1rem;
+}
+
+ion-list {
+  padding: 0;
+}
+
+
+
+
+
+.wallet-content {
   --padding-start: 16px;
   --padding-end: 16px;
   background: #f8f8f8;
@@ -64,11 +64,12 @@ ion-item{
 }
 
 .card-box {
+  position: relative;
   background: white;
-  border-radius: 20px;
+ border-radius: 20px;
   padding: 16px;
   margin: 12px 0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+ 
 }
 
 .title {
@@ -149,4 +150,43 @@ ion-item{
   .badge-credito {
     background: #28a745;
   }
+}
+
+.actualizar-saldo {
+  text-transform: capitalize;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  width: 100px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.actualizar-saldo ion-icon {
+  font-size: 25px;
+  width: 20px;
+  height: 20px;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.actualizar-saldo:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }

@@ -24,13 +24,14 @@ export class BilleteraPage implements OnInit {
   fechaFin: string = '';
   movimientosFiltrados: any = [];
   activarFiltroFecha: boolean = false;
-
-  constructor(private api: UserService, private apiConductor: ConductorService,public actionSheetController: ActionSheetController,
+  saldoMinimo: any = 0;
+  constructor(private api: UserService, private apiConductor: ConductorService, public actionSheetController: ActionSheetController,
     private auth: AuthService, private menuController: MenuController, private modalCtrl: ModalController,
     private navCtrl: NavController, private alertController: AlertController) {
 
     this.userRole = this.auth.getRole();
     this.user = this.auth.getUser();
+    this.getSaldoBloqueoViaje();
   }
 
 
@@ -51,18 +52,20 @@ export class BilleteraPage implements OnInit {
 
   getSaldo() {
     this.isLoading = true;
-    try {
-      this.api.getSaldo(this.user.idUser).subscribe((re) => {
+
+    this.api.getSaldo(this.user.idUser).subscribe({
+      next: (re) => {
         if (re.result) {
           const data = re.result;
           this.saldo = data.saldo;
-          this.isLoading = false;
         }
-      })
-    } catch (error) {
-      console.error(error);
-      this.isLoading = false;
-    }
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error al obtener saldo:', err);
+        this.isLoading = false;
+      }
+    });
   }
 
   getMovimientos() {
@@ -91,7 +94,7 @@ export class BilleteraPage implements OnInit {
       return cumpleTipo && cumpleFechaInicio
     });
 
-      this.movimientosFiltrados =   this.movimientosFiltrados.reverse();
+    this.movimientosFiltrados = this.movimientosFiltrados.reverse();
   }
 
 
@@ -108,10 +111,10 @@ export class BilleteraPage implements OnInit {
   }
 
 
-  
+
   async navigateToPayments() {
 
-    this.mostrarDetallesCuenta();  
+    this.mostrarDetallesCuenta();
     /*
     const actionSheet = await this.actionSheetController.create({
       header: 'Métodos de Pago',  // Título del Action Sheet
@@ -151,15 +154,30 @@ export class BilleteraPage implements OnInit {
     console.log('onDidDismiss resolved with role', role); */
   }
 
-  
-    async mostrarDetallesCuenta() {
-      const modal = await this.modalCtrl.create({
-        component: DetallesCuentaPage,
-        cssClass: 'custom-alert-modal-billetera', // Clase CSS personalizada
-        backdropDismiss: false, // Opcional: evita que se cierre al hacer clic fuera del modal
-      });
-  
-      await modal.present();
+
+  async mostrarDetallesCuenta() {
+    const modal = await this.modalCtrl.create({
+      component: DetallesCuentaPage,
+      cssClass: 'custom-alert-modal-billetera', // Clase CSS personalizada
+      backdropDismiss: false, // Opcional: evita que se cierre al hacer clic fuera del modal
+    });
+
+    await modal.present();
+  }
+
+
+
+  async getSaldoBloqueoViaje() {
+    try {
+      await this.apiConductor.getSaldoMinimo().subscribe(async (res: any) => {
+        if (res.success) {
+          const data = res.result;
+          this.saldoMinimo = data.saldo;
+        }
+      })
+    } catch (error) {
+      console.error(error)
     }
-  
+
+  }
 }

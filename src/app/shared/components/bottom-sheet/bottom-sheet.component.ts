@@ -360,7 +360,7 @@ export class BottomSheetComponent implements AfterViewInit, OnChanges {
       const user: any = this.authService.getUser();
       this.solicitud.idUser = user.idUser;
       this.solicitud.fecha_hora = new Date().toISOString();
-      await this.delay(3000); // esto funciona
+      await this.delay(1000); // esto funciona
       this.storage.setItem('solicitudEstado', JSON.stringify({ estado: 'pendiente', solicitud: this.solicitud }))
       this.solicitudService.enviarSolicitudAConductor(
         this.solicitud,
@@ -384,7 +384,7 @@ export class BottomSheetComponent implements AfterViewInit, OnChanges {
     this.storage.setItem('solicitudEstado', JSON.stringify({ estado, solicitud: this.solicitud }))
 
     // Limpiar el estado después de un tiempo
-    await this.delay(5000);
+    await this.delay(3000);
     this.estadoSolicitud = ''
     /* setTimeout(() => {
       

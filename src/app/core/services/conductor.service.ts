@@ -44,12 +44,29 @@ export class ConductorService {
     return this.apiService.get(`conductor/metodospagos`);
   }
 
-
-
-
   getCallSecurity() {
     return this.apiService.get(`conductor/callsecurity`);
   }
 
+  getSaldoMinimo() {
+    return this.apiService.get(`conductor/saldoMinimo`);
+  }
+
+  bloquear(data: any) {
+    return this.apiService.put(`user/bloqueo/${data.id}`, data);
+  }
+
+  desbloquear(data: any) {
+    return this.apiService.put(`user/update-estado-bloqueo/${data.id}`, data);
+  }
+
+
+  validateImagen(data: any) {
+    return this.apiService.post(`validateimage/imagen`, data);
+  }
+
+    getApoyoBoleta() {
+    return this.apiService.get(`conductor/apoyoboleta`);
+  }
 
 }

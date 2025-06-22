@@ -46,7 +46,6 @@ public class CallActionPlugin extends Plugin {
     super.handleOnDestroy();
     unregisterBroadcastReceiver();
     pluginInstance = null; // Prevenir memory leak
-    Log.d(TAG, "Plugin destruido");
   }
 
   private void registerBroadcastReceiver() {
@@ -57,9 +56,6 @@ public class CallActionPlugin extends Plugin {
         String idViaje = intent.getStringExtra("idViaje");
         String idUser = intent.getStringExtra("idUser");
         String idConductor = intent.getStringExtra("idConductor");
-        Log.d(TAG, "Broadcast recibido - Acción: " + accion + ", Viaje: " + idViaje);
-
-
         try {
           SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
           prefs.edit()
@@ -68,7 +64,6 @@ public class CallActionPlugin extends Plugin {
             .putString("idUser", idUser)
             .putString("idConductor", idConductor)
             .apply();
-          Log.d(TAG, "Acción guardada en SharedPreferences");
         } catch (Exception e) {
           Log.e(TAG, "Error guardando en SharedPreferences", e);
         }
@@ -80,7 +75,6 @@ public class CallActionPlugin extends Plugin {
           if (launchIntent != null) {
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             context.startActivity(launchIntent);
-            Log.d(TAG, "Intent de lanzamiento de app ejecutado");
           }
         } catch (Exception e) {
           Log.e(TAG, "Error al lanzar la app desde BroadcastReceiver", e);
@@ -106,7 +100,6 @@ public class CallActionPlugin extends Plugin {
         // Versiones anteriores
         getContext().registerReceiver(accionReceiver, filter);
       }
-      Log.d(TAG, "BroadcastReceiver registrado correctamente");
     } catch (Exception e) {
       Log.e(TAG, "Error al registrar BroadcastReceiver", e);
     }

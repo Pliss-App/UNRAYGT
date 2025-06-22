@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Apoyo con boleta</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarModal()" color="light">
+        <ion-icon  style="color:white !important;zoom:1.5;" color="white" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content [fullscreen]="true">
+  <div style="text-align: center; padding-top: 15px; padding-left: 15px; padding-right: 15px;">
+
+
+    <ion-icon style="zoom:5; color:red" name="information-circle"></ion-icon>
+    <h1 style="margin-top: 0px; font-weight: bolder;">Contacto Soporte</h1>
+    <div style="text-align:left !important">
+      <p>Tienes problemas con subir tu boleta?</p>
+      <p>Te dejamos los siguientes contactos para que te comuniques con nosotros.</p>
+      <br>
+
+      <ion-item *ngFor="let item of list" lines="none"  button (click)="abrirEnlace(item)">
+        <ion-button shape="round" slot="start" fill="clear">
+          <ion-icon style="zoom:1.5" slot="icon-only" [name]="item.icon"></ion-icon>
+        </ion-button>
+        <ion-label>{{item.enlace}}</ion-label>
+      </ion-item>
+    </div>
+
+  </div>
+</ion-content>

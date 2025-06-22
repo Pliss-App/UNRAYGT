@@ -43,13 +43,9 @@ export class HomePage implements OnInit {
       this.isActiveMenu = re;
     });
 
-
-
     this.onesignal.initialize(this.userRole, this.user.idUser);
-
-
-  this.getListNotifiacionesNotLeidas();
-     setInterval(() => this.getListNotifiacionesNotLeidas(), 15000); // cada 15s
+    this.getListNotifiacionesNotLeidas();
+    setInterval(() => this.getListNotifiacionesNotLeidas(), 15000); // cada 15s
   }
 
   async ngOnInit() {
@@ -63,16 +59,16 @@ export class HomePage implements OnInit {
     this.getSolicitudCreada();
     this.escucharSolicitud();
     this.getCalificar();
-   
+
 
     await this.getEstadoCalificacion();
 
-      
+
   }
 
 
   async ionViewDidEnter() {
-
+    this.soli.startPolling();
     this.callActionService.accion$.subscribe(async ({ accion, idViaje, idUser }) => {
 
       if (accion === 'aceptar') {
@@ -225,10 +221,10 @@ export class HomePage implements OnInit {
     this.router.navigate(['/user/notificaciones']);
   }
 
-  getListNotifiacionesNotLeidas(){
-      this.callActionService.getNotificacionesNoLeidas(this.user.idUser).subscribe(count => {
-    this.unreadCount = count;
-  });
+  getListNotifiacionesNotLeidas() {
+    this.callActionService.getNotificacionesNoLeidas(this.user.idUser).subscribe(count => {
+      this.unreadCount = count;
+    });
   }
 
 

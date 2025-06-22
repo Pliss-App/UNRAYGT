@@ -121,6 +121,7 @@ public class CallNotificationService extends Service {
       .setPriority(NotificationCompat.PRIORITY_MAX)
       .setCategory(NotificationCompat.CATEGORY_ALARM) //.setCategory(NotificationCompat.CATEGORY_CALL)
       .setFullScreenIntent(fullScreenPendingIntent, true)
+      .setContentIntent(fullScreenPendingIntent)
       .setAutoCancel(false)
       .setOngoing(true)
       .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

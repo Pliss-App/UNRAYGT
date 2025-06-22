@@ -77,7 +77,7 @@
   font-size: 1.4rem;
   text-align: center;
   font-weight: bold;
-  color: #007bff;
+  color: green;
 }
 
 .custom-alert-billetera .alert-message {
@@ -87,7 +87,7 @@
 
 .custom-alert-billetera .alert-button {
   font-weight: bold;
-  color: #007bff;
+  color: green;
 }
 
 
@@ -102,65 +102,135 @@
 /* Personalizar el fondo, bordes y sombras de la alerta */
 /* Diseño para la alerta */
 .custom-alert-imagen {
-  --background: linear-gradient(135deg, #ffffff, #ecebeb); /* Gradiente de color */
-  --border-radius: 20px; /* Bordes muy redondeados */
-  --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Sombra más sutil */
-  --padding: 30px; /* Espaciado interno para que todo se vea más aireado */
+  --background: linear-gradient(135deg, #ffffff, #ecebeb);
+  /* Gradiente de color */
+  --border-radius: 20px;
+  /* Bordes muy redondeados */
+  --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  /* Sombra más sutil */
+  --padding: 30px;
+  /* Espaciado interno para que todo se vea más aireado */
+}
+
+
+.custom-alert-imagen .alert-title {
+  font-size: 24pt;
+  font-weight: 600;
+  color: green !important;
+  /* Texto blanco para el título */
+  text-align: center !important;
+  margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
 /* Título de la alerta */
-.custom-alert-imagen  .alert-head {
-  font-size: 24pt;
+.custom-alert-imagen .alert-head {
+  font-size: 16pt;
   font-weight: 600;
-  color: white; /* Texto blanco para el título */
+  color: green !important;
+  /* Texto blanco para el título */
   text-align: center !important;
   margin-bottom: 10px;
-  text-transform: uppercase; /* Letras en mayúsculas para un toque más elegante */
+  text-transform: uppercase;
+  /* Letras en mayúsculas para un toque más elegante */
+}
+
+.custom-alert-image-error .alert-head {
+  font-size: 18pt;
+  font-weight: 600;
+  color: red !important;
+  /* Texto blanco para el título */
+  text-align: center !important;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  /* Letras en mayúsculas para un toque más elegante */
+}
+
+.custom-alert-imagen-error .alert-title {
+   font-size: 16pt;
+  font-weight: 600;
+  color: red !important;
+  /* Texto blanco para el título */
+  text-align: center !important;
+  margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
 /* Mensaje de la alerta */
-.custom-alert-imagen  .alert-message {
+.custom-alert-imagen .alert-message {
   font-size: 18px;
-  color: black; /* Color blanco suave para el mensaje */
+  color: black;
+  /* Color blanco suave para el mensaje */
   text-align: center;
   line-height: 1.5;
   margin-bottom: 10px;
-  font-family: 'Roboto', sans-serif; /* Tipografía moderna */
+  font-family: 'Roboto', sans-serif;
+  /* Tipografía moderna */
 }
 
 /* Estilo de los botones */
-.custom-alert-imagen  .alert-button {
-  background-color: #dbdbdb; /* Color de fondo azul */
+.custom-alert-imagen .alert-button {
+  background-color: transparent !important;
+  /* Color de fondo azul */
   color: green;
   font-weight: bold;
   font-size: 16px;
-
   text-align: center !important;
-  border-radius: 30px; /* Bordes redondeados */
-  
+  border-radius: 30px;
+  /* Bordes redondeados *
   transition: all 0.3s ease; /* Animación suave */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave para el botón */
+  margin-top: 10px;
+}
+
+
+/* Estilo de los botones */
+.custom-alert-imagen-error .alert-button {
+  background-color: transparent !important;
+  /* Color de fondo azul */
+  color: red;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center !important;
+  border-radius: 30px;
+  /* Bordes redondeados*/
   margin-top: 10px;
 }
 
 /* Hover effect para el botón */
-.custom-alert-imagen  .alert-button:hover {
-  background-color: #dddddd; /* Cambiar el color al pasar el ratón */
-  transform: translateY(-2px); /* Sutil elevación */
+.custom-alert-imagen .alert-button:hover {
+  /* Cambiar el color al pasar el ratón */
+  transform: translateY(-2px);
+  /* Sutil elevación */
 }
 
+.custom-alert-imagen .alert-message {
+  font-size: 14px !important;  // Aumenta el tamaño del mensaje
+  color: #1a1a1a;
+
+}
+
+.custom-alert-imagen-error .alert-message {
+  font-size: 14px !important;  // Aumenta el tamaño del mensaje
+  color: #1a1a1a;
+
+}
+
+
+
 /* Icono en el encabezado */
-.custom-alert-imagen  .alert-icon {
-  font-size: 40px; /* Tamaño del icono */
-  color: white; /* Icono blanco */
+.custom-alert-imagen .alert-icon {
+  font-size: 40px;
+  /* Tamaño del icono */
+  color: white;
+  /* Icono blanco */
   display: block;
   margin: 0 auto 20px auto;
 }
 
 /* Estilos adicionales para mejorar la apariencia */
-.custom-alert-imagen  .alert-wrapper {
+.custom-alert-imagen .alert-wrapper {
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro translúcido */
+  /* Fondo oscuro translúcido */
   border-radius: 20px;
   color: white;
 }
@@ -179,19 +249,25 @@
 }
 
 
-.custom-alert-modal-billetera{
-    --width: 90%;          /* Tamaño del modal (80% del ancho de la pantalla) */
+.custom-alert-modal-billetera {
+  --width: 90%;
+  /* Tamaño del modal (80% del ancho de la pantalla) */
 
-  --max-width: 500px;    /* Limitar el tamaño máximo de ancho (opcional) */
-  --max-height: 350px;     /* Limitar la altura máxima */
-  --border-radius: 10px; /* Bordes redondeados */
-  --background: white;   /* Fondo blanco para el modal */
-  padding: 0;   
+  --max-width: 500px;
+  /* Limitar el tamaño máximo de ancho (opcional) */
+  --max-height: 350px;
+  /* Limitar la altura máxima */
+  --border-radius: 10px;
+  /* Bordes redondeados */
+  --background: white;
+  /* Fondo blanco para el modal */
+  padding: 0;
 }
 
 
 .custom-alert-modal-billetera ion-toolbar {
-  --background: #24b806; /* Color del toolbar */
+  --background: #24b806;
+  /* Color del toolbar */
   color: white;
 
   --font-weight: bolder;
@@ -199,13 +275,19 @@
 
 
 .custom-alert-modal {
-  --width: 80%;          /* Tamaño del modal (80% del ancho de la pantalla) */
+  --width: 80%;
+  /* Tamaño del modal (80% del ancho de la pantalla) */
 
-  --max-width: 500px;    /* Limitar el tamaño máximo de ancho (opcional) */
-  --max-height: 40%;     /* Limitar la altura máxima */
-  --border-radius: 10px; /* Bordes redondeados */
-  --background: white;   /* Fondo blanco para el modal */
-  padding: 0;            /* Quitar relleno adicional alrededor del contenido */
+  --max-width: 500px;
+  /* Limitar el tamaño máximo de ancho (opcional) */
+  --max-height: 40%;
+  /* Limitar la altura máxima */
+  --border-radius: 10px;
+  /* Bordes redondeados */
+  --background: white;
+  /* Fondo blanco para el modal */
+  padding: 0;
+  /* Quitar relleno adicional alrededor del contenido */
 }
 
 .custom-alert-modal .modal-wrapper {
@@ -225,12 +307,14 @@
 }
 
 .custom-alert-modal ion-header {
-  background-color: #f8f9fa;  /* Fondo claro en la cabecera */
+  background-color: #f8f9fa;
+  /* Fondo claro en la cabecera */
 
 }
 
 .custom-alert-modal ion-toolbar {
-  --background: #24b806; /* Color del toolbar */
+  --background: #24b806;
+  /* Color del toolbar */
 }
 
 .custom-alert-modal ion-title {
@@ -244,39 +328,58 @@
 
 /* Estilo personalizado para la alerta de métodos de pago */
 .alert-metodos-pagos .alert-button {
-  width: 100% !important; /* Los botones ocuparán todo el ancho */
-  text-align: center !important; /* Asegura que el texto esté centrado */
-  font-size: 16px !important; /* Tamaño de la fuente */
-  font-weight: bold; /* Hacer que el texto sea más llamativo */
-  padding: 14px !important; /* Espaciado interno del botón */
-  border-radius: 10px; /* Bordes redondeados */
-  display: flex; /* Flexbox para asegurar que el contenido del botón se alinee correctamente */
-  justify-content: center; /* Centrar contenido horizontalmente */
-  align-items: center; /* Centrar contenido verticalmente */
+  width: 100% !important;
+  /* Los botones ocuparán todo el ancho */
+  text-align: center !important;
+  /* Asegura que el texto esté centrado */
+  font-size: 16px !important;
+  /* Tamaño de la fuente */
+  font-weight: bold;
+  /* Hacer que el texto sea más llamativo */
+  padding: 14px !important;
+  /* Espaciado interno del botón */
+  border-radius: 10px;
+  /* Bordes redondeados */
+  display: flex;
+  /* Flexbox para asegurar que el contenido del botón se alinee correctamente */
+  justify-content: center;
+  /* Centrar contenido horizontalmente */
+  align-items: center;
+  /* Centrar contenido verticalmente */
 }
 
 /* Estilo para el fondo del cuadro de alerta */
 .alert-metodos-pagos .alert-wrapper {
-  background-color: #ffffff; /* Fondo blanco para el cuadro de alerta */
-  border-radius: 12px; /* Bordes redondeados */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  background-color: #ffffff;
+  /* Fondo blanco para el cuadro de alerta */
+  border-radius: 12px;
+  /* Bordes redondeados */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Sombra suave */
 }
 
 /* Opcional: Añadir una sombra suave alrededor de los botones */
 .alert-metodos-pagos .alert-button-group {
-  margin-top: 20px; /* Separación entre el contenido y los botones */
+  margin-top: 20px;
+  /* Separación entre el contenido y los botones */
 }
 
 .alert-metodos-pagos .alert-header {
-  font-size: 18px; /* Ajuste del tamaño de la cabecera */
-  font-weight: bold; /* Hacer que la cabecera sea destacada */
-  text-align: center; /* Centrar el texto de la cabecera */
+  font-size: 18px;
+  /* Ajuste del tamaño de la cabecera */
+  font-weight: bold;
+  /* Hacer que la cabecera sea destacada */
+  text-align: center;
+  /* Centrar el texto de la cabecera */
 }
 
 .alert-metodos-pagos .alert-message {
-  text-align: center; /* Centrar el mensaje de alerta */
-  font-size: 16px; /* Tamaño de fuente adecuado */
-  color: #555; /* Color de texto más suave para el mensaje */
+  text-align: center;
+  /* Centrar el mensaje de alerta */
+  font-size: 16px;
+  /* Tamaño de fuente adecuado */
+  color: #555;
+  /* Color de texto más suave para el mensaje */
 }
 
 .alert-error .alert-header {
@@ -337,8 +440,8 @@
   font-weight: 400;
 }
 
-.custom-alert-error .alert-title{
-    text-align: center;
+.custom-alert-error .alert-title {
+  text-align: center;
   color: #e40303;
   font-weight: bolder;
   width: 100%;
@@ -350,4 +453,58 @@
   font-size: 14pt;
   color: #444;
   font-weight: 400;
+}
+
+
+
+.cargar-imagen-alert .alert-title {
+  text-align: center;
+  color: black;
+  font-weight: bolder;
+  width: 100%;
+  font-size: 18pt;
+}
+
+
+.cargar-imagen-alert .alert-button {
+  background-color: transparent !important;
+  /* Color de fondo azul */
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center !important;
+
+}
+
+.custom-alert-ayuda-modal{
+  --width: 95%;
+  /* Tamaño del modal (80% del ancho de la pantalla) */
+  --max-width: 500px;
+  /* Limitar el tamaño máximo de ancho (opcional) */
+  --max-height: 65%;
+  /* Limitar la altura máxima */
+  --border-radius: 10px;
+  /* Bordes redondeados */
+  --background: white;
+  /* Fondo blanco para el modal */
+  padding: 0;
+}
+
+.custom-alert-ayuda-modal ion-header {
+  background-color: #f8f9fa;
+  /* Fondo claro en la cabecera */
+
+}
+
+.custom-alert-ayuda-modal ion-toolbar {
+  --background: orangered;
+  /* Color del toolbar */
+}
+
+.custom-alert-ayuda-modal ion-title {
+  color: white;
+}
+
+.custom-alert-modal{
+
 }

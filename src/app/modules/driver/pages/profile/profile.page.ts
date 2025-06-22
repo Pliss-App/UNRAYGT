@@ -200,7 +200,6 @@ export class ProfilePage implements OnInit {
 
   copiarCodigo(codigo: string) {
     if (!codigo) {
-      console.log("No hay código para copiar.");
       return;
     }
   

@@ -55,17 +55,14 @@ public class SocketManager {
 
       mSocket.on(Socket.EVENT_CONNECT, args -> {
         isConnected = true;
-        Log.d("SocketManager", "✅ Conectado al servidor");
       });
 
       mSocket.on(Socket.EVENT_DISCONNECT, args -> {
         isConnected = false;
-        Log.d("SocketManager", "🔌 Desconectado del servidor");
       });
 
       mSocket.on(Socket.EVENT_CONNECT_ERROR, args -> {
         isConnected = false;
-        Log.e("SocketManager", "❌ Error de conexión: " + args[0]);
       });
 
       mSocket.connect();
@@ -85,14 +82,11 @@ public class SocketManager {
 
       if (mSocket != null && mSocket.connected()) {
         mSocket.emit("respuesta_solicitud", payload);
-        Log.d("SocketManager", "📤 Evento respuesta_solicitud emitido");
         if (callback != null) callback.onEventEmitted(true);
       } else {
-        Log.e("SocketManager", "⚠ Socket no conectado, intentando reconectar...");
         reconnectAndEmit(accion, idViaje, idUser, idConductor, callback);
       }
     } catch (JSONException e) {
-      Log.e("SocketManager", "❌ Error al crear JSON", e);
       if (callback != null) callback.onEventEmitted(false);
     }
   }
@@ -105,14 +99,11 @@ public class SocketManager {
 
       if (mSocket != null && mSocket.connected()) {
         mSocket.emit("cambiar_estado", payload);
-        Log.d("SocketManager", "🔄 Estado cambiado emitido");
         if (callback != null) callback.onEventEmitted(true);
       } else {
-        Log.e("SocketManager", "⚠ Socket no conectado para cambiar estado");
         if (callback != null) callback.onEventEmitted(false);
       }
     } catch (JSONException e) {
-      Log.e("SocketManager", "❌ Error al crear JSON para cambiar estado", e);
       if (callback != null) callback.onEventEmitted(false);
     }
   }
@@ -136,7 +127,6 @@ public class SocketManager {
       mSocket.disconnect();
       mSocket.off();
       isConnected = false;
-      Log.d("SocketManager", "🧹 Socket desconectado y limpiado");
     }
   }
 }

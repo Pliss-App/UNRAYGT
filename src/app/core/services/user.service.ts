@@ -64,8 +64,6 @@ export class UserService {
     return this.apiService.post(`user/update-location`, data);
   }
 
-
-
   eliminarCuenta(data: any) {
     return this.apiService.put(`user/eliminar-cuenta`, data);
   }
@@ -258,6 +256,13 @@ export class UserService {
     return this.apiService.post(`user/upload_profile`, data);
 
   }
+
+
+    imageBoletaPago(data: any) {
+    return this.apiService.post(`user/upload_boletas`, data);
+
+  }
+
 
   updateDocumentacion(data: any) {
     return this.apiService.post(`user/upload_documentacion`, data);

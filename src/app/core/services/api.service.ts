@@ -131,7 +131,6 @@ export class ApiService {
   // Intentar reconectar cuando la red se recupere
   private tryReconnect() {
     if (!this.reconnecting && this.isConnected.value) {
-      console.log('Intentando reconectar...');
       this.startApiMonitoring(); // Comienza a monitorear la API nuevamente
     }
   }

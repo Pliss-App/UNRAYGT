@@ -3,15 +3,21 @@
   <div>
   <app-mapa>
     <div class="btn-online-off">
-
       <ion-item class="toggle-container" [ngClass]="{ 'item-online': isOnline, 'item-offline': !isOnline }">
         <div class="toggle-wrapper">
           <div class="toggle-left">
             <ion-label class="status-label">OFFLINE</ion-label>
           </div>
       
-          <div class="toggle-center">
-            <ion-toggle [(ngModel)]="isOnline" (ionChange)="updateStatus()"
+          <div *ngIf="this.estado_usuario == 'bloqueo'" class="toggle-center" (click)="mostrarMensaje()">
+            <ion-toggle  disabled
+                        [color]="isOnline==true ? 'success' : 'danger'">
+            </ion-toggle>
+          </div>
+
+                
+          <div *ngIf="this.estado_usuario != 'bloqueo'" class="toggle-center">
+            <ion-toggle [disabled]="estado_usuario == 'ocupado' ? true : false" [(ngModel)]="isOnline" (ionChange)="updateStatus()"
                         [color]="isOnline==true ? 'success' : 'danger'">
             </ion-toggle>
           </div>

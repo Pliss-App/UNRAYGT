@@ -122,7 +122,6 @@ export class AuthService { //'https://unrayappserver.onrender.com/api';
     return this.http.post<any>(`${this.authUrl}/cuenta/login-modo`, credenciales)
       .pipe(map(async user => {
 
-        console.log("User ", user)
         if (user?.msg) {
           if (user && user.token) {
             localStorage.setItem('currentUser', JSON.stringify(user.user));

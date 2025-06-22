@@ -75,7 +75,7 @@ export class UserDriverComponent implements OnInit {
     private api: UserService, private auth: AuthService, private storageService: StorageService,
     private route: Router, private launchNavigator: LaunchNavigator) {
     this.user = this.auth.getUser();
- 
+
     this.intervalIdChat = setInterval(() => this.getChatsNoLeido(), 15000);
   }
 
@@ -168,7 +168,7 @@ export class UserDriverComponent implements OnInit {
         await this.api.getDriverProfile(this.idConductor).subscribe((re) => {
           if (re.success) {
             this.profile = re?.result;
-             this.getChatsNoLeido();
+            this.getChatsNoLeido();
             this.loading = false;
             if (!this.profile.foto) {
               this.profile.foto = this.placeholderImage;
@@ -182,7 +182,7 @@ export class UserDriverComponent implements OnInit {
         await this.api.getUserProfileDriver(this.idConductor).subscribe((re) => {
           if (re.success) {
             this.profile = re?.result;
-                  this.getChatsNoLeido();
+            this.getChatsNoLeido();
             this.loading = false;
             if (!this.profile.foto) {
               this.profile.foto = this.placeholderImage;
@@ -190,9 +190,9 @@ export class UserDriverComponent implements OnInit {
           }
         })
       }
- 
+
     }
-  
+
   }
 
   updateEstadoViaje(item: any, idUser: any, idSoli: any) {
@@ -211,7 +211,8 @@ export class UserDriverComponent implements OnInit {
           title: 'Viaje - Conductor',
           message: item == 'En Ruta a Usuario' ? 'El viaje se ha iniciado, esperemos todo salga bien.' : 'Ya esta tu Driver Ray esperandote. No tardes.',
           fecha: this.obtenerFechaHoraLocal(),
-          idUser: this.idConductor
+          idUser: this.idConductor,
+          tipo: 'viaje'
         }
         this.onesignal.enviarNotificacion(data).subscribe((re) => {
           return 0;
@@ -264,7 +265,8 @@ export class UserDriverComponent implements OnInit {
         title: 'Viaje - Iniciado',
         message: `${this.profile.nombre},  tu driver va en camino.`,
         fecha: this.obtenerFechaHoraLocal(),
-        idUser: this.idConductor
+        idUser: this.idConductor,
+        tipo: 'viaje'
       }
       this.onesignal.enviarNotificacion(data).subscribe((re) => {
         return 0;
@@ -280,7 +282,8 @@ export class UserDriverComponent implements OnInit {
         title: 'Viaje - A Destino',
         message: `Esperamos que todo vaya bien en tu viaje.`,
         fecha: this.obtenerFechaHoraLocal(),
-        idUser: this.idConductor
+        idUser: this.idConductor,
+        tipo: 'viaje'
       }
       this.onesignal.enviarNotificacion(noti).subscribe((re) => {
       });
@@ -328,9 +331,10 @@ export class UserDriverComponent implements OnInit {
               userId: this.idTokenOne,
               sonido: 'vacio',
               title: 'Viaje - Cancelado',
-              message: `${this.profile.nombre}, se acaba de cancelar tu viaje.`,
+              message: `${this.profile.nombre}, acaba de cancelar tu viaje.`,
               fecha: this.obtenerFechaHoraLocal(),
-              idUser: this.idConductor
+              idUser: this.idConductor,
+              tipo: 'principal'
             }
             this.onesignal.enviarNotificacion(data).subscribe((re) => {
               var val = re;
@@ -352,7 +356,8 @@ export class UserDriverComponent implements OnInit {
               title: 'Viaje - Cancelado',
               message: `${this.profile.nombre}, acaba de cancelar la solicitud.`,
               fecha: this.obtenerFechaHoraLocal(),
-              idUser: this.idConductor
+              idUser: this.idConductor,
+              tipo: 'viaje'
             }
             this.onesignal.enviarNotificacion(data).subscribe((re) => {
               var val = re;
@@ -408,7 +413,8 @@ export class UserDriverComponent implements OnInit {
                   title: 'Viaje - Finalizado',
                   message: `Viaje a sido finalizado. Esperamos que todo haya ido bien.`,
                   fecha: this.obtenerFechaHoraLocal(),
-                  idUser: this.idConductor
+                  idUser: this.idConductor,
+                  tipo: 'principal'
                 }
                 this.onesignal.enviarNotificacion(data).subscribe((re) => {
                   var val = re;
@@ -496,7 +502,8 @@ export class UserDriverComponent implements OnInit {
         title: 'Viaje - Usuario',
         message: `${this.user.nombre}, ya va hacia ti.`,
         fecha: this.obtenerFechaHoraLocal(),
-        idUser: this.idConductor
+        idUser: this.idConductor,
+        tipo: 'viaje'
       }
 
       const response = this.onesignal.enviarNotificacion(noti);
@@ -626,22 +633,21 @@ export class UserDriverComponent implements OnInit {
 
   getChatsNoLeido() {
 
-    if(this.user &&  this.rol && this.profile)
-    {
+    if (this.user && this.rol && this.profile) {
 
-    const data = {
-      idViaje: this.idViaje,
-      emisor_id: this.user.idUser,
-      receptor_id:this.profile.idUser
-    }
-
-    this.api.getMensajesNoLeidos(data).subscribe((re:any) => {
-      if(re.success){
-          this.isChat = re.result;
+      const data = {
+        idViaje: this.idViaje,
+        emisor_id: this.user.idUser,
+        receptor_id: this.profile.idUser
       }
-    })
 
-  }
+      this.api.getMensajesNoLeidos(data).subscribe((re: any) => {
+        if (re.success) {
+          this.isChat = re.result;
+        }
+      })
+
+    }
   }
 
   ngOnDestroy() {

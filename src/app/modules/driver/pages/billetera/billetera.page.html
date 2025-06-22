@@ -13,15 +13,28 @@
 
   <!-- Saldo Disponible -->
   <div class="card-box balance-box">
+ <ion-button 
+  (click)="getSaldo()" 
+  class="actualizar-saldo" 
+  shape="round" 
+  fill="clear"
+  [disabled]="isLoading">
+
+ 
+  Actualizar
+
+</ion-button>
     <div class="title">Saldo Disponible</div>
     <div class="amount">Q{{ saldo }}</div>
+    <p style="margin-top: -10px; font-size:13px">Saldo mínimo para recibir viajes Q{{saldoMinimo}}</p>
     <ion-button expand="block" class="btn-recargar" routerLink="/driver/recargar">RECARGAR</ion-button>
   </div>
 
   <!-- Donde depositar -->
   <div class="card-box deposit-box">
     <div class="title">¿Dónde debo depositar?</div>
-    <ion-button expand="block" fill="outline" class="btn-outline" (click)="navigateToPayments()">VER No. DE CUENTA</ion-button>
+    <ion-button expand="block" fill="outline" class="btn-outline" (click)="navigateToPayments()">VER No. DE
+      CUENTA</ion-button>
   </div>
 
   <!-- Historial de Transacciones -->

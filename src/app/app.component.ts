@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   isAuthenticated: boolean = false;
   constructor(
     private location: LocationService,
-    private soli: SolicitudService,
+  //  private soli: SolicitudService,
     private menuCtrl: MenuController,
     private platform: Platform,
     private authService: AuthService,
@@ -68,7 +68,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   async ngOnInit() {
     await this.platform.ready();
     await this.getSplash();
-    this.isAuthenticated =  await this.authService.isAuthenticated();
+    this.isAuthenticated = await this.authService.isAuthenticated();
     App.addListener('pause', () => {
       this.saveState();
     });
@@ -91,7 +91,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     const currentUrl = this.router.url;
     if (isAuthenticated) {
       // this.getLocationInit();
-      this.user =  await this.authService.getUser();
+      this.user = await this.authService.getUser();
       if (this.user.verificacion == 1) {
         const userRole = this.authService.getRole();
         this.role = userRole;
@@ -102,19 +102,19 @@ export class AppComponent implements OnInit, AfterViewInit {
           } else {
             this.menuCtrl.enable(true, 'userMenu');
             this.menuCtrl.enable(false, 'driverMenu');
-            this.soli.startPolling();
+            //this.soli.startPolling();
             this.router.navigate(['/user'], { replaceUrl: true });
           }
 
         } else if (userRole === 'conductor' && !currentUrl.startsWith('/driver')) {
-          this.soli.startPolling();
+       //   this.soli.startPolling();
           this.menuCtrl.enable(true, 'driverMenu');
           this.menuCtrl.enable(false, 'userMenu');
           this.router.navigate(['/driver'], { replaceUrl: true });
         }
       } else {
-  this.menuCtrl.enable(false, 'userMenu');
-          this.menuCtrl.enable(false, 'driverMenu');
+        this.menuCtrl.enable(false, 'userMenu');
+        this.menuCtrl.enable(false, 'driverMenu');
         this.router.navigate([`/auth/verificacion/${this.user.telefono}`], { replaceUrl: true });
       }
     } else {

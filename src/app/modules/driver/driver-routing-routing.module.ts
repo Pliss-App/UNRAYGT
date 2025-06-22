@@ -69,7 +69,15 @@ const routes: Routes = [
   {
     path: 'referidos',
     loadChildren: () => import('./pages/referidos/referidos.module').then( m => m.ReferidosPageModule)
+  },  {
+    path: 'gestionesboleta',
+    loadChildren: () => import('./pages/gestionesboleta/gestionesboleta.module').then( m => m.GestionesboletaPageModule)
   },
+  {
+    path: 'ayuda-boleta',
+    loadChildren: () => import('./pages/ayuda-boleta/ayuda-boleta.module').then( m => m.AyudaBoletaPageModule)
+  },
+
 // Protección de ruta }
 ];
 

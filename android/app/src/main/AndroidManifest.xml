@@ -56,22 +56,15 @@
         </intent-filter>
       </activity>
 
-
-
-      <activity android:name=".callscreen.FullScreenActivity"
+      <activity
+        android:name=".callscreen.FullScreenActivity"
         android:exported="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar.FullScreen"
         android:showWhenLocked="true"
         android:turnScreenOn="true"
-        android:launchMode="singleInstance"
-        android:excludeFromRecents="true" >
-        <intent-filter>
-          <action android:name="android.intent.action.MAIN"/>
-          <category android:name="android.intent.category.DEFAULT"/>
-        </intent-filter>
+        android:launchMode="singleTop"
+        android:excludeFromRecents="true">
       </activity>
-
-
 
       <service
             android:name=".callscreen.MyFirebaseMessagingService"
